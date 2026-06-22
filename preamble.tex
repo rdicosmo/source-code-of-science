@@ -21,6 +21,7 @@
 \usepackage[most]{tcolorbox}
 \usepackage{marginnote}
 \usepackage{enumitem}
+\usepackage{etoolbox}
 
 % --- Links (load before biblatex) -----------------------------------------
 \usepackage{hyperref}
@@ -46,6 +47,13 @@
 
 % SWHID display helper (small monospace, allows breaks).
 \newcommand{\swhid}[1]{\texttt{\small #1}}
+
+% Self-archival stamp (see the Colophon and the Makefile `swhid` target).
+% A document cannot contain its own SWHID; `make swhid` injects it, at build
+% time, into a throwaway swhid.tex consumed only by the stamped (non-committed)
+% PDF. A plain `make` leaves \thisswhid empty -> the Colophon shows a placeholder.
+\providecommand{\thisswhid}{}
+\ifdef{\STAMPSWHID}{\InputIfFileExists{swhid.tex}{}{}}{}
 
 % --- Title-page command ---------------------------------------------------
 \newcommand{\swhtitlepage}{%

@@ -16,7 +16,7 @@ $(NAME).pdf: $(NAME).tex preamble.tex references.bib \
 # Produces $(TITLE)-swhid.pdf (git-ignored).
 swhid:
 	@test -n "$(SWHID)" || (echo "usage: make swhid SWHID='swh:1:dir:...'" && exit 1)
-	@printf '\\newcommand{\\thisswhid}{%s}\n' '$(SWHID)' > swhid.tex
+	@printf '\\def\\thisswhid{%s}\n' '$(SWHID)' > swhid.tex
 	latexmk -xelatex -interaction=nonstopmode -jobname=$(TITLE)-swhid \
 	  -usepretex='\def\STAMPSWHID{1}' $(NAME).tex
 	@echo "Built $(TITLE)-swhid.pdf (do not commit)."

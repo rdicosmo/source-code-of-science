@@ -1,0 +1,49 @@
+\clearpage
+\chapter*{Colophon: archiving this note}
+\addcontentsline{toc}{chapter}{Colophon: archiving this note}
+\label{ch:colophon}
+
+This note is a worked example of its own subject. Its \LaTeX{} source is archived in
+Software Heritage, and the intrinsic identifier of the archived source directory is:
+
+\begin{center}
+\ifdefempty{\thisswhid}{%
+  \emph{(stamped at release time --- see ``How this identifier is produced'' below)}%
+}{%
+  \swhid{\thisswhid}%
+}
+\end{center}
+
+\paragraph{Why this identifier is not written into the source.}
+A \textsc{swhid} is a cryptographic hash of the content it names. Writing a document's own
+\textsc{swhid} \emph{into} that document would change the document's bytes, and therefore
+change its hash --- a self-reference no hash function can satisfy (a fixed point it does not
+have). This is not a limitation of Software Heritage; it is what makes the identifier
+trustworthy: the name is forced to follow the bytes, so it cannot be faked. The source is
+therefore archived first, and the resulting identifier is stamped only into \emph{this
+rendered PDF}, which is not part of the hashed source tree.
+
+\paragraph{How this identifier is produced.}
+After the source is committed and archived (via Save Code Now), the qualified directory
+\textsc{swhid} is read from the archive's \emph{Permalinks} tab and stamped into a
+non-committed PDF:
+\begin{center}
+\texttt{make swhid SWHID='swh:1:dir:...;origin=...;visit=...'}
+\end{center}
+A plain \texttt{make} deliberately leaves the slot empty: the committed source never contains
+its own identifier, so the source's \textsc{swhid} stays well-defined and stable.
+
+\begin{handson}[Hands-on (capstone): verify this very note]
+You can recompute the identifier above and confirm it yourself.
+\begin{enumerate}[nosep,leftmargin=*]
+  \item Export the \emph{committed} source (tracked files only, no build artefacts):\\
+        \texttt{git archive HEAD | (mkdir -p /tmp/note \&\& tar -x -C /tmp/note)}
+  \item Compute the directory \textsc{swhid}: \texttt{swh identify -{}-type directory /tmp/note}.
+  \item Compare its core \swhid{swh:1:dir:<hash>} with the one printed above (ignore the
+        \texttt{origin}/\texttt{visit} qualifiers). A match means you have verified the
+        integrity of the document you are reading.
+  \item \emph{Bonus (git-compatibility):} the note's \emph{revision} identifier is just
+        \swhid{swh:1:rev:} prepended to \texttt{git rev-parse HEAD} --- a Software Heritage
+        revision \textsc{swhid} \emph{is} the git commit hash.
+\end{enumerate}
+\end{handson}

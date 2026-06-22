@@ -27,9 +27,12 @@ then moves *beyond* it (per the CODE-beyond-FAIR roadmap).
 - **Audience/level:** doctoral course; cross-disciplinary researchers; practical with moderate
   theory; suitable for self-study *and* taught delivery.
 - **Language:** English (an Italian edition is a possible later follow-up for the GARR audience).
-- **Build:** LaTeX `report`/`scrreprt` + `biblatex` (`datamodel=software`) + `software-biblatex`
+- **Build:** LaTeX `report` + `biblatex` (`datamodel=software`) + `software-biblatex`
   + `biber`, compiled with `xelatex` (TeX Gyre Pagella, SWH-branded title), standalone git repo
-  like the AEC guide.
+  like the AEC guide. (KOMA `scrreprt` was the first choice but `koma-script` is not installed.)
+- **License:** CC-BY-4.0 for the text; code snippets permissive (CC0/MIT). *(settled)*
+- **Hands-on labs:** included — lab boxes in the practical chapters, plus a self-verification
+  capstone in the Colophon. *(settled)*
 
 ## Structure and chapter outline
 
@@ -106,11 +109,21 @@ GARR-2026 material (`talks-private/2026-05-19-Garr/`: Guix proof-of-concept, six
 - D. **Annotated bibliography** (the curated `references.bib`).
 
 **Pedagogical devices (doctoral course):**
-- *Hands-on boxes* at the end of Ch. 3–4: "archive your repo and get its SWHID", "compute a
-  `dir` SWHID and verify it", "write a `biblatex-software` entry for your code".
+- *Hands-on boxes* at the end of Ch. 3–4: "archive <any> repo (yours, or a report you want to mention/cite/rely upon) and get its SWHID", "compute a
+  `dir` SWHID and verify it", "write a `biblatex-software` entry for your code"
+  + additional material:
+     - use updateswh, save code now
+	 - create a reference to a code snippet, a revison, a file a directory, etc. to embed in a research article
+	 - create variants of biblatex-software entries
+	 - use an acmart.cls and enable support for biblatex-software entries
+     - set up a webhook for your repository on GitHub, GitLab instances, Gitea, Birbucket, SourceForge
+  + create a codemeta.json, insert it into your repo, check how the citation sidebar appears in the Archive, and use it to get the citations that you want
 - *Key-takeaway* margin notes per chapter.
-- *Dogfooding:* archive the finished note in SWH and have it **cite itself** by SWHID — a live
-  demonstration of the whole workflow. #+NOTE_TO_CLAUDE: the SWHID is computed on an object, so this object cannot contain its own SWHID! What I can suggest is to have a makefile that produces a non commited pdf that includes the SWHID of the archive (this requires some gymnastics)
+- *Dogfooding (implemented):* the note archives and verifies **itself**. Because a SWHID is a
+  hash of the content, a document cannot contain its own SWHID; so `make swhid SWHID=...` stamps
+  the archived-source SWHID into a *non-committed* release PDF, and the **Colophon** turns the
+  paradox into a lesson on hashing plus a capstone lab that recomputes and verifies the note's
+  own identifier (`git archive HEAD | swh identify --type directory`).
 
 ## Sourcing / reuse map (summary)
 
@@ -126,15 +139,15 @@ GARR-2026 material (`talks-private/2026-05-19-Garr/`: Guix proof-of-concept, six
 
 ```
 2026-course-research-software/
-  main.tex                 % scrreprt, xelatex, biblatex(datamodel=software)+software-biblatex
-  preamble.tex             % fonts (TeX Gyre Pagella), SWH title, hands-on/takeaway box envs
-  chapters/00-intro.tex … 05-outlook.tex
-  appendix/{cookbook,swhid-syntax,glossary}.tex
+  main.tex                 % report, xelatex, biblatex(datamodel=software)+software-biblatex
+  preamble.tex             % fonts (TeX Gyre Pagella), SWH title, hands-on/takeaway envs, swhid stamp
+  chapters/01-why.tex … 06-outlook.tex
+  appendix/{A-cookbook,B-swhid-syntax,C-glossary}.tex
+  colophon.tex             % self-archival SWHID + hashing lesson + capstone lab
   references.bib           % copied from ../2026-06-AEC-guide/
-  figures/                 % copied from slides/common/images/
-  logos/SWH-logo.pdf
-  Makefile                 % latexmk -xelatex (biber)
-  README.md
+  figures/  logos/SWH-logo.pdf
+  Makefile                 % `make` -> main.pdf ; `make swhid SWHID=...` -> stamped (non-committed) PDF
+  README.md  LICENSE
 ```
 
 Build: `latexmk -xelatex main.tex` (biber auto-run). Bibliography options:
@@ -154,9 +167,9 @@ Build: `latexmk -xelatex main.tex` (biber auto-run). Bibliography options:
 
 ## Open questions to confirm before/while drafting
 
-- **License of the note** (suggest CC-BY-4.0 for text, with code snippets under a permissive
-  license).
-- **Hands-on labs:** include the three boxes above, or keep the note pure reading?
+*(Settled since the first draft: spine, audience, language, build toolchain, CC-BY-4.0
+license, inclusion of hands-on labs, and the self-verification capstone in the Colophon.)*
+
 - **Figure permissions/sourcing:** confirm reuse rights for any third-party images.
 - **Depth on the data model** (Ch. 2): how technical to go on the Merkle DAG / graph dataset
   for a cross-disciplinary doctoral audience (proposed: conceptual, with a "go deeper" pointer
