@@ -2,8 +2,9 @@
 \label{ch:ardc}
 
 This is the operational core of the note: \textbf{A}rchive, \textbf{R}eference,
-\textbf{D}escribe, \textbf{C}ite \& credit. Each step has concrete tools, and the chapter
-ends with hands-on labs you run on your own repository.
+\textbf{D}escribe, \textbf{C}ite \& credit. Each step has concrete tools, and the chapter is
+punctuated by hands-on labs you run on a repository of your choice --- your own code, or a
+report, dependency, or library you want to mention, cite, or rely upon.
 
 \takeaway{Archive once, then reference at the granularity your claim needs.}
 
@@ -11,13 +12,35 @@ ends with hands-on labs you run on your own repository.
 % TODO draft from: swh-acquisition-process.org::#savecodenow; deposit.org::#overview,#prepare,#send,#status.
 Save Code Now, the browser extension, a release webhook, or the SWORD deposit API.
 
+\begin{handson}[Hands-on: archive any repository and get its SWHID]
+\begin{enumerate}[nosep,leftmargin=*]
+  \item Pick a repository worth referencing: your own, or one you depend on / want to cite.
+  \item Archive it --- either with the \textbf{updateswh} browser extension (one click on a
+        GitHub/GitLab/Bitbucket page) or via \url{https://save.softwareheritage.org}.
+  \item Wait for the visit to reach status \texttt{full}; open the object and copy the
+        \emph{qualified} \textsc{swhid} from the \emph{Permalinks} tab.
+  \item Confirm it resolves under \texttt{https://archive.softwareheritage.org/}.
+\end{enumerate}
+\end{handson}
+
+% Hands-on (to draft): set up a release WEBHOOK so each tag is auto-archived ---
+%   GitHub, self-hosted GitLab, Gitea, Bitbucket, SourceForge.
+
 \section{Reference}
 % TODO draft from: swh-ardc.org::#swh-r. Granularity snp/rev/rel/dir/cnt/lines;
 % qualifiers origin=/visit=/anchor=; worked examples (appendix B).
 
+% Hands-on (to draft): build a reference to embed in a research article ---
+%   a code snippet (cnt + lines), a revision (rev), a file, and a directory ---
+%   and paste each into the archive to confirm it highlights the right object.
+
 \section{Describe}
 % TODO draft from: research-software-essentials.org::#description,#licence,#versioncontrol.
 % codemeta.json, CITATION.cff, SPDX, REUSE.
+
+% Hands-on (to draft): create a codemeta.json, commit it into your repo, re-archive,
+%   then check how the citation sidebar appears in the Archive and use it to produce
+%   the citation(s) you want.
 
 \section{Cite and credit}
 % TODO draft from: swh-ardc.org::#swh-dc. Refs: DiCosmoSEN2020, cise-2020-doi,
@@ -27,14 +50,13 @@ field~\autocite{DiCosmoSEN2020,cise-2020-doi}. For example, this note cites a sp
 version of a library, \autocite{parmap-1.1.1}, and a code fragment within
 it, \autocite{simplemapper}.
 
-\begin{handson}[Hands-on: archive and identify your code]
+\begin{handson}[Hands-on: cite software with biblatex-software]
 \begin{enumerate}[nosep,leftmargin=*]
-  \item Archive your repository at \url{https://save.softwareheritage.org} and wait for the
-        visit to reach status \texttt{full}.
-  \item Install the identifier tool: \texttt{pip install 'swh.model[cli]'}.
-  \item Compute a directory \textsc{swhid}: \texttt{swh identify -{}-type directory ./src}.
-  \item Open your file in the archive and copy the \emph{qualified} \textsc{swhid} from the
-        \emph{Permalinks} tab. Paste it after
-        \texttt{https://archive.softwareheritage.org/} to confirm it resolves.
+  \item Write a \texttt{@softwareversion} entry for the code you archived, with its
+        \texttt{swhid=} field; then add a \texttt{@codefragment} child via \texttt{crossref}.
+  \item Produce \emph{variants}: a project-level \texttt{@software}, a \texttt{@softwaremodule},
+        and a line-pinpointed fragment --- and compare how each renders.
+  \item Enable \texttt{biblatex-software} inside an \texttt{acmart.cls} article and confirm the
+        \textsc{swhid} renders in the ACM template.
 \end{enumerate}
 \end{handson}
