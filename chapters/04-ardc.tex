@@ -1,0 +1,40 @@
+\chapter{ARDC in practice}
+\label{ch:ardc}
+
+This is the operational core of the note: \textbf{A}rchive, \textbf{R}eference,
+\textbf{D}escribe, \textbf{C}ite \& credit. Each step has concrete tools, and the chapter
+ends with hands-on labs you run on your own repository.
+
+\takeaway{Archive once, then reference at the granularity your claim needs.}
+
+\section{Archive}
+% TODO draft from: swh-acquisition-process.org::#savecodenow; deposit.org::#overview,#prepare,#send,#status.
+Save Code Now, the browser extension, a release webhook, or the SWORD deposit API.
+
+\section{Reference}
+% TODO draft from: swh-ardc.org::#swh-r. Granularity snp/rev/rel/dir/cnt/lines;
+% qualifiers origin=/visit=/anchor=; worked examples (appendix B).
+
+\section{Describe}
+% TODO draft from: research-software-essentials.org::#description,#licence,#versioncontrol.
+% codemeta.json, CITATION.cff, SPDX, REUSE.
+
+\section{Cite and credit}
+% TODO draft from: swh-ardc.org::#swh-dc. Refs: DiCosmoSEN2020, cise-2020-doi,
+% force11citationprinciples, SCIDWG2020.
+The \texttt{biblatex-software} style adds four entry types and a \texttt{swhid=}
+field~\autocite{DiCosmoSEN2020,cise-2020-doi}. For example, this note cites a specific
+version of a library, \autocite{parmap-1.1.1}, and a code fragment within
+it, \autocite{simplemapper}.
+
+\begin{handson}[Hands-on: archive and identify your code]
+\begin{enumerate}[nosep,leftmargin=*]
+  \item Archive your repository at \url{https://save.softwareheritage.org} and wait for the
+        visit to reach status \texttt{full}.
+  \item Install the identifier tool: \texttt{pip install 'swh.model[cli]'}.
+  \item Compute a directory \textsc{swhid}: \texttt{swh identify -{}-type directory ./src}.
+  \item Open your file in the archive and copy the \emph{qualified} \textsc{swhid} from the
+        \emph{Permalinks} tab. Paste it after
+        \texttt{https://archive.softwareheritage.org/} to confirm it resolves.
+\end{enumerate}
+\end{handson}

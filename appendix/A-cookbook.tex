@@ -1,0 +1,25 @@
+\chapter{Command cookbook}
+\label{app:cookbook}
+
+% TODO: port from ../2026-06-AEC-guide (Appendix A). Keep in sync.
+
+\begin{verbatim}
+# Install
+pip install 'swh.model[cli]'        # swh identify
+pip install swh.scanner             # swh scanner
+
+# Compute core SWHIDs locally
+swh identify file.c                  # -> swh:1:cnt:...
+swh identify --type directory src/   # -> swh:1:dir:...
+swh identify --type revision  repo/  # -> swh:1:rev:...  (HEAD)
+swh identify --type snapshot  repo.git/   # -> swh:1:snp:...
+
+# Verify (exit 0 iff bytes match the claimed SWHID)
+swh identify --verify swh:1:cnt:<hex> file.c
+
+# Discover what is already archived
+swh scanner scan ./repo
+
+# Archive a public repo:  https://save.softwareheritage.org
+# Resolve any SWHID:      https://archive.softwareheritage.org/<swhid>
+\end{verbatim}

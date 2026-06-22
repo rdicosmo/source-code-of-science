@@ -1,0 +1,18 @@
+\chapter{SWHID syntax cheat-sheet}
+\label{app:swhid-syntax}
+
+% TODO draft from: swh-id-syntax.org::#swh-id-syntax; spec v1.2 / ISO 18670.
+
+A core \textsc{swhid} is \swhid{swh:1:<type>:<40-hex>} where \texttt{<type>} is one of
+\texttt{cnt} (file), \texttt{dir} (directory), \texttt{rev} (commit), \texttt{rel}
+(release), \texttt{snp} (snapshot).
+
+A qualified \textsc{swhid} appends context and fragment qualifiers:
+
+\begin{verbatim}
+swh:1:cnt:<hex>;origin=<url>;visit=swh:1:snp:<hex>;
+            anchor=swh:1:rev:<hex>;path=/src/file.ml;lines=192-228
+\end{verbatim}
+
+% TODO: qualifier rules (visit requires origin; anchor+path; lines only on cnt);
+% worked examples (Apollo 11, Quake III).

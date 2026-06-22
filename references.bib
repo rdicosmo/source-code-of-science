@@ -1,0 +1,286 @@
+% Qualified bibliography for "Archiving and Evaluating Source-Code Artifacts
+% with Software Heritage".
+%
+% Citekeys for the Di Cosmo / Software Heritage works reuse the canonical keys
+% from ~/TeX/Bibliography/dicosmo.bib and swh.bib so this file stays consistent
+% with the rest of the project's bibliography.
+%
+% Software entries use the biblatex-software data model. To compile, load:
+%   \usepackage[backend=biber,datamodel=software]{biblatex}
+%   \usepackage{software-biblatex}
+%   \ExecuteBibliographyOptions{halid=true,swhid=true,swlabels=true,vcs=true,license=true}
+% (the standard @article/@inproceedings/@incollection entries need nothing extra).
+% Biber may warn "possible runaway string" on multiline swhid fields: a false positive.
+
+% ===========================================================================
+% Software Heritage, SWHIDs, software citation (canonical keys)
+% ===========================================================================
+
+@article{cise-2020-doi,
+  author  = {Di Cosmo, Roberto and Gruenpeter, Morane and Zacchiroli, Stefano},
+  title   = {Referencing Source Code Artifacts: a Separate Concern in Software Citation},
+  journal = {Computing in Science \& Engineering},
+  volume  = {22},
+  number  = {2},
+  pages   = {33--43},
+  year    = {2020},
+  doi     = {10.1109/MCSE.2019.2963148},
+}
+
+@inproceedings{ICMS2020,
+  author    = {Di Cosmo, Roberto},
+  title     = {Archiving and Referencing Source Code with Software Heritage},
+  booktitle = {Mathematical Software -- ICMS 2020},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {12097},
+  pages     = {362--373},
+  publisher = {Springer},
+  year      = {2020},
+  doi       = {10.1007/978-3-030-52200-1_36},
+}
+
+@article{SwhCACM2018,
+  author  = {Abramatic, Jean-Fran\c{c}ois and Di Cosmo, Roberto and Zacchiroli, Stefano},
+  title   = {Building the Universal Archive of Source Code},
+  journal = {Communications of the ACM},
+  volume  = {61},
+  number  = {10},
+  pages   = {29--31},
+  year    = {2018},
+  doi     = {10.1145/3183558},
+}
+
+@inproceedings{swhipres2018,
+  author    = {Di Cosmo, Roberto and Gruenpeter, Morane and Zacchiroli, Stefano},
+  title     = {Identifiers for Digital Objects: the Case of Software Source Code Preservation},
+  booktitle = {Proceedings of the 15th International Conference on Digital Preservation (iPRES 2018), Boston, USA},
+  year      = {2018},
+  doi       = {10.17605/OSF.IO/KDE56},
+  note      = {HAL: hal-01865790},
+}
+
+@inproceedings{swhipres2017,
+  author    = {Di Cosmo, Roberto and Zacchiroli, Stefano},
+  title     = {Software Heritage: Why and How to Preserve Software Source Code},
+  booktitle = {Proceedings of the 14th International Conference on Digital Preservation (iPRES 2017), Kyoto, Japan},
+  year      = {2017},
+  note      = {HAL: hal-01590958},
+}
+
+@inproceedings{pietri2019graph,
+  author    = {Pietri, Antoine and Spinellis, Diomidis and Zacchiroli, Stefano},
+  title     = {The Software Heritage Graph Dataset: Public Software Development under One Roof},
+  booktitle = {Proceedings of the 16th International Conference on Mining Software Repositories (MSR)},
+  pages     = {138--142},
+  publisher = {IEEE},
+  year      = {2019},
+  doi       = {10.1109/MSR.2019.00030},
+}
+
+@inproceedings{spinellis2026hotspots,
+  author    = {Muzammil, Saleha and Ur Rehman, Mughees and Kotti, Zoe and Spinellis, Diomidis},
+  title     = {Source Code Hotspots: A Diagnostic Method for Quality Issues},
+  booktitle = {Proceedings of the 23rd International Conference on Mining Software Repositories (MSR)},
+  publisher = {ACM},
+  year      = {2026},
+  note      = {arXiv:2602.13170. Uses 30 qualified SWHIDs to pinpoint code passages},
+}
+
+@incollection{SWHecosystems2023,
+  author    = {Di Cosmo, Roberto and Zacchiroli, Stefano},
+  editor    = {Mens, Tom and De Roover, Coen and Cleve, Anthony},
+  title     = {The Software Heritage Open Science Ecosystem},
+  booktitle = {Software Ecosystems: Tooling and Analytics},
+  pages     = {33--61},
+  publisher = {Springer},
+  year      = {2023},
+  doi       = {10.1007/978-3-031-36060-2_2},
+  note      = {arXiv:2310.10295},
+}
+
+@inproceedings{dicosmo_tpdl_2022,
+  author    = {Di Cosmo, Roberto},
+  title     = {Should We Preserve the World's Software History, And Can We?},
+  booktitle = {Linking Theory and Practice of Digital Libraries (TPDL 2022)},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {13541},
+  pages     = {3--7},
+  publisher = {Springer},
+  year      = {2022},
+  doi       = {10.1007/978-3-031-16802-4_1},
+}
+
+@article{2020GtCitation,
+  author  = {Alliez, Pierre and Di Cosmo, Roberto and Guedj, Benjamin and Girault, Alain and
+             Hacid, Mohand-Said and Legrand, Arnaud and Rougier, Nicolas},
+  title   = {Attributing and Referencing (Research) Software: Best Practices and Outlook From Inria},
+  journal = {Computing in Science \& Engineering},
+  volume  = {22},
+  number  = {1},
+  pages   = {39--52},
+  year    = {2020},
+  doi     = {10.1109/MCSE.2019.2949413},
+}
+
+@article{DiCosmoSEN2020,
+  author  = {Di Cosmo, Roberto},
+  title   = {Announcing biblatex-software},
+  journal = {ACM SIGSOFT Software Engineering Notes},
+  volume  = {45},
+  number  = {4},
+  pages   = {22--23},
+  year    = {2020},
+  doi     = {10.1145/3417564.3417570},
+  note    = {HAL: hal-02977711},
+}
+
+% ===========================================================================
+% Open science, FAIR, reproducibility, preservation
+% ===========================================================================
+
+@article{NatureSD2026,
+  author  = {Di Cosmo, Roberto and Granger, Sabrina and Hinsen, Konrad and Jullien, Nicolas and
+             Le Berre, Daniel and Louvet, Violaine and Maumet, Camille and Maurice, Cl\'ementine and
+             Monat, Rapha\"el and Rougier, Nicolas P.},
+  title   = {CODE beyond FAIR: A Roadmap for Reusable Research Software},
+  journal = {Scientific Data},
+  year    = {2026},
+  doi     = {10.1038/s41597-026-06705-6},
+}
+
+@article{barker2022fair4rs,
+  author  = {Barker, Michelle and Chue Hong, Neil P. and Katz, Daniel S. and
+             Lamprecht, Anna-Lena and Martinez-Ortiz, Carlos and Psomopoulos, Fotis and
+             Harrow, Jennifer and Castro, Leyla Jael and Gruenpeter, Morane and
+             Martinez, Paula Andrea and Honeyman, Tom},
+  title   = {Introducing the FAIR Principles for research software},
+  journal = {Scientific Data},
+  volume  = {9},
+  pages   = {622},
+  year    = {2022},
+  doi     = {10.1038/s41597-022-01710-x},
+}
+
+@techreport{SCIDWG2020,
+  author      = {Gruenpeter, Morane and Di Cosmo, Roberto and Allen, Alice and Bandrowski, Anita and
+                 Chan, Peter and Fenner, Martin and Garcia, Leyla and Jones, Catherine M. and
+                 Katz, Daniel S. and Kunze, John and Schubotz, Moritz and Todorov, Ilian T.},
+  title       = {Use cases and identifier schemes for persistent software source code identification},
+  institution = {Research Data Alliance / FORCE11 Software Source Code Identification WG},
+  year        = {2020},
+  doi         = {10.15497/RDA00053},
+}
+
+@article{force11citationprinciples,
+  author  = {Smith, Arfon M. and Katz, Daniel S. and Niemeyer, Kyle E.},
+  title   = {Software citation principles},
+  journal = {PeerJ Computer Science},
+  volume  = {2},
+  pages   = {e86},
+  year    = {2016},
+  doi     = {10.7717/peerj-cs.86},
+}
+
+@inproceedings{osec_2022,
+  author    = {Di Cosmo, Roberto},
+  title     = {Construire le pilier logiciel de la Science Ouverte},
+  booktitle = {Open Science European Conference (OSEC 2022)},
+  pages     = {183--193},
+  publisher = {OpenEdition Press},
+  year      = {2022},
+  doi       = {10.4000/books.oep.15822},
+}
+
+@article{anderson2015digital,
+  author  = {Anderson, David},
+  title   = {The Digital Dark Age},
+  journal = {Communications of the ACM},
+  volume  = {58},
+  number  = {12},
+  pages   = {20--23},
+  year    = {2015},
+  doi     = {10.1145/2842646},
+}
+
+% ===========================================================================
+% Standards, policy, badging
+% ===========================================================================
+
+@manual{isoiec18670,
+  author       = {{ISO/IEC}},
+  title        = {{ISO/IEC 18670:2025} Information technology --- SoftWare Hash IDentifier (SWHID) Specification V1.2},
+  organization = {International Organization for Standardization},
+  edition      = {1},
+  year         = {2025},
+  url          = {https://www.iso.org/standard/89985.html},
+}
+
+@manual{acmbadging,
+  author       = {{ACM}},
+  title        = {Artifact Review and Badging --- Version 1.1},
+  organization = {Association for Computing Machinery},
+  year         = {2020},
+  month        = {8},
+  url          = {https://www.acm.org/publications/policies/artifact-review-and-badging-current},
+}
+
+@manual{nisorp31,
+  author       = {{NISO}},
+  title        = {{NISO RP-31-2021}: Reproducibility Badging and Definitions},
+  organization = {National Information Standards Organization},
+  year         = {2021},
+  url          = {https://www.niso.org/publications/rp-31-2021-badging},
+}
+
+% ===========================================================================
+% Software entries (biblatex-software data model)
+% Field conventions follow the canonical examples in
+% ~/ACADEMIC/Paperi/Miei/SoftwareHeritage/bibtex-sw-entry/biblatex/
+% ===========================================================================
+
+@software{softwareheritage,
+  title       = {Software Heritage Archive},
+  author      = {{Software Heritage}},
+  url         = {https://www.softwareheritage.org},
+  institution = {{Inria} and {UNESCO}},
+  year        = {2016},
+}
+
+@software{biblatexsoftware,
+  title      = {biblatex-software},
+  author     = {Di Cosmo, Roberto},
+  date       = {2020},
+  url        = {https://ctan.org/pkg/biblatex-software},
+  repository = {https://gitlab.inria.fr/gt-sw-citation/bibtex-sw-entry},
+  license    = {LPPL-1.3c},
+}
+
+@software{parmap,
+  title       = {The Parmap library},
+  author      = {Di Cosmo, Roberto and Danelutto, Marco},
+  date        = {2012},
+  url         = {https://rdicosmo.github.io/parmap/},
+  repository  = {https://github.com/rdicosmo/parmap},
+  license     = {LGPL-2.0},
+  institution = {{Inria} and {University of Paris} and {University of Pisa}},
+}
+
+@softwareversion{parmap-1.1.1,
+  crossref = {parmap},
+  date     = {2020},
+  version  = {1.1.1},
+  swhid    = {swh:1:rel:373e2604d96de4ab1d505190b654c5c4045db773;
+              origin=https://github.com/rdicosmo/parmap;
+              visit=swh:1:snp:2a6c348c53eb77d458f24c9cbcecaf92e3c45615},
+}
+
+@codefragment{simplemapper,
+  crossref = {parmap-1.1.1},
+  subtitle = {Core mapping routine},
+  swhid    = {swh:1:cnt:43a6b232768017b03da934ba22d9cc3f2726a6c5;
+              origin=https://github.com/rdicosmo/parmap;
+              visit=swh:1:snp:2a6c348c53eb77d458f24c9cbcecaf92e3c45615;
+              anchor=swh:1:rel:373e2604d96de4ab1d505190b654c5c4045db773;
+              path=/src/parmap.ml;
+              lines=192-228},
+}

@@ -1,0 +1,25 @@
+# LaTeX build artifacts
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.run.xml
+*.toc
+*.lof
+*.lot
+*.synctex.gz
+*.xdv
+
+# Built PDFs (rebuild with `make`); the SWHID-stamped PDF must never be committed
+main.pdf
+source-code-of-science-swhid.*
+swhid.tex
+
+# Editor temp / lock / backup files
+\#*\#
+.\#*
+*~

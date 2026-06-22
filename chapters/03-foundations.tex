@@ -1,0 +1,27 @@
+\chapter{Foundations}
+\label{ch:foundations}
+
+To reference code reliably we need the right kind of identifier and the right kind of
+archive. This chapter builds the concepts from the ground up: why forges are not archives,
+the difference between intrinsic and extrinsic identifiers, the Merkle-DAG data model, and
+the \textsc{swhid}.
+
+\takeaway{An \emph{intrinsic} identifier is computed from the content; a DOI is not.}
+
+\section{Forges are not archives}
+% TODO draft from: forges-not-archives.org::#categories,#oldapproaches,#evidence.
+% Link-rot evidence: Google Code/Gitorious (2015), Bitbucket (2020), URL half-life ~4y.
+
+\section{Identification versus location; intrinsic versus extrinsic identifiers}
+% TODO draft from: swh-pids.org::#diovsido,#swhexamples; doi-analysis.org::#doiexplained.
+% Refs: swhipres2018.
+
+\section{The Merkle DAG data model}
+% TODO draft from: under-the-hood-pictures.org::#automation; vcs-history.org::#dvcs-to-merkle.
+% Refs: pietri2019graph, SWHecosystems2023.
+Software Heritage archives source code with its full development history in a uniform
+Merkle DAG~\autocite{ICMS2020,SWHecosystems2023}.
+
+\section{The SWHID and its granularity}
+% TODO draft from: swhid.org::#main,#swhidentify; swh-id-syntax.org::#swh-id-syntax.
+% Refs: isoiec18670. Examples: Apollo 11, Quake III (see appendix B).

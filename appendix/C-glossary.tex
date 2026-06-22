@@ -1,0 +1,16 @@
+\chapter{Glossary}
+\label{app:glossary}
+
+% TODO: flesh out definitions.
+\begin{description}[leftmargin=!,labelwidth=2.6cm,font=\bfseries]
+  \item[ARDC] Archive, Reference, Describe, Cite \& credit --- the four needs for research
+        software.
+  \item[SWHID] SoftWare Hash IDentifier; an intrinsic identifier (ISO/IEC~18670:2025).
+  \item[Core SWHID] \swhid{swh:1:<type>:<hash>}; the content fingerprint.
+  \item[Qualified SWHID] a core \textsc{swhid} plus \texttt{origin}/\texttt{visit}/%
+        \texttt{anchor}/\texttt{path}/\texttt{lines} qualifiers.
+  \item[Origin] the URL where the code was found (a \texttt{visit} target).
+  \item[Snapshot] the full state of a repository at one visit (\texttt{snp}).
+  \item[Forge] a development platform (GitHub, GitLab, \dots) --- \emph{not} an archive.
+  \item[Intrinsic identifier] computed from the content; verifiable offline, no registry.
+\end{description}

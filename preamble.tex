@@ -1,0 +1,63 @@
+% Preamble for "The Source Code of Science" — SWH-branded LaTeX course note.
+% Engine: xelatex.  Bibliography: biblatex + software-biblatex (biber).
+
+% --- Fonts (xelatex) ------------------------------------------------------
+\usepackage{fontspec}
+\setmainfont{TeX Gyre Pagella}
+\setsansfont{TeX Gyre Heros}
+\setmonofont{Latin Modern Mono}[Scale=0.92]
+\usepackage{microtype}
+
+% --- Page geometry: wide outer margin for key-takeaway margin notes -------
+\usepackage[a4paper,top=2.6cm,bottom=2.6cm,inner=2.4cm,outer=4.2cm,
+            marginparwidth=3cm,marginparsep=0.6cm]{geometry}
+
+% --- Colours, graphics, boxes ---------------------------------------------
+\usepackage{graphicx}
+\usepackage{xcolor}
+\definecolor{swhaccent}{HTML}{C8102E}
+\definecolor{swhdark}{HTML}{2B2B2B}
+\definecolor{swhbg}{HTML}{F7E9EC}
+\usepackage[most]{tcolorbox}
+\usepackage{marginnote}
+\usepackage{enumitem}
+
+% --- Links (load before biblatex) -----------------------------------------
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=swhdark,citecolor=swhaccent,
+            urlcolor=swhaccent,breaklinks=true}
+
+% --- Bibliography: the software-aware style -------------------------------
+\usepackage{csquotes}
+\usepackage[backend=biber,style=numeric,sorting=nyt,datamodel=software]{biblatex}
+\usepackage{software-biblatex}
+\ExecuteBibliographyOptions{halid=true,swhid=true,swlabels=true,vcs=true,license=true}
+\addbibresource{references.bib}
+
+% --- Pedagogical devices --------------------------------------------------
+% Hands-on lab box.
+\newtcolorbox{handson}[1][Hands-on]{%
+  breakable, enhanced, colback=swhbg, colframe=swhaccent, coltitle=white,
+  fonttitle=\bfseries\sffamily, title={\,#1}, sharp corners=downhill,
+  boxrule=0.6pt, left=2.2mm, right=2.2mm, top=1.4mm, bottom=1.4mm}
+
+% Key-takeaway margin note.
+\newcommand{\takeaway}[1]{\marginnote{\footnotesize\sffamily\itshape\color{swhaccent}#1}}
+
+% SWHID display helper (small monospace, allows breaks).
+\newcommand{\swhid}[1]{\texttt{\small #1}}
+
+% --- Title-page command ---------------------------------------------------
+\newcommand{\swhtitlepage}{%
+  \begin{titlepage}
+  \centering
+  \includegraphics[height=2.0cm]{logos/SWH-logo.pdf}\par\vspace{2.2cm}
+  {\Huge\bfseries The Source Code of Science\par}\vspace{0.6cm}
+  {\Large Archiving, Referencing and Reproducing Research Software\par}\vspace{0.3cm}
+  {\large\itshape a doctoral course --- beyond FAIR data\par}\vspace{2.4cm}
+  {\large Roberto Di Cosmo\par}\vspace{0.2cm}
+  {\large Software Heritage\par}\vfill
+  {\small This work is licensed under a Creative Commons
+   Attribution~4.0 International License (CC-BY-4.0).\par}
+  {\small \today\par}
+  \end{titlepage}}

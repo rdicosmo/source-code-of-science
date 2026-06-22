@@ -1,0 +1,35 @@
+\chapter{Reproducibility and artifact evaluation}
+\label{ch:repro}
+
+The climax of the note: from the reproducibility crisis to a SWH-native practice for
+artifact evaluation. This chapter folds in the standalone \emph{AEC guide} (history of
+artifact evaluation, the failures of zip+DOI, the seven properties of Software Heritage, the
+organiser/author/reviewer workflow, double-blind via directory \textsc{swhid}s, and the
+Spinellis ``hotspots'' strip/restore-qualifiers technique).
+
+\takeaway{The only difference between a double-blind and a camera-ready citation is the
+qualifiers; the content hash is identical.}
+
+\section{The reproducibility crisis}
+% TODO draft from: reprod-bad-sota.org::#collbergmethod; reproducible-builds.org::#r-b-definition.
+
+\section{Artifact evaluation and badging}
+% TODO draft from: sourcecode-reproductibility.org::#artefactevaluation,#artefactevaluation-beyondcs,
+% #elife-swh-pipeline,#opensourcereprod. Refs: acmbadging, nisorp31.
+
+\section{Artifact evaluation with Software Heritage}
+% TODO: port ../2026-06-AEC-guide/swhid-artifact-evaluation-guide.md to LaTeX here
+% (organiser / author / reviewer parts; SWHID verification offline).
+
+\section{Double-blind review and dense pinpointing}
+% TODO: dir SWHID for anonymity; Spinellis hotspots. Ref: spinellis2026hotspots.
+
+\begin{handson}[Hands-on: verify a SWHID offline]
+\begin{enumerate}[nosep,leftmargin=*]
+  \item Given a colleague's file and a claimed content \textsc{swhid}, run
+        \texttt{swh identify -{}-verify swh:1:cnt:<hex> file} (exit~0 iff the bytes match).
+  \item For a double-blind submission, compute a directory \textsc{swhid}
+        (\texttt{swh identify -{}-type directory ./}); it reveals no author or origin, yet
+        lets a reviewer confirm the exact bytes.
+\end{enumerate}
+\end{handson}

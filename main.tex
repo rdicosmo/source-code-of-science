@@ -1,0 +1,43 @@
+% The Source Code of Science — a doctoral course note.
+% Build with:  latexmk -xelatex main.tex   (or: make)
+\documentclass[11pt,oneside]{report}
+
+\input{preamble}
+
+\begin{document}
+
+\swhtitlepage
+
+% --- Abstract / how to read this note ------------------------------------
+\chapter*{About this note}
+\addcontentsline{toc}{chapter}{About this note}
+This note is a doctoral-level course on managing the \emph{source code} of research:
+how to archive it for the long term, reference it at the right granularity, describe and
+cite it, and use it to make computational results reproducible. It is built on Software
+Heritage and the \textsc{swhid} intrinsic identifier (ISO/IEC~18670:2025). It addresses the
+FAIR principles and then goes \emph{beyond} them, following the CODE-beyond-FAIR roadmap for
+research software~\autocite{NatureSD2026}.
+
+The note is meant to be read \emph{and} done: each practical chapter ends with a
+\textbf{Hands-on} box. Margin notes flag the key takeaways.
+
+\tableofcontents
+
+% --- Chapters ------------------------------------------------------------
+\include{chapters/01-why}
+\include{chapters/02-beyond-fair}
+\include{chapters/03-foundations}
+\include{chapters/04-ardc}
+\include{chapters/05-reproducibility-aec}
+\include{chapters/06-outlook}
+
+% --- Appendices ----------------------------------------------------------
+\appendix
+\include{appendix/A-cookbook}
+\include{appendix/B-swhid-syntax}
+\include{appendix/C-glossary}
+
+% --- Bibliography (Appendix D: annotated) --------------------------------
+\printbibliography[heading=bibintoc,title={References}]
+
+\end{document}
