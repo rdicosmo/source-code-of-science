@@ -1,21 +1,90 @@
 \chapter{Why this note}
 \label{ch:why}
 
-Software is the third pillar of open science, alongside publications and data. Yet the
-source code behind published results is too often lost, mutated, or impossible to run. This
-chapter sets the stakes --- reproducibility and preservation --- and the promise of the rest
-of the note: a workflow you can apply starting with your next paper.
+Software source code is a precious, unique form of knowledge. It can be turned, almost
+instantly, into something a machine will execute; and yet it is written to be read by people.
+As Harold Abelson put it in 1985, \enquote{programs must be written for people to read, and
+only incidentally for machines to execute}. A program is a human creation in the same sense as
+an article or a proof --- a record of how its authors understood a problem and chose to solve
+it --- and in research it is, more and more, the place where the actual science happens: the
+model that was simulated, the data that were cleaned, the figure that was produced.
 
-\takeaway{Publications, data, \emph{and} software: source code is a first-class research
-output.}
+\takeaway{Publications, data, \emph{and} software: source code is a first-class research output.}
+
+And yet, when a published result rests on code, that code is too often the first thing we lose.
+The article is archived, typeset, given a DOI; the data, increasingly, are deposited in a
+repository; the software --- the one artifact that actually produced the numbers --- is left on
+a personal web page, in a forge that may close next year, or nowhere at all. This note is about
+taking that software as seriously as we take the paper, and about the concrete,
+already-available practice that lets you do so --- starting with your next paper.
 
 \section{Software as the third pillar of open science}
-% TODO draft from: swh-ardc.org::#pillaropenscience, ::#pillaropenscience_monitor;
-%      source-code-different-short.org::#softwareisdifferent. Refs: SwhCACM2018, osec_2022.
-Building the universal archive of source code is now a reality~\autocite{SwhCACM2018}.
+
+Open science rests on three pillars: publications, data, and software. The first two have had
+their revolutions. Open access freed the article; the FAIR principles and a dense network of
+repositories gave research data a home, identifiers, and metadata. Software, meanwhile, was
+treated as a mere means to an end --- a tool you used and then forgot --- rather than as a
+research output in its own right.
+
+This is no longer tenable, and the numbers say so. Across \emph{every} discipline, from
+mathematics to biology, from physics to the social sciences, a growing share of published work
+now depends on software the authors wrote themselves~\autocite{osec_2022}. When the code
+\emph{is} the experiment, pretending it is a detail does not make it one.
+% TODO figure (open Q: permissions): French Open Science barometer --- share of papers
+% producing/using software, across disciplines. Source: osec_2022 / OS monitor.
+
+What makes software special is also what makes it easy to mishandle: it is at once executable
+and human-readable; it \emph{evolves}, often over decades, so that its development history is
+part of its meaning; and it never stands alone, resting instead on a deep web of other software
+it depends on. These are not the properties of a dataset --- and, as we will see in the next
+chapter, they are exactly the properties that the familiar, data-shaped recipes fail to
+respect. Software is not data; it is a first-class citizen of the scientific record, and it
+deserves to be treated as one.
 
 \section{What is at stake: reproducibility and preservation}
-% TODO link-rot + reproducibility teaser (full treatment in ch. 3 and 5).
+
+Two things are at stake, and they are worth naming plainly.
+
+The first is \emph{reproducibility}. A computational result is only as solid as our ability to
+get hold of the exact code that produced it and run it again --- not code \emph{like} it, not a
+later version with the bug quietly fixed, but \emph{that} code, at \emph{that} revision. We will
+return to the dispiriting state of the art in Chapter~\ref{ch:repro}; for now it is enough to
+say that, far too often, the code behind a published figure cannot be found, cannot be built, or
+cannot be told apart from a dozen neighbouring versions.
+
+The second is \emph{preservation}, and here a single slogan does most of the work: \emph{forges
+are not archives}. GitHub, GitLab, and their kin are wonderful places to \emph{develop}
+software; they make no promise whatsoever to \emph{keep} it. That promise has been tested, and
+broken, more than once: Google Code and Gitorious shut down in 2015, putting roughly a million
+repositories at risk; Bitbucket deleted more than 250,000 Mercurial repositories in 2020. The
+half-life of a URL cited in the scholarly literature is about four years. Every one of those
+losses is a hole in the web of knowledge --- a paper that points at code which is no longer
+there.
+
+\takeaway{Forges are for developing code; they make no promise to keep it.}
+
+And yet, collectively, we have not been taking good care of this precious form of
+knowledge~\autocite{SwhCACM2018}. Closing that gap is the whole purpose of this note.
 
 \section{How to read this note}
-% TODO: ARDC backbone; hands-on boxes; the running example.
+
+The good news is that the practice already exists, the tools are built, and you can adopt them
+today. Throughout the note we organise that practice under four verbs --- \textbf{A}rchive,
+\textbf{R}eference, \textbf{D}escribe, \textbf{C}ite \& credit, or \textsc{ardc} --- and rest it
+on two foundations: the Software Heritage archive, which preserves the world's source code with
+its full development history, and the \textsc{swhid}, the intrinsic identifier (now the
+international standard ISO/IEC~18670) that lets you point at exactly the code you mean. We will
+meet the FAIR principles along the way and then, deliberately, go \emph{beyond} them, for the
+reasons the next chapter makes precise~\autocite{NatureSD2026}.
+
+This note is meant to be read \emph{and} done. The practical chapters end with \textbf{Hands-on}
+boxes you run on a repository of your choice --- your own code, a library you depend on, a result
+you want to cite. Margin notes flag the one idea worth carrying away from each section. And the
+note practises what it preaches: it is itself archived in Software Heritage, and the Colophon
+shows you how to recompute and verify its own identifier --- the entire workflow, applied to the
+very document in your hands.
+
+You do not need to be a computer scientist to use any of this. If you write or run code for your
+research --- whether a few lines of analysis or a library maintained for decades --- this note is
+for you. The tools are ready; the habit is the only thing missing. Let us build it, starting with
+your next paper.
