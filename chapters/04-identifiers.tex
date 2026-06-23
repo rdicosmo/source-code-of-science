@@ -1,0 +1,70 @@
+\chapter{Identifiers for digital objects}
+\label{ch:identifiers}
+
+% Conceptual core. Thesis: the word "DOI" silently bundles FIVE separable concerns, and most
+% arguments about identifiers are really arguments about one of the other four, mislabelled.
+% Untangle them first; then intrinsic vs extrinsic falls out cleanly, and the SWHID with it.
+
+\takeaway{Identification is one thing; location, metadata, organization, and curation are four
+others. Keep them apart.}
+
+\section{Five concerns hiding behind one word}
+% TODO draft: motivate with the everyday confusion, then separate the concerns. When people
+% say "DOI" they usually mean some mixture of all five below.
+When we say a digital object \enquote{has a DOI}, we are quietly running five different concerns
+together. Pulling them apart is the single most clarifying move in this whole subject:
+
+\begin{description}[leftmargin=!,labelwidth=2.5cm,font=\bfseries]
+  \item[Identification] assigning a unique name to an object --- the identifier proper.
+  \item[Location] a mechanism to access or resolve the object (DOI $\to$ Handle $\to$ landing
+        page; \textsc{swhid} $\to$ archive). The ISBN names a book; the library tells you where
+        it sits on the shelf --- two different jobs.
+  \item[Metadata] what is known \emph{about} the object, typically held in a registry.
+  \item[Organization] who maintains the coherence of the system --- governance, the registry
+        operator, the institutions that keep it alive.
+  \item[Curation] the \emph{quality} of the metadata: how it is ensured and maintained, who
+        decides which objects deserve metadata (or even identification), and how that is checked.
+\end{description}
+
+\section{``Crossref DOIs are better than DataCite DOIs''}
+% TODO draft. The hook that makes the five-way split vivid.
+% CAUTION: verify a current citable source on each org's metadata/curation model before
+% asserting specifics in prose.
+The claim is shocking to anyone who knows that, \emph{technically}, a DOI is a DOI: Crossref and
+DataCite both mint identifiers on the same Handle system, and the identifier technology is the
+same on both sides. It is obvious to anyone who knows that the two \emph{organizations}, and the
+\emph{curation} they practise, are not the same at all. The sentence is not really about
+identification --- it is about organization and curation, wearing the identifier's clothes.
+That is the confusion the five concerns dissolve.
+
+\section{Intrinsic versus extrinsic identifiers}
+% TODO draft from: swh-pids.org::#diovsido,#swhexamples. Refs: swhipres2018, cise-2020-doi.
+% DIO (extrinsic) vs IDO (intrinsic); three criteria: gratis, integrity, no middle-man.
+An \emph{extrinsic} identifier delegates identification to an organization: it means nothing
+without the register that backs it. An \emph{intrinsic} identifier is computed from the content
+itself, so it needs no organization to \emph{mean} something --- only, separately, to
+\emph{locate and preserve} what it names. That one separation is the whole story: it buys
+integrity, it costs nothing, and it removes the middle-man~\autocite{swhipres2018,cise-2020-doi}.
+
+\takeaway{An intrinsic identifier is computed from the content; an extrinsic one is assigned by
+a registry.}
+
+\section{The SWHID}
+% TODO draft from: swhid.org::#main,#swhidentify; swh-id-syntax.org::#swh-id-syntax.
+% Types + granularity (snp/rev/rel/dir/cnt/lines); qualified SWHIDs; standard status.
+% Refs: isoiec18670. Worked examples: Apollo 11, Quake III (appendix B).
+The \textsc{swhid} is the intrinsic identifier for source code --- an international standard,
+ISO/IEC~18670:2025, also referenced by SPDX, registered as the IANA \texttt{swh:} scheme, and
+recorded as Wikidata property P6138. Its syntax and granularity are summarised in
+Appendix~\ref{app:swhid-syntax}. This note is itself named and verified this way: the Colophon
+shows how a document can refer to its own archived source, and why a hash forbids it from
+\emph{containing} its own identifier.
+
+\begin{handson}[Hands-on: watch the name follow the bytes]
+\begin{enumerate}[nosep,leftmargin=*]
+  \item Compute a content \textsc{swhid} for a file: \texttt{swh identify file.c}.
+  \item Change a single byte and recompute --- the identifier changes completely.
+  \item Restore the byte; the original identifier returns, to the character. No registry was
+        ever consulted, and no authority was asked --- the name simply follows the bytes.
+\end{enumerate}
+\end{handson}

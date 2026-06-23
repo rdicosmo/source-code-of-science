@@ -1,33 +1,27 @@
-\chapter{Foundations}
+\chapter{Foundations: forges, the archive, and the data model}
 \label{ch:foundations}
 
-To reference code reliably we need the right kind of identifier and the right kind of
-archive. This chapter builds the concepts from the ground up: why forges are not archives,
-the difference between intrinsic and extrinsic identifiers, the Merkle-DAG data model, and
-the \textsc{swhid}.
+Before we can name a piece of code, we need somewhere that reliably keeps it. This chapter
+builds that ground: why software forges are not archives, what a universal archive of source
+code collects and how, and the content-addressed data model --- the Merkle DAG --- that makes
+the identifiers of the next chapter possible.
 
-\takeaway{An \emph{intrinsic} identifier is computed from the content; a DOI is not.}
+\takeaway{A forge is where code is developed; an archive is where it is kept.}
 
 \section{Forges are not archives}
 % TODO draft from: forges-not-archives.org::#categories,#oldapproaches,#evidence.
 % Link-rot evidence: Google Code/Gitorious (2015), Bitbucket (2020), URL half-life ~4y.
 
-\section{Identification versus location; intrinsic versus extrinsic identifiers}
-% TODO draft from: swh-pids.org::#diovsido,#swhexamples; doi-analysis.org::#doiexplained.
-% Refs: swhipres2018.
+\section{The universal archive}
+% TODO draft from: swh-as-infrastructure.org::#oneslide; under-the-hood-pictures.org::#automation.
+% What Software Heritage collects and how (listers + loaders), at what scale; non-profit,
+% built for the long term. Refs: SwhCACM2018.
 
 \section{The Merkle DAG data model}
 % TODO draft from: under-the-hood-pictures.org::#automation; vcs-history.org::#dvcs-to-merkle.
+% Content-addressed, deduplicated, history-preserving --- this is what makes intrinsic
+% identification possible, and sets up Chapter~\ref{ch:identifiers}.
 % Refs: pietri2019graph, SWHecosystems2023.
-Software Heritage archives source code with its full development history in a uniform
-Merkle DAG~\autocite{ICMS2020,SWHecosystems2023}.
-
-\section{The SWHID and its granularity}
-% TODO draft from: swhid.org::#main,#swhidentify; swh-id-syntax.org::#swh-id-syntax.
-% Refs: isoiec18670. Examples: Apollo 11, Quake III (see appendix B).
-% Forward-link the hash fixed-point lesson: this note is itself archived and
-% identified this way --- the Colophon shows how a document refers to its own
-% archived source, and why it cannot contain its own identifier.
-This note is itself archived and identified exactly as described here; the Colophon at the
-end shows how a document can refer to its own archived source --- and why a hash forbids it
-from \emph{containing} its own identifier.
+Software Heritage archives source code with its full development history in a uniform Merkle
+DAG~\autocite{ICMS2020,SWHecosystems2023} --- the property that the next chapter turns into an
+identifier you can trust.

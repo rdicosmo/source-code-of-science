@@ -55,22 +55,52 @@ CODE-beyond-FAIR tiered roadmap. *(This chapter addresses FAIR head-on, then set
 about FAIR?").
 *Refs:* `NatureSD2026` (CODE beyond FAIR), `barker2022fair4rs`, `2020GtCitation`.
 
-**Ch. 2 — Foundations** (~10 pp)
+**Ch. 2 — Foundations: forges, the archive, and the data model** (~7 pp)
 Forges are not archives (link-rot evidence: Google Code/Gitorious 2015, Bitbucket 2020, URL
-half-life). Identification vs location; **intrinsic vs extrinsic identifiers** (why DOI is
-not enough for code). The Merkle DAG data model. The **SWHID** and its granularity. ISO/IEC
-18670:2025, SPDX, IANA, Wikidata.
+half-life). The universal archive: what Software Heritage collects and how (listers/loaders),
+at what scale. The **Merkle DAG** data model --- content-addressed, deduplicated,
+history-preserving --- which sets up the identifiers chapter.
 *Reuse:* `forges-not-archives.org::#categories,#oldapproaches,#evidence`;
-`swh-pids.org::#diovsido,#swhexamples`; `doi-analysis.org::#doiexplained`;
 `under-the-hood-pictures.org::#automation`; `vcs-history.org::#dvcs-to-merkle`;
-`swhid.org::#main,#swhidentify`; `swh-id-syntax.org::#swh-id-syntax`.
-*Refs:* `swhipres2018`, `ICMS2020`, `pietri2019graph`, `SWHecosystems2023`, `isoiec18670`.
+`swh-as-infrastructure.org::#oneslide`.
+*Refs:* `SwhCACM2018`, `ICMS2020`, `pietri2019graph`, `SWHecosystems2023`.
 *Figures:* archive-growth, Merkle/under-the-hood.
 
-**Ch. 3 — ARDC in practice** (~12 pp) — the operational core
+**Ch. 3 — Identifiers for digital objects** (~9 pp) — the conceptual core
+The chapter that untangles a confusion most people carry about identifiers. **Thesis:**
+talking about "a DOI" silently bundles **five separable concerns**, and most arguments about
+identifiers are really arguments about one of the other four, mislabelled:
+  1. **Identification** — assigning a unique name to an object (the identifier proper).
+  2. **Location** — a mechanism to access/resolve the object (DOI → Handle → landing page;
+     SWHID → archive). Identification and location are *separate concerns* (the ISBN analogy).
+  3. **Metadata** — what is known *about* the object, typically held in a registry.
+  4. **Organization** — who maintains the coherence of the system (governance, the registry
+     operator, the social/institutional structure that keeps it alive).
+  5. **Curation** — the *quality* of the metadata: how it is ensured and maintained, who
+     decides which objects deserve metadata (or even identification), and how that is checked.
+Running hook: **"Crossref DOIs are better than DataCite DOIs."** Shocking to anyone who knows
+that *technically* a DOI is a DOI --- both mint Handle-system DOIs, the identifier technology
+is identical --- and obvious to anyone who knows that the two **organizations** and their
+**curation** practices differ. The sentence conflates the identifier with the registry behind
+it; the five-way split dissolves the paradox and is the chapter's main teaching tool.
+From there: **intrinsic vs extrinsic identifiers** (DIO vs IDO, after the iPRES 2018 paper) ---
+an *extrinsic* id delegates identification to an organization and is meaningless without the
+register; an *intrinsic* id **computes** identification from the content, so it needs no
+organization to *mean* something, only to *locate and preserve*. That separation is the whole
+power: integrity, gratis, no middle-man. Then the **SWHID** as the intrinsic identifier for
+code --- types and granularity (snp/rev/rel/dir/cnt/lines), qualified SWHIDs --- and its status
+as a standard: ISO/IEC 18670:2025, plus SPDX, the IANA `swh:` scheme, Wikidata P6138.
+*Reuse:* `swh-pids.org::#diovsido,#swhexamples,#swhorigins`; `doi-analysis.org::#doiexplained`;
+`swhid.org::#main,#swhidentify`; `swh-id-syntax.org::#swh-id-syntax`.
+*Refs:* `swhipres2018` (Identifiers for Digital Objects), `cise-2020-doi`, `isoiec18670`,
+`force11citationprinciples`. *(For the Crossref/DataCite point, verify a current citable source
+on each org's metadata/curation model before asserting specifics.)*
+*Worked examples:* Apollo 11, Quake III line-pinpoints (also used in Ch. 4 / appendix B).
+
+**Ch. 4 — ARDC in practice** (~12 pp) — the operational core
 - **Archive:** Save Code Now, browser extension, webhook/CI, SWORD deposit.
-- **Reference:** choosing SWHID granularity (snp/rev/rel/dir/cnt/lines); qualified SWHIDs;
-  the `origin=`/`visit=`/`anchor=` qualifiers; worked examples (Apollo 11, Quake III).
+- **Reference:** *applying* the identifiers of Ch. 3 — choosing the granularity a claim needs;
+  building qualified SWHIDs with the `origin=`/`visit=`/`anchor=` qualifiers for a paper.
 - **Describe:** `codemeta.json`, `CITATION.cff`, SPDX licensing, REUSE.
 - **Cite & Credit:** `biblatex-software` (the four entry types, the `swhid=` field, crossref
   chains); how the note cites *itself* (dogfooding).
@@ -81,7 +111,7 @@ not enough for code). The Merkle DAG data model. The **SWHID** and its granulari
 *Tooling:* the `swhid` and `biblatex-software-citation` skills; the online HOWTO.
 *Figures:* `BibLaTeX-swh.png`, `hal-swh-overview.png`.
 
-**Ch. 4 — Reproducibility and artifact evaluation** (~12 pp) — the climax
+**Ch. 5 — Reproducibility and artifact evaluation** (~12 pp) — the climax
 The reproducibility crisis (Collberg); reproducible builds; ACM Artifact Review & Badging and
 its spread across (and beyond) CS; the eLife automatic-archival pipeline. **The AEC guide is
 lifted in here, lightly re-edited as a chapter** (history of AEC; the four failures of
@@ -92,7 +122,7 @@ zip+DOI; the seven SWH properties; organiser/author/reviewer parts; double-blind
 **`../2026-06-AEC-guide/swhid-artifact-evaluation-guide.md`** (port to LaTeX).
 *Refs:* `acmbadging`, `nisorp31`, `spinellis2026hotspots`. *Figure:* `acm-artifact-badges`.
 
-**Ch. 5 — Adoption, policy and outlook** (~8 pp)
+**Ch. 6 — Adoption, policy and outlook** (~8 pp)
 Adoption indicators (HAL, IPOL, eLife, swMATH, Episciences). The policy landscape (UNESCO,
 EOSC SIRS, national plans, the French Software College, RI roadmap). The wider mission:
 **resilience & digital sovereignty** (Guix fallback to SWH, AI transparency / CodeCommons,
@@ -128,7 +158,7 @@ GARR-2026 material (`talks-private/2026-05-19-Garr/`: Guix proof-of-concept, six
 ## Sourcing / reuse map (summary)
 
 - **Prose & structure:** ~70 % already exists in `common/modules/` (paths above) and in the
-  three articles; the AEC guide supplies Ch. 4 wholesale.
+  three articles; the AEC guide supplies Ch. 5 wholesale.
 - **Bibliography:** copy `../2026-06-AEC-guide/references.bib` verbatim (canonical citekeys +
   `biblatex-software` entries); extend only as new chapters cite more.
 - **Figures:** reuse from `slides/common/images/` (archive-growth, hal-swh-overview,
@@ -141,7 +171,7 @@ GARR-2026 material (`talks-private/2026-05-19-Garr/`: Guix proof-of-concept, six
 2026-course-research-software/
   main.tex                 % report, xelatex, biblatex(datamodel=software)+software-biblatex
   preamble.tex             % fonts (TeX Gyre Pagella), SWH title, hands-on/takeaway envs, swhid stamp
-  chapters/01-why.tex … 06-outlook.tex
+  chapters/01-why.tex … 07-outlook.tex   % 7 chapters (Identifiers added as Ch. 4 file)
   appendix/{A-cookbook,B-swhid-syntax,C-glossary}.tex
   colophon.tex             % self-archival SWHID + hashing lesson + capstone lab
   references.bib           % copied from ../2026-06-AEC-guide/
@@ -157,10 +187,10 @@ Build: `latexmk -xelatex main.tex` (biber auto-run). Bibliography options:
 
 1. **Scaffold** the repo: class, preamble, branded title, `Makefile`, copy `references.bib`,
    stage figures, empty chapter files. Build a "hello" PDF. *(git init + initial commit.)*
-2. **Ch. 0–2** (framing + foundations) — lift and rewrite from modules.
-3. **Ch. 3** (ARDC in practice) — the operational core; add hands-on boxes.
-4. **Ch. 4** (reproducibility & AEC) — port the AEC guide to LaTeX; integrate Spinellis.
-5. **Ch. 5 + appendices + glossary** — policy/outlook; cookbook; cheat-sheet.
+2. **Ch. 0–3** (framing + foundations + identifiers) — lift and rewrite from modules.
+3. **Ch. 4** (ARDC in practice) — the operational core; add hands-on boxes.
+4. **Ch. 5** (reproducibility & AEC) — port the AEC guide to LaTeX; integrate Spinellis.
+5. **Ch. 6 + appendices + glossary** — policy/outlook; cookbook; cheat-sheet.
 6. **Polish pass:** figures, key-takeaways, cross-references, index; full build; proofread;
    archive the note in SWH and add its self-citation.
 7. *(Optional, later)* tagged 3-hour cut for live delivery; Italian edition for GARR.
@@ -171,7 +201,7 @@ Build: `latexmk -xelatex main.tex` (biber auto-run). Bibliography options:
 license, inclusion of hands-on labs, and the self-verification capstone in the Colophon.)*
 
 - **Figure permissions/sourcing:** confirm reuse rights for any third-party images.
-- **Depth on the data model** (Ch. 2): how technical to go on the Merkle DAG / graph dataset
+- **Depth on the data model** (Ch. 2–3): how technical to go on the Merkle DAG / graph dataset
   for a cross-disciplinary doctoral audience (proposed: conceptual, with a "go deeper" pointer
   to `pietri2019graph` / the ecosystem survey).
 
