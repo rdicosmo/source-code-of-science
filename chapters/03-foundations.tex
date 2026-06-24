@@ -2,26 +2,126 @@
 \label{ch:foundations}
 
 Before we can name a piece of code, we need somewhere that reliably keeps it. This chapter
-builds that ground: why software forges are not archives, what a universal archive of source
-code collects and how, and the content-addressed data model --- the Merkle DAG --- that makes
-the identifiers of the next chapter possible.
+builds that ground in three steps: why the places where we \emph{develop} software are not the
+places that \emph{preserve} it; what a universal archive of source code is, and how it works;
+and the simple, powerful data structure --- the Merkle DAG --- that turns ``keeping the code''
+into ``being able to name it exactly,'' which is the subject of the next chapter.
 
 \takeaway{A forge is where code is developed; an archive is where it is kept.}
 
 \section{Forges are not archives}
-% TODO draft from: forges-not-archives.org::#categories,#oldapproaches,#evidence.
-% Link-rot evidence: Google Code/Gitorious (2015), Bitbucket (2020), URL half-life ~4y.
+
+Where does the source code behind a paper actually live? In practice, in one of three kinds of
+place, and it pays to keep them apart. There are \emph{forges} --- collaborative development
+platforms such as GitHub, GitLab, and Bitbucket, built for writing software together, with
+version control, issues, and pull requests. There are \emph{distribution platforms} --- CTAN,
+CRAN, PyPI, Debian --- built to ship ready-to-use packages to users. And there are
+\emph{archives}, built for one purpose: to keep things, for the long term. Software Heritage is
+an archive. GitHub is not, and was never meant to be.
+
+This is not a quibble. For thirty years researchers have reached for one of two habits, and both
+have a hole in them. The older habit, inherited from the 1990s, is to drop a \texttt{.zip} on a
+web page or in a document repository, perhaps with a DOI attached: a poor user experience and ---
+as the next chapter shows --- a poor identifier. The newer habit, since the 2000s, is to leave
+the code in a forge and cite its URL. That is pleasant to use, and offers \emph{no preservation
+guarantee whatsoever}~\autocite{SwhCACM2018}.
+
+How weak is that guarantee? The record is brutal, and it is recent. In 2015, Google Code and
+Gitorious shut their doors, putting on the order of a \emph{million} repositories at risk and
+breaking links across the web of scholarship. In 2019, Bitbucket announced the end of Mercurial
+hosting; in July 2020 it deleted more than \emph{250,000} repositories, research software among
+them. In 2022, GitLab.com floated a plan to erase any project left inactive for a year. And lest
+this seem a disease of commercial platforms only, in 2021 Inria unplugged its own ageing forge
+and broke the build chain of the entire OCaml package ecosystem. Earlier still, the hosting
+service CodeSpaces ran happily from 2007 until 2014 --- and then, one bad day, was gone, its
+data unrecoverable. Seven years of ``everything is fine'' is not preservation.
+
+The deeper reason is that a URL is a promise nobody signed. As the very specification that
+defined them concedes, \enquote{there is no general guarantee that a URL\ldots continues to
+[point to the same object]}; Tim Berners-Lee's plea that \enquote{cool URIs don't change} carries
+its own sad diagnosis --- URIs don't change, \emph{people change them}. Measured rather than
+asserted, the rot is fast: studying the URLs cited in \emph{Computer} and the
+\emph{Communications of the ACM}, Spinellis found the half-life of a referenced URL to be about
+four years~\autocite{spinellis2003decay}, and Lawrence and colleagues had found the same
+fragility throughout the scientific literature~\autocite{lawrence2001persistence}. Digital
+information decays if left untended --- the ``bit rot'' and ``digital dark age'' that
+preservationists have warned of for a generation~\autocite{cerf2011avoiding,anderson2015digital}
+--- and source code, with its web of dependencies and its decades-long lives, decays faster than
+most. Keeping it is a job in its own right~\autocite{matthews2010framework}, and it is not the
+job a forge ever signed up for.
 
 \section{The universal archive}
-% TODO draft from: swh-as-infrastructure.org::#oneslide; under-the-hood-pictures.org::#automation.
-% What Software Heritage collects and how (listers + loaders), at what scale; non-profit,
-% built for the long term. Refs: SwhCACM2018.
+
+If forges will not keep our code, something must. Software Heritage is that something: an
+international, non-profit, long-term initiative whose mission is to \emph{collect, preserve, and
+share} the source code of all publicly available software --- a modern Library of Alexandria for
+code, built once and shared by industry, research, culture, and society as a
+whole~\autocite{SwhCACM2018,SWHecosystems2023}.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=.86\linewidth]{figures/archive-growth-2026-03-10.png}
+  \caption[Growth of the Software Heritage archive]{The growth of the Software Heritage archive
+  over time: by early 2026 it holds the development history of hundreds of millions of projects
+  --- the largest corpus of source code ever assembled.}
+  \label{fig:archive-growth}
+\end{figure}
+
+It fills itself automatically, by a division of labour worth understanding. \emph{Listers} walk
+a hosting platform and enumerate the repositories it holds; \emph{loaders} then ingest each
+repository --- its files, its directories, and, crucially, its full commit history --- whatever
+the version-control system (Git, Mercurial, Subversion) or package format. New listers and
+loaders are contributed by a broad community, with support from the Alfred P.\ Sloan and NLnet
+foundations. The result, at the time of writing, is hard to overstate: the development history of
+more than \emph{28 billion} unique source files from over \emph{430 million} projects, some three
+petabytes of deduplicated content, organised as roughly sixty billion nodes joined by close to a
+trillion edges (Figure~\ref{fig:archive-growth}). It is, by a wide margin, the largest body of
+source code ever gathered in one place.
+
+The interesting question is not how big the archive is, but how it is \emph{organised} --- because
+the organisation is what makes it more than a very large backup.
 
 \section{The Merkle DAG data model}
-% TODO draft from: under-the-hood-pictures.org::#automation; vcs-history.org::#dvcs-to-merkle.
-% Content-addressed, deduplicated, history-preserving --- this is what makes intrinsic
-% identification possible, and sets up Chapter~\ref{ch:identifiers}.
-% Refs: pietri2019graph, SWHecosystems2023.
-Software Heritage archives source code with its full development history in a uniform Merkle
-DAG~\autocite{ICMS2020,SWHecosystems2023} --- the property that the next chapter turns into an
-identifier you can trust.
+
+Archiving the world's code so that anyone can \emph{name} a precise piece of it calls for a
+particular kind of identifier. We want identifiers that are \emph{intrinsic} --- derived from the
+content itself, not handed out by a registry --- and that work not only for single files but for
+\emph{tree structures}, the directories-within-directories that are the natural shape of
+software. A classical construction gives us exactly this: the \emph{Merkle
+tree}~\autocite{merkle1987digital}, which marries a tree to a cryptographic hash function so that
+the name of every node is computed from the names of its children, all the way down to the bytes
+of each file.
+
+This single idea buys three properties we could not otherwise have together. Such identifiers are
+\emph{gratis} --- you can mint billions of them at no cost; they guarantee \emph{integrity} ---
+change one byte and the identifier changes, so an object cannot be altered behind its name; and
+they need \emph{no middle-man} --- no central authority has to exist for the name to mean
+something. Integrity \emph{and} no middle-man, at once, is exactly the combination a registry
+cannot give you --- which is why the same construction underpins Git, Nix, IPFS, and the
+blockchains.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=.84\linewidth]{figures/swh-merkle-dag.pdf}
+  \caption[The Software Heritage Merkle DAG]{The Software Heritage data model: one Merkle directed
+  acyclic graph in which file \emph{contents} (\texttt{cnt}) are gathered into \emph{directories}
+  (\texttt{dir}), directories into \emph{revisions} (\texttt{rev}, i.e.\ commits), and those into
+  \emph{releases} (\texttt{rel}) and \emph{snapshots} (\texttt{snp}). Each node's name is the hash
+  of everything beneath it; identical subtrees are stored once.}
+  \label{fig:merkle-dag}
+\end{figure}
+
+\takeaway{Gratis, integrity, no middle-man --- a Merkle tree delivers all three at once.}
+
+Software Heritage stores \emph{all} the code it has ever collected, with its full history, in
+\emph{one} such structure: a single Merkle directed acyclic graph whose nodes are file contents,
+directories, revisions, releases, and snapshots (Figure~\ref{fig:merkle-dag})%
+~\autocite{ICMS2020,pietri2019graph}. Because every node is named by the hash of everything below
+it, identical files and directories --- of which the world's software has a staggering number ---
+are stored exactly once, and the archive as a whole becomes, in effect, a global ledger of public
+code whose integrity anyone can verify~\autocite{SWHecosystems2023}.
+
+That is the foundation. We now have somewhere to keep code, and a data model in which every
+artifact already \emph{has} a name, computed from its content. The next chapter takes that name
+seriously --- and shows how it untangles a confusion that has dogged digital identifiers for
+decades.
