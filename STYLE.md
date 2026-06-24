@@ -106,6 +106,18 @@ form of knowledge."
   bullets.
 - Don't hedge the thesis.
 
+## House facts & conventions
+
+- **SWHID = Software Hash Identifier** (intrinsic, ISO/IEC 18670). *Not* "Software Heritage
+  Identifier" — the acronym was redefined with the spec/ISO. Use the *Hash* reading throughout.
+- **Cite densely** — match the citation density of his published writing; back every claim,
+  statistic, and historical fact with a reference rather than leaving it bare.
+- **Figures earn their place** — real, concrete, captioned, attributed (archive growth, the
+  French Open Science Monitor, a real dependency graph), never decorative. Watch licences:
+  CC-BY-NC images (e.g. xkcd) don't sit cleanly in a CC-BY work — prefer generated/licensable.
+- **For FAIR**, remember that *interoperable* and *reusable* already have precise, different
+  meanings in software engineering — say so; it is the crux of the "beyond FAIR" argument.
+
 ## Three model sentences in-voice (seeds for Ch. 1–2)
 
 > Software source code is a precious, unique form of knowledge: readily turned into something

@@ -34,6 +34,18 @@ then moves *beyond* it (per the CODE-beyond-FAIR roadmap).
 - **Hands-on labs:** included — lab boxes in the practical chapters, plus a self-verification
   capstone in the Colophon. *(settled)*
 
+## Drafting conventions
+
+- **Cite densely.** Match the citation density of RDC's published writing: back every claim,
+  figure, statistic, and historical fact with a reference; prefer a citation to an unsupported
+  assertion. Extend `references.bib` as needed rather than leaving a claim bare.
+- **SWHID = Software Hash Identifier.** Spell it out as *Software Hash Identifier* (intrinsic,
+  ISO/IEC 18670). It is **no longer** "Software Heritage Identifier" — the acronym was redefined
+  with the specification/ISO standard. Use the *Hash* reading throughout; note the history once
+  (glossary).
+- **Figures earn their place.** Use real, concrete figures (not decoration), captioned and
+  attributed. Planned figures and their sources are listed under *Sourcing / reuse map* below.
+
 ## Structure and chapter outline
 
 Estimated lengths in parentheses. Each chapter lists the **existing material to reuse**
@@ -51,9 +63,19 @@ Software as the third pillar of open science (with publications and data); the s
 Software's living nature: executable + human-readable, evolves over time, dependency
 complexity, the human side. Where FAIR-for-data fits and where it breaks for software; the
 CODE-beyond-FAIR tiered roadmap. *(This chapter addresses FAIR head-on, then sets it aside.)*
+**Key point on the I and R:** *interoperable* and *reusable* are already well-established,
+precise notions in software engineering — and they mean something quite different there from
+what FAIR intends for data. So the very vocabulary of FAIR is *confusing for experienced
+developers*: an engineer hears "reusable/interoperable" and thinks of APIs, ABIs, modularity,
+portability — not metadata. Keep what FAIR gets right (findable + accessible, which archiving
+and intrinsic identifiers deliver) and be explicit that software interoperability/reusability
+is a distinct, harder, long-studied problem.
 *Reuse:* `swh-ardc.org::#swnotdata`; SNS FAIR section (`2026-06-11-SNS-EELISA.org`, "What
 about FAIR?").
 *Refs:* `NatureSD2026` (CODE beyond FAIR), `barker2022fair4rs`, `2020GtCitation`.
+*Figure:* a real dependency graph (e.g. `matplotlib`) to make "deep web of dependencies"
+concrete — candidate assets `common/images/dependency-xkcd-2347.png`, `supply-chain-deps.png`,
+or generate a matplotlib dependency graph.
 
 **Ch. 2 — Foundations: forges, the archive, and the data model** (~7 pp)
 Forges are not archives (link-rot evidence: Google Code/Gitorious 2015, Bitbucket 2020, URL
@@ -161,9 +183,22 @@ GARR-2026 material (`talks-private/2026-05-19-Garr/`: Guix proof-of-concept, six
   three articles; the AEC guide supplies Ch. 5 wholesale.
 - **Bibliography:** copy `../2026-06-AEC-guide/references.bib` verbatim (canonical citekeys +
   `biblatex-software` entries); extend only as new chapters cite more.
-- **Figures:** reuse from `slides/common/images/` (archive-growth, hal-swh-overview,
-  acm-artifact-badges, SWH-nutshell, BibLaTeX-swh, Merkle diagrams) — copy into `figures/`
-  with attribution; check each is committed/clean (`make check-assets` discipline).
+- **Figures** (copy into `figures/` with attribution; paths under `slides/common/images/`):
+  | Figure | Asset / source | Placement |
+  |---|---|---|
+  | Software across all disciplines | `french_os_monitor-use-2025.png` / `-share-2024.png` | Ch. 0 |
+  | Deep web of dependencies (matplotlib) | `dependency-xkcd-2347.png`, `supply-chain-deps.png`, or generate a real matplotlib dep graph | Ch. 1 |
+  | Archive growth | `2025-10-archive-growth.png` (or latest) | Ch. 2 |
+  | Under the hood / Merkle DAG | `swh-modules-deps-*.pdf`, under-the-hood diagrams | Ch. 2–3 |
+  | HAL ↔ SWH workflow | `hal-swh-overview.png` | Ch. 4 |
+  | biblatex-software rendering | `BibLaTeX-swh.png` | Ch. 4 |
+  | ACM artifact badges | `acm-artifact-badges.*` | Ch. 5 |
+  | SWH in a nutshell | `SWH-nutshell*.{pdf,png}` | Ch. 0 / 6 |
+
+  Check each is committed/clean (`make check-assets` discipline). Pick the *latest*
+  archive-growth and french-os-monitor variants at drafting time. Open question: confirm
+  reuse rights for any third-party image (xkcd 2347 is CC-BY-NC — fine to reproduce with
+  attribution, but prefer a generated/licensable dependency graph for a CC-BY work).
 
 ## Toolchain and repository layout
 
