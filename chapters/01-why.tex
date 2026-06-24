@@ -28,19 +28,37 @@ research output in its own right.
 
 This is no longer tenable, and the numbers say so. Across \emph{every} discipline, from
 mathematics to biology, from physics to the social sciences, a growing share of published work
-now depends on software the authors wrote themselves~\autocite{osec_2022}. When the code
-\emph{is} the experiment, pretending it is a detail does not make it one.
-% TODO figure: French Open Science Monitor --- share of papers producing/using software,
-% across disciplines. Asset: common/images/french_os_monitor-use-2025.png (or -share-2024.png).
-% Likely CC-BY (ouvrirlascience / MESR); confirm and attribute. Cite osec_2022.
+now depends on software the authors wrote themselves~\autocite{osec_2022} (Figure~\ref{fig:os-monitor}).
+When the code \emph{is} the experiment, pretending it is a detail does not make it one.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{figures/french_os_monitor-use-2025.png}
+  \caption[Software across all disciplines]{Across every discipline, a substantial and growing
+  share of research articles produces or uses software. \emph{Source:} French Open Science
+  Monitor, 2025 edition.}
+  \label{fig:os-monitor}
+\end{figure}
 
 What makes software special is also what makes it easy to mishandle: it is at once executable
 and human-readable; it \emph{evolves}, often over decades, so that its development history is
 part of its meaning; and it never stands alone, resting instead on a deep web of other software
-it depends on. These are not the properties of a dataset --- and, as we will see in the next
+it depends on (Figure~\ref{fig:matplotlib-deps}). These are not the properties of a dataset ---
+and, as we will see in the next
 chapter, they are exactly the properties that the familiar, data-shaped recipes fail to
 respect. Software is not data; it is a first-class citizen of the scientific record, and it
 deserves to be treated as one.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{figures/python3-matplotlib.pdf}
+  \caption[The dependency web of a single library]{No software stands alone. The dependency
+  graph of the \texttt{matplotlib} plotting library: blue marks its Python-level dependencies,
+  orange the real system libraries beneath, green the artefacts of packaging
+  granularity~\autocite{SWHecosystems2023}. A single research tool already rests on a deep web
+  of other software --- none of which the data-deposit model knows how to keep.}
+  \label{fig:matplotlib-deps}
+\end{figure}
 
 \section{What is at stake: reproducibility and preservation}
 

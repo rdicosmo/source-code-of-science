@@ -38,7 +38,11 @@ then moves *beyond* it (per the CODE-beyond-FAIR roadmap).
 
 - **Cite densely.** Match the citation density of RDC's published writing: back every claim,
   figure, statistic, and historical fact with a reference; prefer a citation to an unsupported
-  assertion. Extend `references.bib` as needed rather than leaving a claim bare.
+  assertion, never leaving a claim bare. **Canonical bibliography source:**
+  `~/TeX/Bibliography/dicosmo.bib` and `~/TeX/Bibliography/swh.bib` (rich; the user can supply
+  more) — pull entries from there, reusing their citekeys, into the repo's curated
+  `references.bib` (which must stay self-contained for the build). Mine those `.bib` files first
+  before inventing an entry.
 - **SWHID = Software Hash Identifier.** Spell it out as *Software Hash Identifier* (intrinsic,
   ISO/IEC 18670). It is **no longer** "Software Heritage Identifier" — the acronym was redefined
   with the specification/ISO standard. Use the *Hash* reading throughout; note the history once
@@ -187,7 +191,7 @@ GARR-2026 material (`talks-private/2026-05-19-Garr/`: Guix proof-of-concept, six
   | Figure | Asset / source | Placement |
   |---|---|---|
   | Software across all disciplines | `french_os_monitor-use-2025.png` / `-share-2024.png` | Ch. 0 |
-  | Deep web of dependencies (matplotlib) | `dependency-xkcd-2347.png`, `supply-chain-deps.png`, or generate a real matplotlib dep graph | Ch. 1 |
+  | Deep web of dependencies (matplotlib) | `python3-matplotlib.pdf` (RDC's own figure, in `common/images/`; staged in `figures/`) — **used in Ch. 1** | Ch. 1 |
   | Archive growth | `2025-10-archive-growth.png` (or latest) | Ch. 2 |
   | Under the hood / Merkle DAG | `swh-modules-deps-*.pdf`, under-the-hood diagrams | Ch. 2–3 |
   | HAL ↔ SWH workflow | `hal-swh-overview.png` | Ch. 4 |
@@ -196,9 +200,9 @@ GARR-2026 material (`talks-private/2026-05-19-Garr/`: Guix proof-of-concept, six
   | SWH in a nutshell | `SWH-nutshell*.{pdf,png}` | Ch. 0 / 6 |
 
   Check each is committed/clean (`make check-assets` discipline). Pick the *latest*
-  archive-growth and french-os-monitor variants at drafting time. Open question: confirm
-  reuse rights for any third-party image (xkcd 2347 is CC-BY-NC — fine to reproduce with
-  attribution, but prefer a generated/licensable dependency graph for a CC-BY work).
+  archive-growth and french-os-monitor variants at drafting time. The matplotlib and SWH
+  figures are RDC's own work (no third-party licence issue); for any genuinely third-party
+  image, confirm reuse rights and avoid CC-BY-NC sources in this CC-BY work.
 
 ## Toolchain and repository layout
 
