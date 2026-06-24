@@ -1,30 +1,119 @@
 \chapter{Software is not data --- and why ``beyond FAIR''}
 \label{ch:beyond-fair}
 
-Research software differs from data in kind: it is executable \emph{and} human-readable, it
-evolves over time, and it sits atop a deep web of dependencies. The FAIR principles were
-designed for data; this chapter shows where they fit research software and where they break,
-and introduces the CODE-beyond-FAIR roadmap~\autocite{NatureSD2026}.
+The previous chapter asked us to treat research software as a first-class output. The natural
+next question is: which recipe do we follow? For data, the community converged on a powerful
+answer --- the FAIR principles~\autocite{fairdefinition2016} --- and it is tempting to reach for
+the same recipe and simply declare software FAIR as well. This chapter argues, plainly, that the
+temptation should be resisted: not because FAIR is wrong, but because software is not data, and
+the parts of FAIR that matter most for software either come for free from archiving or mean
+something quite different once code is involved.
 
 \takeaway{FAIR is a starting point, not the destination, for living software.}
 
 \section{The living nature of software}
-% TODO draft from: swh-ardc.org::#swnotdata; source-code-different-short.org.
-% Figure: the matplotlib dependency graph (figures/python3-matplotlib.pdf) already appears in
-% Ch.1 as Figure~\ref{fig:matplotlib-deps} --- reference it back here when drafting the
-% "living nature / complexity" argument rather than repeating it.
+
+Recall what source code is: knowledge that a machine can execute and a human can read. As Harold
+Abelson put it, \enquote{programs must be written for people to read, and only incidentally for
+machines to execute}; and as Len Shustek of the Computer History Museum observed, source code
+offers \enquote{a view into the mind of the designer}. That double nature already sets software
+apart from every other research output~\autocite{SwhCACM2018}.
+
+Three further properties make software a moving target rather than a frozen artifact.
+
+It \emph{evolves}. A dataset, once collected, is what it is; a piece of software that anyone
+finds useful is a \emph{living entity}, continuously changing, with no state that can honestly be
+called final~\autocite{NatureSD2026}. Its development history is not bookkeeping --- it is part
+of the object's meaning, the record of how the design was reached.
+
+It is \emph{diverse}. Behind the single word \enquote{software} hides a startling variety of
+objects, differing in structure (a one-file script, or a million-line assembly of modules),
+lifetime (a fire-and-forget analysis, or a library maintained for decades), community (one
+researcher, one team, a worldwide crowd), and size --- written in any of the more than nine
+thousand programming languages humanity has invented~\autocite{NatureSD2026}. A rule that fits a
+tidy dataset will not fit all of this at once.
+
+And it never stands \emph{alone}. Every non-trivial program rests on a biotope: a deep stack of
+other software --- libraries, build tools, an operating system beneath it all. We have already
+seen this (Figure~\ref{fig:matplotlib-deps}): one plotting library drags in a whole forest of
+dependencies. In that biotope, the smallest change in a component buried far below can break the
+reusability of the code on top --- or, worse, silently alter its
+correctness~\autocite{NatureSD2026}. Data has no such problem; software has little else.
 
 \section{FAIR for software: fit and friction}
-% TODO draft: the SNS "What about FAIR?" argument. Refs: barker2022fair4rs (FAIR4RS), 2020GtCitation.
-% KEY POINT: the I (interoperable) and R (reusable) of FAIR already have precise, established
-% meanings in software engineering --- and they differ from FAIR's data-centric intent. An
-% experienced developer hears "interoperable/reusable" and thinks APIs, ABIs, modularity,
-% portability --- not metadata. So the FAIR vocabulary actively CONFUSES practitioners. Keep
-% what FAIR gets right (Findable + Accessible, delivered by archiving + intrinsic identifiers);
-% be explicit that software interoperability/reusability is a distinct, harder, long-studied
-% problem, not a metadata checkbox.
+
+The FAIR principles --- \emph{Findable, Accessible, Interoperable, Reusable} --- were proposed in
+2016 for research \emph{data}~\autocite{fairdefinition2016}, and they have been enormously
+successful there. In a nutshell, FAIR-for-data is about putting good metadata everywhere, which
+is exactly the right obsession for data. Serious, well-intentioned efforts have since tried to
+carry the same banner over to software: \emph{Towards FAIR principles for research
+software}~\autocite{Lamprecht2020}, the FAIR4RS principles~\autocite{barker2022fair4rs}, and FAIR
+computational workflows~\autocite{Goble2020}. We share their higher-level goal completely; the
+disagreement is about \emph{how} --- and it is not a small one. Even when FAIR is carefully
+adapted to software, it falls short of the problems one actually faces~\autocite{NatureSD2026}.
+
+The friction has two sources. The first is that \enquote{FAIR} has drifted into a buzzword with
+two faces: a vague, feel-good goal that policymakers invoke without looking inside, and a precise
+set of recommendations that, for software, mostly reduce to \emph{putting metadata all over the
+place}. Metadata is necessary, but nowhere near sufficient for code, and it is a trap to let FAIR
+become the alpha and omega of how we treat software~\autocite{NatureSD2026}.
+
+The second source of friction is sharper, and it is the one experienced developers feel at once.
+The \emph{I} and the \emph{R} of FAIR --- \emph{interoperable} and \emph{reusable} --- are not
+free-floating slogans in our field. They are precise, long-studied technical notions in software
+engineering: interoperability is about APIs, ABIs, data formats, and protocols; reusability is
+about modularity, portability, and architecture. These are properties that remain \emph{very hard
+to achieve even for commercial software built by billion-dollar corporations}. When a researcher
+who writes code is told to make her software \enquote{interoperable and reusable}, she hears a
+decades-old engineering challenge --- not a request to fill in a metadata field. The FAIR
+vocabulary, borrowed wholesale from data, thus confuses precisely the people best equipped to act.
+
 \takeaway{For software, \emph{interoperable} and \emph{reusable} already mean something precise
 --- and it is not what FAIR means by them.}
 
+So what, in FAIR, do we keep? The first two letters. \emph{Findable} and \emph{accessible} are
+real, achievable, and decisive for software --- and, happily, they are exactly what a universal
+archive and an intrinsic identifier deliver, as the next two chapters show. The rest we should
+not paper over with a checklist: software interoperability and reusability are a distinct, harder,
+genuinely engineering problem, and pretending otherwise helps no one.
+
 \section{The CODE-beyond-FAIR roadmap}
-% TODO: tiered roadmap for reusable research software. Ref: NatureSD2026.
+
+If imposing data principles on software is the wrong move, what is the right one? Stop legislating
+from outside, and start learning from the community that has been building reusable software for
+half a century: free and open-source software. Rather than minting new principles and handing them
+to volunteers, we should adopt and adapt the philosophy that the FOSS world already lives
+by~\autocite{NatureSD2026}.
+
+That philosophy has to respect the diversity we just described. A single strict gold standard,
+proclaimed from on high, would discourage exactly the people we most want to help --- the
+scientist-developers who very often have no formal training in software
+engineering~\autocite{Carver2022}, and who contribute, frequently, on goodwill alone. So the
+recommendation is built, deliberately, as a \emph{progressive roadmap}: a short list of
+\emph{mandatory} first steps, then a longer ladder of \emph{recommended} and \emph{optional}
+ones, climbing toward a gold standard that nobody is required to reach all at once. The whole
+roadmap fits a four-word mnemonic --- \textbf{CODE}: \emph{Open, Document, Execute,
+Collaborate}~\autocite{NatureSD2026}.
+
+\begin{description}[leftmargin=!,labelwidth=2.4cm,font=\bfseries\sffamily]
+  \item[Open] publish the source on a public forge \emph{and} archive it in Software Heritage ---
+        the only two \emph{mandatory} steps; then license it openly and claim authorship.
+  \item[Document] meaningful names and comments first, then API documentation, examples, and
+        notebooks.
+  \item[Execute] declare your software and hardware dependencies, then ship a container or a Guix
+        recipe, a test suite, and a worked example with its expected results.
+  \item[Collaborate] handle issues, explain how to contribute, set honest limits, and grow a
+        community.
+\end{description}
+
+\takeaway{\textbf{CODE} --- Open, Document, Execute, Collaborate --- and only \emph{Open} is
+mandatory.}
+
+Notice where the single hard requirement lands: \emph{publish and archive}. Everything above it is
+a ladder you climb as far as your project warrants. This is liberating, not lax --- it says, in
+effect, that the worst outcome is not imperfect software but \emph{lost} software, and that
+\enquote{ugly code is always better than no code}~\autocite{Leveque2013}. It also tells us where
+this note goes next. The mandatory rung of \textbf{O}pen --- archive your code, and be able to
+point at it --- is precisely the \textbf{A}rchive and \textbf{R}eference of the ARDC practice at
+the heart of this note. To make good on it we need two things first: somewhere to keep code for
+the long term, and a way to name exactly the code we mean. Those are the next two chapters.
