@@ -3,22 +3,36 @@
 
 % TODO: port from ../2026-06-AEC-guide (Appendix A). Keep in sync.
 
+The reference implementation of the \textsc{swhid} standard (ISO/IEC~18670) is
+\texttt{swhid-rs}, a Rust tool released under the MIT licence; use it as the primary local
+tool. The Python \texttt{swh identify} (from \texttt{swh.model}) and \texttt{swh scanner} remain
+useful for a few operations the Rust CLI does not yet cover --- chiefly snapshot identifiers and
+scanning a tree against the archive.
+
 \begin{verbatim}
-# Install
-pip install 'swh.model[cli]'        # swh identify
-pip install swh.scanner             # swh scanner
+# --- Install -------------------------------------------------------------
+cargo install swhid                  # swhid-rs (Rust reference impl., MIT)
+cargo install swhid --features git   # ...with VCS (revision) support
+# or download a pre-built binary from the project's releases page:
+#   https://github.com/swhid/swhid-rs
+pip install 'swh.model[cli]'         # swh identify (Python)
+pip install swh.scanner              # swh scanner  (Python)
 
-# Compute core SWHIDs locally
-swh identify file.c                  # -> swh:1:cnt:...
-swh identify --type directory src/   # -> swh:1:dir:...
-swh identify --type revision  repo/  # -> swh:1:rev:...  (HEAD)
-swh identify --type snapshot  repo.git/   # -> swh:1:snp:...
+# --- Compute core SWHIDs locally (Rust reference tool) -------------------
+swhid content --file file.c          # -> swh:1:cnt:...
+swhid dir src/                       # -> swh:1:dir:...  (Merkle hash of tree)
+swhid parse "swh:1:cnt:<hex>"        # validate / pretty-print a SWHID
 
-# Verify (exit 0 iff bytes match the claimed SWHID)
-swh identify --verify swh:1:cnt:<hex> file.c
+# A revision SWHID is just the git commit hash:
+echo "swh:1:rev:$(git rev-parse HEAD)"     # -> swh:1:rev:...
 
-# Discover what is already archived
-swh scanner scan ./repo
+# --- Verify bytes against a claimed SWHID (exit 0 iff they match) --------
+swhid verify file.c swh:1:cnt:<hex>        # PATH first, then SWHID
+swhid verify src/   swh:1:dir:<hex>
+
+# --- Operations still served by the Python tools ------------------------
+swh identify --type snapshot repo.git/     # -> swh:1:snp:... (snapshot)
+swh scanner scan ./repo                    # what is already archived?
 
 # Archive a public repo:  https://save.softwareheritage.org
 # Resolve any SWHID:      https://archive.softwareheritage.org/<swhid>

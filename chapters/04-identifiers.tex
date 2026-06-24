@@ -110,12 +110,19 @@ the Colophon explains, this document is named and verified by its own \textsc{sw
 also exactly why it cannot contain that identifier inside itself.
 
 \begin{handson}[Hands-on: watch the name follow the bytes]
+Install the Rust reference implementation of the \textsc{swhid} standard --- \texttt{swhid-rs},
+released under the MIT licence --- with \texttt{cargo install swhid}.\footnote{\url{https://github.com/swhid/swhid-rs}.
+A pre-built binary for your platform is also available from the project's releases page. The
+reference implementation tracks ISO/IEC~18670 directly; Appendix~\ref{app:swhid-tools} surveys
+the other tools.}
 \begin{enumerate}[nosep,leftmargin=*]
-  \item Compute a content \textsc{swhid} for any file: \texttt{swh identify file.c}.
+  \item Compute a content \textsc{swhid} for any file: \texttt{swhid content -{}-file file.c}.
   \item Change a single byte and recompute --- the identifier changes completely.
   \item Restore the byte; the original identifier returns, to the character. No registry was ever
         consulted, and no authority was asked --- the name simply follows the bytes.
 \end{enumerate}
+You can confirm the round trip in one step with \texttt{swhid verify file.c swh:1:cnt:\textellipsis}:
+it exits cleanly only when the bytes still match the name.
 \end{handson}
 
 We now have what the rest of this note needs: a name we can trust, that identifies code exactly,

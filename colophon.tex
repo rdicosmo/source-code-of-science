@@ -38,7 +38,8 @@ You can recompute the identifier above and confirm it yourself.
 \begin{enumerate}[nosep,leftmargin=*]
   \item Export the \emph{committed} source (tracked files only, no build artefacts):\\
         \texttt{git archive HEAD | (mkdir -p /tmp/note \&\& tar -x -C /tmp/note)}
-  \item Compute the directory \textsc{swhid}: \texttt{swh identify -{}-type directory /tmp/note}.
+  \item Compute the directory \textsc{swhid} with the Rust reference tool (\texttt{cargo install
+        swhid}; see Appendix~\ref{app:swhid-tools}): \texttt{swhid dir /tmp/note}.
   \item Compare its core \swhid{swh:1:dir:<hash>} with the one printed above (ignore the
         \texttt{origin}/\texttt{visit} qualifiers). A match means you have verified the
         integrity of the document you are reading.

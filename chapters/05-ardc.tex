@@ -22,26 +22,41 @@ clone URL of a public repository, and the archive will visit it --- Git, Mercuri
 matter. One step better is the \emph{updateswh} browser extension, which puts a single ``archive
 this'' button on the repository pages of GitHub, GitLab, and Bitbucket. Better still, for code you
 maintain, is a \emph{webhook}: wire your forge so that every release triggers archival
-automatically, and you never have to remember again. And for source code that does not live in a
-public forge at all, there is the \emph{deposit}: a restricted, \textsc{sword}-based service
-(\url{https://deposit.softwareheritage.org}) through which a trusted partner --- a journal, an
-institution, HAL --- pushes a tarball together with its metadata.
+automatically, and you never have to remember again. And there is a fourth channel, the
+\textsc{sword}-based \emph{deposit} (\url{https://deposit.softwareheritage.org}) --- but it is
+\emph{not} a general path: it is reserved for trusted partners and registered organizations ---
+a journal, an institution, HAL --- who hold credentials to push a tarball with its metadata
+straight into the archive. An ordinary researcher does not have those credentials, and does not
+need them: the easy paths below cover exactly the case the deposit was built to handle.
 
-The deposit is worth seeing once, because it makes the machinery concrete. You prepare an archive
-of the sources and an Atom document carrying CodeMeta metadata, then push it:
-\begin{verbatim}
-$ swh-deposit --username 'name' --password 'pass' --archive software.tar.gz
-  {'deposit_id': '11', 'deposit_status': 'deposited', ...}
-\end{verbatim}
-and the deposit moves through a short lifecycle --- \texttt{deposited}, \texttt{verified},
-\texttt{loading} --- until it is \texttt{done}, at which point it has earned a permanent identifier
-of its own:
-\begin{verbatim}
-  deposit_swh_id: swh:1:rev:a86747d201ab8f8657d145df4376676d5e47cf9f
-\end{verbatim}
-However the code got in, the result is the same: it is now kept, and it now has a name. The full
-recipe lives in the online
-HOWTO.\footnote{\url{https://www.softwareheritage.org/howto-archive-and-reference-your-code/}}
+\subsection*{When all you have is a tarball}
+
+The three public channels above all assume one thing: that your code lives in a forge, behind a
+clone URL. \emph{And yet} a great deal of research software does not --- it is a \texttt{.zip} or
+\texttt{.tar.gz} attached to a paper, a snapshot with no public Git remote. For that case, two
+paths are open to you, and neither needs partner credentials.
+
+The easiest, by far, is to go through \emph{Zenodo}. Since the Zenodo--Software Heritage
+integration launched in late 2024, software you deposit on Zenodo is \emph{automatically} sent on
+to Software Heritage, provided the files are publicly accessible; Software Heritage computes its
+\textsc{swhid}, and Zenodo links that \textsc{swhid} to the record's \textsc{doi} and shows both on
+the landing page~\autocite{zenodoswh2024}. So you upload your archive once, and walk away with
+\emph{both} identifiers --- the \textsc{doi} for discoverability in the scholarly literature, and
+the \textsc{swhid} for the verifiable identity of the exact bytes. It is the same division of
+labour we have insisted on throughout: \emph{a \textsc{doi} for findability, a \textsc{swhid} for
+integrity} --- and here you get both, for the price of one upload, with no forge required.
+
+The second path stays inside Software Heritage: \emph{Save Code Now} can also ingest a
+\texttt{.zip} or tarball directly, rather than a clone URL --- but this is gated. It is open to
+registered accounts holding the \emph{ambassador} role, which Software Heritage grants on request
+(the account is free); an anonymous visitor can submit only a version-control
+URL.\footnote{See the \textsc{faq}: \url{https://docs.softwareheritage.org/user/faq/index.html}.}
+If you expect to archive tarballs regularly --- shepherding a journal's artifacts, say --- this
+is worth setting up; for a one-off, the Zenodo route is simpler. Either way, the full recipe lives
+in the online
+HOWTO.\footnote{\url{https://www.softwareheritage.org/how-to-archive-reference-code/}}
+
+However the code got in, the result is the same: it is now kept, and it now has a name.
 
 \begin{handson}[Hands-on: archive any repository, and automate it]
 \begin{enumerate}[nosep,leftmargin=*]
@@ -78,9 +93,12 @@ when you simply want to point at ``the project, as the archive saw it'' --- an o
 \textsc{swhid} serves as a Wayback-machine-style pointer into the crawl history.
 
 \begin{handson}[Hands-on: reference code in a paper]
-Take a result of your own that rests on code, and build its reference: the \texttt{rev}
-\textsc{swhid} of the exact commit, then a \texttt{cnt} \textsc{swhid} of the precise file with its
-\texttt{path} and \texttt{lines}. Paste each into \texttt{https://archive.softwareheritage.org/}
+Take a result of your own that rests on code, and build its reference with the Rust reference tool
+\texttt{swhid-rs} (\texttt{cargo install swhid}; see Appendix~\ref{app:swhid-tools}). Compute the
+\texttt{cnt} \textsc{swhid} of the precise file --- \texttt{swhid content -{}-file analysis.py} ---
+and the \texttt{rev} \textsc{swhid} of the exact commit, which is simply \swhid{swh:1:rev:}
+prepended to \texttt{git rev-parse HEAD}. Add the \texttt{path} and \texttt{lines} qualifiers by
+hand, then paste each qualified \textsc{swhid} into \texttt{https://archive.softwareheritage.org/}
 and confirm it highlights exactly the code you meant.
 \end{handson}
 
