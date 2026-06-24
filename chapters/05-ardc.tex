@@ -1,62 +1,183 @@
 \chapter{ARDC in practice}
 \label{ch:ardc}
 
-This is the operational core of the note: \textbf{A}rchive, \textbf{R}eference,
-\textbf{D}escribe, \textbf{C}ite \& credit. Each step has concrete tools, and the chapter is
-punctuated by hands-on labs you run on a repository of your choice --- your own code, or a
-report, dependency, or library you want to mention, cite, or rely upon.
+We now have everything we need to do the work: an archive that keeps source code for the long
+term, and an intrinsic identifier that names exactly the code we mean. This chapter is the
+operational heart of the note. It turns the principle ``treat software as a first-class output''
+into four concrete verbs you can apply to a repository of your choice --- your own code, a library
+you depend on, a result you want to cite. The verbs are \textbf{A}rchive, \textbf{R}eference,
+\textbf{D}escribe, and \textbf{C}ite~\&~credit; together they spell \textsc{ardc}, and each ends
+with a hands-on lab.
 
-\takeaway{Archive once, then reference at the granularity your claim needs.}
+\takeaway{Archive once; then reference at the granularity your claim needs.}
 
 \section{Archive}
-% TODO draft from: swh-acquisition-process.org::#savecodenow; deposit.org::#overview,#prepare,#send,#status.
-Save Code Now, the browser extension, a release webhook, or the SWORD deposit API.
 
-\begin{handson}[Hands-on: archive any repository and get its SWHID]
+Recall the one hard requirement from the CODE roadmap: \emph{publish and archive}. Publishing on a
+forge you already do. Archiving means depositing the code, with its history, into Software
+Heritage, and there are four ways in, in rising order of automation~\autocite{SwhCACM2018}.
+
+The simplest is \emph{Save Code Now}: go to \url{https://save.softwareheritage.org}, paste the
+clone URL of a public repository, and the archive will visit it --- Git, Mercurial, Subversion, no
+matter. One step better is the \emph{updateswh} browser extension, which puts a single ``archive
+this'' button on the repository pages of GitHub, GitLab, and Bitbucket. Better still, for code you
+maintain, is a \emph{webhook}: wire your forge so that every release triggers archival
+automatically, and you never have to remember again. And for source code that does not live in a
+public forge at all, there is the \emph{deposit}: a restricted, \textsc{sword}-based service
+(\url{https://deposit.softwareheritage.org}) through which a trusted partner --- a journal, an
+institution, HAL --- pushes a tarball together with its metadata.
+
+The deposit is worth seeing once, because it makes the machinery concrete. You prepare an archive
+of the sources and an Atom document carrying CodeMeta metadata, then push it:
+\begin{verbatim}
+$ swh-deposit --username 'name' --password 'pass' --archive software.tar.gz
+  {'deposit_id': '11', 'deposit_status': 'deposited', ...}
+\end{verbatim}
+and the deposit moves through a short lifecycle --- \texttt{deposited}, \texttt{verified},
+\texttt{loading} --- until it is \texttt{done}, at which point it has earned a permanent identifier
+of its own:
+\begin{verbatim}
+  deposit_swh_id: swh:1:rev:a86747d201ab8f8657d145df4376676d5e47cf9f
+\end{verbatim}
+However the code got in, the result is the same: it is now kept, and it now has a name. The full
+recipe lives in the online
+HOWTO.\footnote{\url{https://www.softwareheritage.org/howto-archive-and-reference-your-code/}}
+
+\begin{handson}[Hands-on: archive any repository, and automate it]
 \begin{enumerate}[nosep,leftmargin=*]
-  \item Pick a repository worth referencing: your own, or one you depend on / want to cite.
-  \item Archive it --- either with the \textbf{updateswh} browser extension (one click on a
-        GitHub/GitLab/Bitbucket page) or via \url{https://save.softwareheritage.org}.
-  \item Wait for the visit to reach status \texttt{full}; open the object and copy the
-        \emph{qualified} \textsc{swhid} from the \emph{Permalinks} tab.
-  \item Confirm it resolves under \texttt{https://archive.softwareheritage.org/}.
+  \item Pick a repository worth keeping --- your own, or one you depend on. Archive it with the
+        \textbf{updateswh} extension or at \url{https://save.softwareheritage.org}; wait for the
+        visit to reach status \texttt{full}.
+  \item Then make it automatic: add a release \emph{webhook} (GitHub, GitLab, Gitea, Bitbucket,
+        SourceForge) so each new tag is archived without your lifting a finger.
 \end{enumerate}
 \end{handson}
 
-% Hands-on (to draft): set up a release WEBHOOK so each tag is auto-archived ---
-%   GitHub, self-hosted GitLab, Gitea, Bitbucket, SourceForge.
-
 \section{Reference}
-% TODO draft from: swh-ardc.org::#swh-r. Granularity snp/rev/rel/dir/cnt/lines;
-% qualifiers origin=/visit=/anchor=; worked examples (appendix B).
 
-% Hands-on (to draft): build a reference to embed in a research article ---
-%   a code snippet (cnt + lines), a revision (rev), a file, and a directory ---
-%   and paste each into the archive to confirm it highlights the right object.
+Archiving gives the code a name; \emph{referencing} is the craft of choosing \emph{which} name to
+quote, and at what granularity. Here the identifiers of Chapter~\ref{ch:identifiers} come into
+their own, because a paper rarely depends on ``the repository'' --- it depends on something far
+more specific. Match the identifier to the claim~\autocite{cise-2020-doi}:
+
+\begin{description}[leftmargin=!,labelwidth=2.6cm,font=\bfseries\sffamily]
+  \item[the project] ``Inria created OCaml and Scikit-learn'' --- name the project (a \texttt{snp},
+        or the origin).
+  \item[a release] ``2D Voronoi diagrams were introduced in CGAL 3.1.0'' --- name the release
+        (\texttt{rel}).
+  \item[an exact state] ``this result was produced using commit 0064fbd\ldots'' --- name the
+        revision (\texttt{rev}).
+  \item[a code fragment] ``the core algorithm is in lines 101--143 of \texttt{parmap.ml} in commit
+        0064fbd\ldots'' --- name the content, with \texttt{path} and \texttt{lines}.
+\end{description}
+
+For a paper you will usually want a \emph{qualified} \textsc{swhid}: the core name that identifies,
+plus the \texttt{origin}, \texttt{visit}, and \texttt{anchor} qualifiers that let a reader walk
+straight to it in the archive and see where it came from. And when no precise version is known ---
+when you simply want to point at ``the project, as the archive saw it'' --- an origin-qualified
+\textsc{swhid} serves as a Wayback-machine-style pointer into the crawl history.
+
+\begin{handson}[Hands-on: reference code in a paper]
+Take a result of your own that rests on code, and build its reference: the \texttt{rev}
+\textsc{swhid} of the exact commit, then a \texttt{cnt} \textsc{swhid} of the precise file with its
+\texttt{path} and \texttt{lines}. Paste each into \texttt{https://archive.softwareheritage.org/}
+and confirm it highlights exactly the code you meant.
+\end{handson}
 
 \section{Describe}
-% TODO draft from: research-software-essentials.org::#description,#licence,#versioncontrol.
-% codemeta.json, CITATION.cff, SPDX, REUSE.
 
-% Hands-on (to draft): create a codemeta.json, commit it into your repo, re-archive,
-%   then check how the citation sidebar appears in the Archive and use it to produce
-%   the citation(s) you want.
+A name keeps code findable; \emph{description} makes it understandable and reusable, and it is
+where a little effort pays off enormously. Three files do most of the work, and you should add them
+in order of growing ambition~\autocite{boettiger2017codemeta}.
+
+Start with a \texttt{README}: the human entry point, answering \emph{what, why, install, run, cite,
+licence} in plain words --- ten minutes today, and the single highest-value thing you can do. As a
+project grows, add a \texttt{codemeta.json}: a rich, machine-readable description --- authors,
+dependencies, funding, archival identifiers --- in a schema.org-based vocabulary that forges and
+Software Heritage can read to generate citations automatically. Do not write it by hand; use the
+CodeMeta Generator.\footnote{\url{https://codemeta.github.io/codemeta-generator/}} From the
+CodeMeta file you can in turn generate a \texttt{CITATION.cff}, the lightweight format that makes
+GitHub show a ``Cite this repository'' button~\autocite{druskat2021cff}.
+
+And do not forget the licence --- the most consequential one-line file in your repository. By the
+Berne Convention, code is copyrighted the moment it is written, and the default is \emph{all rights
+reserved}: without a licence, nobody may legally reuse your work, however open you meant it to be.
+Yet roughly \emph{ninety per cent of public repositories on GitHub carry no licence at all}. Choose
+one --- permissive (MIT, BSD, Apache-2.0) or copyleft (the GPL family) --- declare it
+machine-readably with an \textsc{spdx} identifier, and, if you like, automate the bookkeeping with
+the REUSE specification. (Resist the temptation to reach for Creative Commons: it was not designed
+for software.) The community has distilled all of this into the FAIR Software Five
+recommendations.\footnote{\url{https://fair-software.eu/}}
+
+\takeaway{About 90\% of public repositories carry no licence --- so by default nobody may legally
+reuse them. A one-line \textsc{spdx} tag fixes it.}
+
+To put your software forward as a citable output --- onto your CV, into your institution's portal
+and the literature --- one further step helps: reference it in a curated catalogue. In France that
+means depositing in HAL, which is wired directly into Software Heritage
+(Figure~\ref{fig:hal-swh}); elsewhere, registries such as OSPO-RADAR play the same role.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=.92\linewidth]{figures/hal-swh-overview.png}
+  \caption[HAL and Software Heritage]{The HAL\,/\,Software Heritage synergy: a researcher deposits a
+  curated record of a piece of software in the HAL open-access portal, while the source code itself
+  is archived in Software Heritage --- the two linked by the code's \textsc{swhid}.}
+  \label{fig:hal-swh}
+\end{figure}
+
+\begin{handson}[Hands-on: describe, and watch the citation appear]
+Create a \texttt{codemeta.json} with the CodeMeta Generator, commit it, and re-archive the
+repository. Then open the project in the Software Heritage archive and watch the citation panel
+populate from your metadata --- and use it to produce the citation you actually want.
+\end{handson}
 
 \section{Cite and credit}
-% TODO draft from: swh-ardc.org::#swh-dc. Refs: DiCosmoSEN2020, cise-2020-doi,
-% force11citationprinciples, SCIDWG2020.
-The \texttt{biblatex-software} style adds four entry types and a \texttt{swhid=}
-field~\autocite{DiCosmoSEN2020,cise-2020-doi}. For example, this note cites a specific
-version of a library, \autocite{parmap-1.1.1}, and a code fragment within
-it, \autocite{simplemapper}.
+
+Finally, cite software as you would cite anything else in research: in the bibliography, as a
+first-class reference. For decades there was no proper way to do this, and software citations were
+forced into \texttt{@misc} entries that lost the version, the licence, and any verifiable
+identifier~\autocite{2020GtCitation}. The \texttt{biblatex-software} style fixes
+that~\autocite{DiCosmoSEN2020}. It adds four entry types --- \texttt{@software} for a project,
+\texttt{@softwareversion} for a release, \texttt{@softwaremodule} for a component, and
+\texttt{@codefragment} for a precise span of code --- chained with \texttt{crossref} so shared
+metadata is written once, and, decisively, it carries a \texttt{swhid=} field. The package is on
+CTAN and in TeX\,Live, and has shipped in the ACM \texttt{acmart} class since 2022, so the
+\textsc{swhid} renders natively in an ACM paper (Figure~\ref{fig:biblatex-swh}).
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=.9\linewidth]{figures/BibLaTeX-swh.png}
+  \caption[Software in a bibliography, done right]{A software bibliography typeset with
+  \texttt{biblatex-software}: each entry carries its version, licence, repository, and ---
+  decisively --- a \textsc{swhid}, so the citation still resolves to the exact code long after the
+  project's URL has rotted.}
+  \label{fig:biblatex-swh}
+\end{figure}
+
+The payoff is that a software citation becomes \emph{reproducible}: a \textsc{swhid} in the
+bibliography resolves to the exact bytes you used, with no dependence on a URL that may not outlive
+the paper. This note's own bibliography is built this way --- the Parmap library, for instance, is
+cited as a versioned software entry carrying its \textsc{swhid}, and a routine within it as a code
+fragment.\footnote{See the \texttt{biblatex-software} entries~\autocite{parmap-1.1.1,simplemapper}
+in the references.}
+
+\takeaway{A \textsc{swhid} in the bibliography is a citation that still resolves when the URL is
+gone.}
 
 \begin{handson}[Hands-on: cite software with biblatex-software]
 \begin{enumerate}[nosep,leftmargin=*]
-  \item Write a \texttt{@softwareversion} entry for the code you archived, with its
-        \texttt{swhid=} field; then add a \texttt{@codefragment} child via \texttt{crossref}.
-  \item Produce \emph{variants}: a project-level \texttt{@software}, a \texttt{@softwaremodule},
-        and a line-pinpointed fragment --- and compare how each renders.
-  \item Enable \texttt{biblatex-software} inside an \texttt{acmart.cls} article and confirm the
-        \textsc{swhid} renders in the ACM template.
+  \item Write a \texttt{@softwareversion} entry for the code you archived, with its \texttt{swhid=}
+        field; add a \texttt{@codefragment} child via \texttt{crossref} for a specific routine.
+  \item Produce the variants --- a project-level \texttt{@software}, a \texttt{@softwaremodule} ---
+        and compare how each renders.
+  \item Drop the entries into an \texttt{acmart} article and confirm the \textsc{swhid} renders in
+        the ACM template.
 \end{enumerate}
 \end{handson}
+
+That is \textsc{ardc}: archive the code, reference it precisely, describe it, and cite it --- a
+practice you can adopt incrementally, starting, as we keep saying because it is true, with your next
+paper. The remaining question is what all this rigour \emph{buys} us. The answer, and the sharpest
+test of the whole approach, is reproducibility and the evaluation of research artifacts: the
+subject of the next chapter.
