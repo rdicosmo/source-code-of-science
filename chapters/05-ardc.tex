@@ -19,15 +19,27 @@ Heritage, and there are four ways in, in rising order of automation~\autocite{Sw
 
 The simplest is \emph{Save Code Now}: go to \url{https://save.softwareheritage.org}, paste the
 clone URL of a public repository, and the archive will visit it --- Git, Mercurial, Subversion, no
-matter. One step better is the \emph{updateswh} browser extension, which puts a single ``archive
-this'' button on the repository pages of GitHub, GitLab, and Bitbucket. Better still, for code you
-maintain, is a \emph{webhook}: wire your forge so that every release triggers archival
-automatically, and you never have to remember again. And there is a fourth channel, the
+matter. One step better is the \emph{updateswh} browser extension
+(Figure~\ref{fig:updateswh}), which puts a single ``archive this'' button on the repository pages of
+GitHub, GitLab, and Bitbucket.\footnote{Install links and documentation:
+\url{https://www.softwareheritage.org/browser-extensions/}; source at
+\url{https://github.com/rdicosmo/updateswh}.} Better still, for code you maintain, is a
+\emph{webhook}: wire your forge so that every release triggers archival automatically, and you
+never have to remember again. And there is a fourth channel, the
 \textsc{sword}-based \emph{deposit} (\url{https://deposit.softwareheritage.org}) --- but it is
 \emph{not} a general path: it is reserved for trusted partners and registered organizations ---
 a journal, an institution, HAL --- who hold credentials to push a tarball with its metadata
 straight into the archive. An ordinary researcher does not have those credentials, and does not
 need them: the easy paths below cover exactly the case the deposit was built to handle.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=.6\linewidth]{figures/updateswh-extension.png}
+  \caption[The updateswh browser extension]{The \emph{updateswh} browser extension on a repository
+  page: its button shows the archival status at a glance --- already in Software Heritage, or one
+  click away via \emph{Save Code Now}.}
+  \label{fig:updateswh}
+\end{figure}
 
 \subsection*{When all you have is a tarball}
 
@@ -52,11 +64,28 @@ registered accounts holding the \emph{ambassador} role, which Software Heritage 
 (the account is free); an anonymous visitor can submit only a version-control
 URL.\footnote{See the \textsc{faq}: \url{https://docs.softwareheritage.org/user/faq/index.html}.}
 If you expect to archive tarballs regularly --- shepherding a journal's artifacts, say --- this
-is worth setting up; for a one-off, the Zenodo route is simpler. Either way, the full recipe lives
-in the online
-HOWTO.\footnote{\url{https://www.softwareheritage.org/how-to-archive-reference-code/}}
+is worth setting up; for a one-off, the Zenodo route is simpler.
 
-However the code got in, the result is the same: it is now kept, and it now has a name.
+However the code got in, the result is the same: it is now kept, and it now has a name. The official
+Software Heritage HOWTO walks through the whole recipe, and its three steps map directly onto the
+rest of this chapter:
+
+\begin{tcolorbox}[colback=swhbg!35,colframe=swhdark,fonttitle=\bfseries\sffamily,
+  title={The official HOWTO\footnotemark}, sharp corners=downhill, boxrule=0.4pt,
+  left=2.2mm,right=2.2mm,top=1mm,bottom=1mm]
+\small
+\begin{enumerate}[nosep,leftmargin=*]
+  \item \textbf{Prepare} your public repository: add a \texttt{README}, an \texttt{AUTHORS} file,
+        and licence information (a \texttt{LICENSE} file at the root, or a \texttt{LICENSES/}
+        directory).
+  \item \textbf{Save} your code in Software Heritage: manually with the \emph{updateswh} extension;
+        manually via \emph{Save Code Now} (pick the version-control system, enter the repository URL,
+        click submit); or automatically through the API.
+  \item \textbf{Reference} your code: get the \textsc{swhid} of a full directory, or of a precise
+        code fragment.
+\end{enumerate}
+\end{tcolorbox}
+\footnotetext{\emph{How to archive and reference your code}, \url{https://www.softwareheritage.org/how-to-archive-reference-code/}.}
 
 \begin{handson}[Hands-on: archive any repository, and automate it]
 \begin{enumerate}[nosep,leftmargin=*]
