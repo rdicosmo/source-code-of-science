@@ -1,6 +1,14 @@
 \chapter{Why this note}
 \label{ch:why}
 
+\begin{objectives}\small
+\begin{itemize}[nosep,leftmargin=*]
+  \item place software as a first-class research output, beside publications and data;
+  \item name the two things at stake --- reproducibility and preservation;
+  \item see why a software forge is not an archive.
+\end{itemize}
+\end{objectives}
+
 Software source code is a precious, unique form of knowledge. It can be turned, almost
 instantly, into something a machine will execute; and yet it is written to be read by people.
 As Harold Abelson put it in 1985, \enquote{programs must be written for people to read, and
@@ -100,12 +108,31 @@ four verbs hands-on. We will meet the FAIR principles along the way and then, de
 
 This note is meant to be read \emph{and} done. The practical chapters end with \textbf{Hands-on}
 boxes you run on a repository of your choice --- your own code, a library you depend on, a result
-you want to cite. Margin notes flag the one idea worth carrying away from each section. And the
-note practises what it preaches: it is itself archived in Software Heritage, and the Colophon
-shows you how to recompute and verify its own identifier --- the entire workflow, applied to the
-very document in your hands.
+you want to cite. Margin notes flag the one idea worth carrying away from each section; each chapter
+opens with its \textbf{learning objectives}; and any unfamiliar term --- \textsc{swhid}, snapshot,
+forge, qualified identifier --- is defined in the Glossary (Appendix~\ref{app:glossary}). And the
+note practises what it preaches: it is itself archived in Software Heritage, and the Colophon shows
+you how to recompute and verify its own identifier --- the entire workflow, applied to the very
+document in your hands.
 
-You do not need to be a computer scientist to use any of this. If you write or run code for your
-research --- whether a few lines of analysis or a library maintained for decades --- this note is
-for you. The tools are ready; the habit is the only thing missing. Let us build it, starting with
-your next paper.
+You do not need to be a computer scientist to use any of this. Different readers will want
+different routes through it:
+
+\begin{callout}{Reading paths}
+\begin{description}[nosep,leftmargin=2.6cm,style=nextline,font=\bfseries\sffamily]
+  \item[Researcher] read straight through; Chapters~\ref{ch:ardc} (the practice) and
+        \ref{ch:repro} (reproducibility and artifact evaluation) are where the work gets done.
+  \item[Developer / intern] if you build software but are not (yet) writing papers, go to
+        Chapter~\ref{ch:ardc}, \S\,Archive, plus the licence advice and
+        Appendix~\ref{app:cookbook}; the citation, artifact-evaluation, and policy chapters are
+        optional.
+  \item[Already convinced] skip to Chapter~\ref{ch:identifiers} (what a \textsc{swhid} is) and
+        Chapter~\ref{ch:ardc} (how to use it); the foundations are there if you want them.
+  \item[Editor / funder / policy maker] Chapters~\ref{ch:repro}--\ref{ch:outlook} and the
+        ready-to-use boxes therein are addressed to you; you need not run the labs.
+\end{description}
+\end{callout}
+
+If you write or run code for your research --- whether a few lines of analysis or a library
+maintained for decades --- this note is for you. The tools are ready; the habit is the only thing
+missing. Let us build it, starting with your next paper.

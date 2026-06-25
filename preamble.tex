@@ -45,6 +45,21 @@
   fonttitle=\bfseries\sffamily, title={\,#1}, sharp corners=downhill,
   boxrule=0.6pt, left=2.2mm, right=2.2mm, top=1.4mm, bottom=1.4mm}
 
+% Learning-objectives box (chapter openers).
+\newtcolorbox{objectives}{%
+  breakable, enhanced, colback=swhbg!45, colframe=swhdark,
+  fonttitle=\bfseries\sffamily, title={Learning objectives}, sharp corners=downhill,
+  boxrule=0.4pt, left=2.2mm, right=2.2mm, top=1mm, bottom=1mm}
+
+% Generic titled callout (boilerplate, executive summary, governance, do-one-thing).
+\newtcolorbox{callout}[1]{%
+  breakable, enhanced, colback=swhbg!25, colframe=swhdark,
+  fonttitle=\bfseries\sffamily, title={#1}, sharp corners=downhill,
+  boxrule=0.4pt, left=2.2mm, right=2.2mm, top=1mm, bottom=1mm}
+
+% Per-lab metadata line (time / prereqs / mode), set under a Hands-on title.
+\newcommand{\labmeta}[1]{{\footnotesize\sffamily\itshape\color{swhdark!75}#1}\par\smallskip}
+
 % Key-takeaway margin note.
 \newcommand{\takeaway}[1]{\marginnote{\footnotesize\sffamily\itshape\color{swhaccent}#1}}
 

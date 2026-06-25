@@ -1,6 +1,14 @@
 \chapter{Reproducibility and artifact evaluation}
 \label{ch:repro}
 
+\begin{objectives}\small
+\begin{itemize}[nosep,leftmargin=*]
+  \item relate artifact evaluation and the ACM badges to Software Heritage;
+  \item verify an artifact's \textsc{swhid} offline, as a reviewer would;
+  \item handle a double-blind submission with a directory \textsc{swhid}.
+\end{itemize}
+\end{objectives}
+
 How much of computational science can actually be re-run? It is an uncomfortable question, and the
 honest answers are sobering --- which is why our community has built a process to force the issue:
 \emph{artifact evaluation}, now standard at computer-science conferences, checks that the software
@@ -126,8 +134,9 @@ kind.}
 
 \section{Double-blind review, and dense pinpointing}
 
-Artifact evaluation often happens under \emph{double-blind} review, which seems to pose a problem:
-how do you share your code without revealing who wrote it? Tools that rewrite a repository's history
+Artifact evaluation often happens under \emph{double-blind} review --- where reviewers do not know
+who the authors are, nor the authors who their reviewers are --- which seems to pose a problem: how
+do you share your code without revealing who wrote it? Tools that rewrite a repository's history
 to anonymise it are fragile, and they leak. The intrinsic identifier sidesteps the whole difficulty.
 A \emph{directory} \textsc{swhid} is computed from content alone --- no author, no origin, no commit
 metadata, nothing to scrub --- and it works for any technology, not just Git. Submit the
@@ -139,8 +148,9 @@ this densely: \emph{Source Code Hotspots} ties its findings to exact passages, n
 qualified \textsc{swhid} so a reader can open the precise lines in the
 archive~\autocite{spinellis2026hotspots}. And the part that carries \emph{provenance} is precisely
 the qualifiers --- \texttt{origin}, \texttt{visit}, \texttt{anchor} --- while the core hash, the
-identifier proper, reveals nothing about authorship. So the \emph{only} difference between the double-blind
-submission and the camera-ready version is removing, then restoring, those qualifiers: the core
+identifier proper, reveals nothing about authorship. So the \emph{only} difference between the
+double-blind submission and the camera-ready version (the final, de-anonymised paper) is removing,
+then restoring, those qualifiers: the core
 hashes are identical, and every pinpoint a reviewer checked during blind review stays valid, to the
 character, in the final paper. One mechanical, fully reversible edit (Figure~\ref{fig:doubleblind})
 --- no history-rewriting, no risk of a leak.
