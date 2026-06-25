@@ -99,9 +99,9 @@ pointing \emph{at} them, but a name computed \emph{from} them, that you can reco
 Identification, though, is not location, and the \textsc{swhid} keeps the two cleanly apart. When
 you do want to point a reader into the archive --- to say not merely \emph{which} code but
 \emph{where it came from, and in what context} --- you add qualifiers: \texttt{origin} (the URL the
-code was harvested from), \texttt{visit}, \texttt{anchor}, \texttt{path}, and \texttt{lines}. The
-core name still identifies; the qualifiers merely locate. Appendix~\ref{app:swhid-syntax} gives the
-full grammar.
+code was harvested from), \texttt{visit} (which archived crawl), \texttt{anchor} (the node the
+\texttt{path} is rooted at), \texttt{path}, and \texttt{lines}. The core name still identifies; the
+qualifiers merely locate. Appendix~\ref{app:swhid-syntax} gives the full grammar.
 
 A fully qualified \textsc{swhid} is precise but long --- it can run to several lines, and dropped
 raw into a sentence it overflows the page. The remedy is the oldest trick in hypertext: show the
