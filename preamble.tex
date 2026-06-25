@@ -51,6 +51,16 @@
 % SWHID display helper (small monospace, allows breaks).
 \newcommand{\swhid}[1]{\texttt{\small #1}}
 
+% Readable-core, full-qualified-link: show a short/core SWHID as the visible text,
+% but carry the full qualified SWHID --- resolver prefix and all --- in the hyperlink.
+% Usage: \swhref{visible (core) swhid}{full qualified swhid, without the resolver prefix}
+\newcommand{\swhresolver}{https://archive.softwareheritage.org/}
+\newcommand{\swhref}[2]{\href{\swhresolver#2}{\swhid{#1}}}
+
+% Diagrams.
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,shapes.geometric,fit,backgrounds,calc}
+
 % Self-archival stamp (see the Colophon and the Makefile `swhid` target).
 % A document cannot contain its own SWHID; `make swhid` injects it, at build
 % time, into a throwaway swhid.tex consumed only by the stamped (non-committed)

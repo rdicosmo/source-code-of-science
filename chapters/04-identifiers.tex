@@ -103,6 +103,19 @@ code was harvested from), \texttt{visit}, \texttt{anchor}, \texttt{path}, and \t
 core name still identifies; the qualifiers merely locate. Appendix~\ref{app:swhid-syntax} gives the
 full grammar.
 
+A fully qualified \textsc{swhid} is precise but long --- it can run to several lines, and dropped
+raw into a sentence it overflows the page. The remedy is the oldest trick in hypertext: show the
+reader the short, readable \emph{core} identifier, and carry the full qualified one --- resolver
+prefix and all --- inside the \emph{link}. Hover, and the browser reveals the full target; click,
+and the archive opens the exact lines. You keep readability in the narrative and full functionality
+on the click. So this very sentence can name the core mapping routine of the Parmap library by a
+core \textsc{swhid} you can actually read,
+\swhref{swh:1:cnt:43a6b232768017b03da934ba22d9cc3f2726a6c5}{swh:1:cnt:43a6b232768017b03da934ba22d9cc3f2726a6c5;origin=https://github.com/rdicosmo/parmap;anchor=swh:1:rel:373e2604d96de4ab1d505190b654c5c4045db773;path=/src/parmap.ml;lines=192-228},
+while the link behind it carries the full qualified identifier and opens lines 192--228 of
+\texttt{src/parmap.ml} in the archive. In \LaTeX{} this is one \texttt{\textbackslash href} macro;
+Chapter~\ref{ch:ardc} shows how \texttt{biblatex-software} does the same automatically in a
+bibliography, through a single configuration switch.
+
 None of this is a private convention. The \textsc{swhid} is an international standard, ISO/IEC
 18670:2025, recognised by SPDX, registered with IANA as the \texttt{swh:} URI scheme, and recorded
 as Wikidata property P6138~\autocite{isoiec18670}. And it is not theoretical for this very note: as
@@ -123,6 +136,15 @@ the other tools.}
 \end{enumerate}
 You can confirm the round trip in one step with \texttt{swhid verify file.c swh:1:cnt:\textellipsis}:
 it exits cleanly only when the bytes still match the name.
+\end{handson}
+
+\begin{handson}[Hands-on: a readable link]
+Reference a routine you care about so the prose stays short but the link stays complete: put the
+full qualified \textsc{swhid} (the \texttt{https://archive.softwareheritage.org/} resolver prefix
+followed by \texttt{swh:1:cnt:\textellipsis;origin=\textellipsis;path=\textellipsis;lines=\textellipsis})
+in the \emph{target} of a \texttt{\textbackslash href}, and show only the core \textsc{swhid} as the
+visible text. Click it: the archive should open exactly the lines you meant. You now have readable
+prose and a working permalink in the same breath.
 \end{handson}
 
 We now have what the rest of this note needs: a name we can trust, that identifies code exactly,

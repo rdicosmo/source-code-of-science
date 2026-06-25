@@ -1,0 +1,24 @@
+% Standalone render of biblatex-software output, used as figures in Ch.5.
+% Built twice (full + short SWHID) via -usepretex; see the Makefile snippet in README.
+%   latexmk -xelatex -usepretex='\def\SHORTSWHID{false}' -jobname=samplebib-full  samplebib.tex
+%   latexmk -xelatex -usepretex='\def\SHORTSWHID{true}'  -jobname=samplebib-short samplebib.tex
+% then: pdfcrop --margins 2 samplebib-full.pdf  samplebib-full-crop.pdf
+%       pdfcrop --margins 2 samplebib-short.pdf samplebib-short-crop.pdf
+\providecommand{\SHORTSWHID}{false}
+\documentclass{article}
+\usepackage{fontspec}
+\setmainfont{TeX Gyre Pagella}
+\setmonofont{Latin Modern Mono}[Scale=0.9]
+\usepackage[paperwidth=16cm,paperheight=40cm,margin=5mm]{geometry}
+\usepackage{csquotes}
+\usepackage[backend=biber,style=numeric,sorting=none,datamodel=software]{biblatex}
+\usepackage{software-biblatex}
+\ExecuteBibliographyOptions{halid=true,swhid=true,swlabels=true,vcs=true,license=true,
+                            shortswhid=\SHORTSWHID}
+\addbibresource{../../references.bib}
+\nocite{parmap-1.1.1,simplemapper}
+\pagestyle{empty}
+\begin{document}
+\small
+\printbibliography[title={}]
+\end{document}

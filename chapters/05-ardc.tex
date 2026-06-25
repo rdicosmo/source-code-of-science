@@ -80,10 +80,11 @@ more specific. Match the identifier to the claim~\autocite{cise-2020-doi}:
         or the origin).
   \item[a release] ``2D Voronoi diagrams were introduced in CGAL 3.1.0'' --- name the release
         (\texttt{rel}).
-  \item[an exact state] ``this result was produced using commit 0064fbd\ldots'' --- name the
+  \item[an exact state] ``this result was produced using the exact commit behind it'' --- name the
         revision (\texttt{rev}).
-  \item[a code fragment] ``the core algorithm is in lines 101--143 of \texttt{parmap.ml} in commit
-        0064fbd\ldots'' --- name the content, with \texttt{path} and \texttt{lines}.
+  \item[a code fragment] ``the core routine \texttt{simplemapper} sits at lines 192--228 of
+        \texttt{src/parmap.ml} in release 1.1.1'' --- name the content, with its \texttt{path} and
+        \texttt{lines}.
 \end{description}
 
 For a paper you will usually want a \emph{qualified} \textsc{swhid}: the core name that identifies,
@@ -91,6 +92,23 @@ plus the \texttt{origin}, \texttt{visit}, and \texttt{anchor} qualifiers that le
 straight to it in the archive and see where it came from. And when no precise version is known ---
 when you simply want to point at ``the project, as the archive saw it'' --- an origin-qualified
 \textsc{swhid} serves as a Wayback-machine-style pointer into the crawl history.
+
+Here is the last rung made concrete --- the \texttt{simplemapper} routine of the Parmap library,
+named to the exact line:
+
+\begin{quote}\footnotesize
+\begin{verbatim}
+let simplemapper init finalize ncores' compute opid al collect =
+  flush_all ();
+  let ln = Array.length al in
+  set_ncores (min ln (max 1 ncores'));
+  ...                                  (* src/parmap.ml, lines 192-228 *)
+\end{verbatim}
+\vspace{-3pt}\noindent named by
+\swhref{swh:1:cnt:43a6b232768017b03da934ba22d9cc3f2726a6c5}{swh:1:cnt:43a6b232768017b03da934ba22d9cc3f2726a6c5;origin=https://github.com/rdicosmo/parmap;anchor=swh:1:rel:373e2604d96de4ab1d505190b654c5c4045db773;path=/src/parmap.ml;lines=192-228}
+--- the visible text is the short core identifier; the link behind it carries the full qualified
+\textsc{swhid} and opens exactly these lines in the archive.
+\end{quote}
 
 \begin{handson}[Hands-on: reference code in a paper]
 Take a result of your own that rests on code, and build its reference with the Rust reference tool
@@ -159,17 +177,39 @@ identifier~\autocite{2020GtCitation}. The \texttt{biblatex-software} style fixes
 that~\autocite{DiCosmoSEN2020}. It adds four entry types --- \texttt{@software} for a project,
 \texttt{@softwareversion} for a release, \texttt{@softwaremodule} for a component, and
 \texttt{@codefragment} for a precise span of code --- chained with \texttt{crossref} so shared
-metadata is written once, and, decisively, it carries a \texttt{swhid=} field. The package is on
-CTAN and in TeX\,Live, and has shipped in the ACM \texttt{acmart} class since 2022, so the
-\textsc{swhid} renders natively in an ACM paper (Figure~\ref{fig:biblatex-swh}).
+metadata is written once and, above all, it carries a \texttt{swhid=} field. A few lines of
+\textsc{Bib}\TeX{} suffice:
+
+\begin{quote}\footnotesize
+\begin{verbatim}
+@softwareversion{parmap-1.1.1, crossref={parmap}, version={1.1.1},
+  swhid={swh:1:rel:373e2604d96de4ab1d505190b654c5c4045db773;
+         origin=https://github.com/rdicosmo/parmap}}
+
+@codefragment{simplemapper, crossref={parmap-1.1.1},
+  subtitle={Core mapping routine},
+  swhid={swh:1:cnt:43a6b232768017b03da934ba22d9cc3f2726a6c5;
+         origin=https://github.com/rdicosmo/parmap;
+         path=/src/parmap.ml;lines=192-228}}
+\end{verbatim}
+\end{quote}
+
+\noindent The package is on CTAN and in TeX\,Live, and has shipped in the ACM \texttt{acmart} class
+since 2022, so the \textsc{swhid} renders natively in an ACM paper. It also solves, for the
+bibliography, the very readability problem of Chapter~\ref{ch:identifiers}: a single configuration
+switch, \texttt{shortswhid}, chooses whether the \emph{full} qualified \textsc{swhid} is printed or
+only the short \emph{core} one --- and in both cases the complete identifier stays live in the
+hyperlink (Figure~\ref{fig:biblatex-swh}).
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=.9\linewidth]{figures/BibLaTeX-swh.png}
-  \caption[Software in a bibliography, done right]{A software bibliography typeset with
-  \texttt{biblatex-software}: each entry carries its version, licence, repository, and ---
-  decisively --- a \textsc{swhid}, so the citation still resolves to the exact code long after the
-  project's URL has rotted.}
+  \fbox{\includegraphics[width=.93\linewidth]{figures/samplebib/samplebib-full-crop.pdf}}\\[5pt]
+  \fbox{\includegraphics[width=.93\linewidth]{figures/samplebib/samplebib-short-crop.pdf}}
+  \caption[A software bibliography typeset by biblatex-software]{The same two entries typeset by
+  \texttt{biblatex-software} with \texttt{shortswhid=false} (top) and \texttt{shortswhid=true}
+  (bottom). The top prints the \emph{full} qualified \textsc{swhid} (\texttt{;origin=\ldots;visit=\ldots;path=\ldots}); the
+  bottom prints only the readable \emph{core}, while the complete identifier remains live in the
+  link. Each entry also shows its \texttt{[SW]} kind, version, licence, and repository.}
   \label{fig:biblatex-swh}
 \end{figure}
 
@@ -191,6 +231,9 @@ gone.}
         and compare how each renders.
   \item Drop the entries into an \texttt{acmart} article and confirm the \textsc{swhid} renders in
         the ACM template.
+  \item Flip the option both ways --- \texttt{\textbackslash ExecuteBibliographyOptions\{shortswhid=true\}}
+        vs \texttt{false} --- and rebuild: watch the printed identifier shrink to its core while the
+        link stays whole (Figure~\ref{fig:biblatex-swh}).
 \end{enumerate}
 \end{handson}
 
