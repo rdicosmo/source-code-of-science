@@ -1,22 +1,94 @@
 \chapter{Adoption, policy and outlook}
 \label{ch:outlook}
 
-Where the practice stands today, the policy that backs it, and the wider mission it serves.
+We have built the argument and shown the practice. It remains to look outward: to see that this is
+already happening, that policy now stands behind it, and that the same infrastructure serves a
+mission far larger than open science. And then to ask what you can do, starting --- one last time
+--- with your next paper.
 
-\takeaway{Open science is one payoff of software preservation; resilience and transparency
-are others.}
+\takeaway{Open science is one payoff of software preservation; resilience, transparency, and
+sovereignty are others.}
 
-\section{Adoption indicators}
-% TODO draft from: swh-adoption-academic.org::#adoption,#news. HAL, IPOL, eLife, swMATH, Episciences.
+\section{It is already happening}
 
-\section{The policy landscape}
-% TODO draft from: policyactions.org::#unesco2021,#eoscsirs2020,#PNSO2-official,
-% #collegelogiciel,#roadmap2022,#pariscall2019.
+None of this is hypothetical. Journals and platforms across disciplines have wired Software Heritage
+into how they work: the HAL national repository offers a curated software-deposit workflow; IPOL
+publishes image-processing papers with runnable code and a SWHID; \emph{eLife} archives the code
+behind every article automatically; \emph{swMATH} references mathematical software in the archive;
+and Episciences journals such as JTCAM ask authors to cite their software with
+\texttt{biblatex-software}, which itself has shipped in the ACM article class since
+2022~\autocite{SwhCACM2018}. Papers now routinely carry not one identifier but many: a single recent
+study pinpoints its code with thirty \textsc{swhid}s~\autocite{spinellis2026hotspots}.
+
+And the stakes are real, not niche. When the French ministry surveyed its research-software
+producers, the picture that emerged was of long-lived, widely-used, high-impact work: half of the
+software reported was more than nine years old, a third had over a hundred users, and nearly
+two-thirds had impact beyond academia --- overwhelmingly released as free and open
+source.\footnote{French Ministry of Higher Education and Research, research-software survey, 2023.}
+This is not a fringe of scientific practice; it is a load-bearing part of it, and it has been going
+uncared-for.
+
+\section{The policy that backs it}
+
+The direction of travel, at every level, is now unambiguous. The \textbf{UNESCO Recommendation on
+Open Science} (2021) calls for source code to be released openly, and for open-science
+infrastructures to be \enquote{organized and financed upon an essentially not-for-profit and
+long-term vision}~\autocite{UNESCO2021OpenScience}. The European \textbf{EOSC SIRS report} (2020) is
+more specific still: \emph{archive in Software Heritage, use the SWHID}, and treat open source as the
+default for research software, with deviations to be justified~\autocite{SIRSReport2020}. The
+\textbf{Paris Call on Software Source Code} (2019) had already urged the world to \enquote{recognise
+software source code as a fundamental enabler in all aspects of human endeavour} and to build shared
+infrastructures to preserve it~\autocite{ParisCall2019}. And at the national level the message is the
+same: France's second \textbf{National Plan for Open Science} names Software Heritage and the
+\textsc{swhid} explicitly, the country's research-infrastructure roadmap now lists the archive, and a
+standing College for research software carries the agenda forward~\autocite{PNSO2_2021,osec_2022}.
+Strip away the acronyms and a single instruction remains: archive in Software Heritage, and identify
+with a \textsc{swhid}.
+
+\takeaway{The policy is unambiguous: archive in Software Heritage, identify with a \textsc{swhid}.}
 
 \section{The wider mission: resilience, sovereignty, transparent AI}
-% TODO draft from GARR-2026 (talks-private/2026-05-19-Garr/): Guix fallback to SWH,
-% CodeCommons / AI transparency, software supply chain (CRA, SBOM). Refs: SWHecosystems2023,
-% dicosmo_tpdl_2022.
+
+Open science is only one of the things this archive makes possible, and stepping back reveals why it
+matters beyond the library. The same uniform record of the world's source code is the foundation for
+several urgent agendas at once. It underpins \emph{software supply-chain traceability}: an
+intrinsic identifier is exactly what an SBOM needs, and what regulators reaching for the EU Cyber
+Resilience Act will require~\autocite{EU_CRA_2024,barais2025swhidcyber}. It underpins
+\emph{transparent AI}: the very large code corpora that train today's models --- The Stack, on which
+StarCoder is built --- are drawn from Software Heritage, and provenance for that data is becoming a
+legal as well as an ethical demand~\autocite{StarCoder2_2024}. And it underpins \emph{resilience}:
+because the archive holds the code with its history, a build system can fall back to it when the
+upstream platform fails. Guix has done exactly this since 2019 --- when a package vanishes from its
+registry, the build continues from Software Heritage~\autocite{dicosmo_tpdl_2022,SWHecosystems2023}.
+The point is not academic. If GitHub or PyPI disappeared tomorrow, much of the digital world would
+not merely slow down --- it would stop.
+
+This reframes the whole enterprise. The goal is not to \emph{own} the infrastructure but to ensure
+that nothing essential can vanish --- a shared, open, non-rival archive that benefits all while
+leaving each free to build on it: digital sovereignty understood not as autarky but as
+\emph{resilience}. As the argument goes: sovereignty is not about owning everything; it is about
+ensuring that nothing essential can disappear. Or, more sharply still: true digital sovereignty is
+not control --- it is resilience.
 
 \section{Call to action}
-% TODO: researchers, reviewers, institutions.
+
+Which brings us, finally, back to you. The tools are built, the policy is written, the adoption is
+under way; the one thing still missing is the habit. So make it, at three scales.
+
+\emph{As a researcher:} archive the code behind your next result in Software Heritage, reference it
+with a \textsc{swhid} at the granularity your claim needs, describe it, and cite it. That is the
+whole of \textsc{ardc}, and you can do it this week.
+
+\emph{As a reviewer, an editor, or a member of an artifact-evaluation committee:} ask authors for
+archival proof --- a \textsc{swhid} --- rather than a fragile URL. It is one small habit, but applied
+every time, it changes the norms of a whole community.
+
+\emph{As an institution or a funder:} write Software Heritage into your open-science policy, become a
+member or run a mirror, and --- not least --- count high-quality software contributions in the
+careers of the people who make them.
+
+Software source code is a precious, unique form of knowledge, and for too long we have treated it as
+an afterthought. We no longer have to. The argument is settled and the machinery is ready; what is
+needed now is simply that we use it. Record your code, share it, and value it --- and, as we have
+said from the first page because it remains the truest place to begin, start with your next
+paper~\autocite{NatureSD2026}.
