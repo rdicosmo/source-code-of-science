@@ -161,9 +161,20 @@ licence} in plain words --- ten minutes today, and the single highest-value thin
 project grows, add a \texttt{codemeta.json}: a rich, machine-readable description --- authors,
 dependencies, funding, archival identifiers --- in a schema.org-based vocabulary that forges and
 Software Heritage can read to generate citations automatically. Do not write it by hand; use the
-CodeMeta Generator.\footnote{\url{https://codemeta.github.io/codemeta-generator/}} From the
-CodeMeta file you can in turn generate a \texttt{CITATION.cff}, the lightweight format that makes
-GitHub show a ``Cite this repository'' button~\autocite{druskat2021cff}.
+CodeMeta generator (Figure~\ref{fig:codemeta}).\footnote{\url{https://codemeta.github.io/codemeta-generator/};
+the CodeMeta vocabulary and crosswalk: \url{https://codemeta.github.io/}.} From the CodeMeta file
+you can in turn generate a \texttt{CITATION.cff}, the lightweight format that makes GitHub show a
+``Cite this repository'' button~\autocite{druskat2021cff}.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=.96\linewidth]{figures/CodeMetaGeneratorFull.png}
+  \caption[The CodeMeta generator]{The CodeMeta generator: a browser form that writes a
+  \texttt{codemeta.json} for you, from fields for the software itself, its discoverability and
+  citation, its development tools, its run-time environment, and its authors --- no hand-editing of
+  JSON-LD.}
+  \label{fig:codemeta}
+\end{figure}
 
 And do not forget the licence --- the most consequential one-line file in your repository. By the
 Berne Convention, code is copyrighted the moment it is written, and the default is \emph{all rights
@@ -191,6 +202,23 @@ means depositing in HAL, which is wired directly into Software Heritage
   is archived in Software Heritage --- the two linked by the code's \textsc{swhid}.}
   \label{fig:hal-swh}
 \end{figure}
+
+Once your software is in HAL it becomes \emph{queryable} as a first-class output. A single call to
+the HAL API lists every piece of software an entity --- a lab, or a person --- has produced over a
+span of years; for all software produced under Inria between 2020 and 2024:
+\begin{quote}\footnotesize
+\begin{verbatim}
+https://api.archives-ouvertes.fr/search/?q=*&wt=json
+   &fq=docType_s:SOFTWARE&fq=collCode_s:INRIA
+   &fq=producedDateY_i:[2020 TO 2024]
+\end{verbatim}
+\end{quote}
+returns well over a hundred records, each with its \textsc{swhid}. Narrow to a single author ---
+\texttt{authIdHal\_s:roberto-di-cosmo} --- and you get that researcher's archived software (here the
+Parmap and OcamlP3l libraries, each carrying the \textsc{swhid} of its source). The HALtools
+front-end turns the same query into a ready-made HTML list for a CV or a lab
+page.\footnote{HAL API: \url{https://api.archives-ouvertes.fr/}; HALtools:
+\url{https://haltools.archives-ouvertes.fr/}.}
 
 \begin{handson}[Hands-on: describe, and watch the citation appear]
 Create a \texttt{codemeta.json} with the CodeMeta Generator, commit it, and re-archive the

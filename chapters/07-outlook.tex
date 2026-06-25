@@ -16,10 +16,13 @@ into how they work: the HAL national repository offers a curated software-deposi
 publishes image-processing papers with runnable code and a SWHID; \emph{eLife} archives the code
 behind every article automatically; \emph{swMATH} references mathematical software in the archive;
 and Episciences journals such as JTCAM ask authors to cite their software with
-\texttt{biblatex-software}, which itself has shipped in the ACM article class since
-2022~\autocite{SwhCACM2018}. Papers now routinely carry not one identifier but many, pinpointing
-their code passages with qualified \textsc{swhid}s throughout the
-text~\autocite{spinellis2026hotspots}.
+\texttt{biblatex-software} (itself shipped in the ACM article class since
+2022)~\autocite{SwhCACM2018}. The connections keep multiplying: Episciences now links each published
+article to its code through a \textsc{swhid}~\autocite{episciences2025swh}; \emph{Zenodo} forwards
+its software deposits to the archive (Chapter~\ref{ch:ardc}); and code-publishing venues such as
+Dagstuhl's \emph{DROPS} interconnect the same way.\footnote{\url{https://drops.dagstuhl.de/}.} Papers
+themselves now carry not one identifier but many, pinpointing their code passages with qualified
+\textsc{swhid}s throughout the text~\autocite{spinellis2026hotspots}.
 
 And the stakes are real, not niche. When the French ministry surveyed its research-software
 producers, the picture that emerged was of long-lived, widely-used, high-impact work: half of the
@@ -45,6 +48,29 @@ same: France's second \textbf{National Plan for Open Science} names Software Her
 standing College for research software carries the agenda forward~\autocite{PNSO2_2021,osec_2022}.
 Strip away the acronyms and a single instruction remains: archive in Software Heritage, and identify
 with a \textsc{swhid}.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[height=5.3cm]{figures/EOSC-SIRS-report.png}\hspace{7mm}
+  \includegraphics[height=5.3cm]{figures/PNSO2-en-cover.png}
+  \caption[Policy documents]{Two of the documents that now point research software at Software
+  Heritage: the EOSC \emph{Scholarly Infrastructures for Research Software} report (left,
+  2020)~\autocite{SIRSReport2020} and France's second National Plan for Open Science (right,
+  2021--2024)~\autocite{PNSO2_2021}.}
+  \label{fig:policy}
+\end{figure}
+
+Funders have followed. France's national research agency, the ANR, asks in its own funding
+guidelines that project software be released under a libre licence and its source archived in
+Software Heritage, with the grant referenced (Figure~\ref{fig:anr}).
+
+\begin{figure}[htbp]
+  \centering
+  \fbox{\includegraphics[width=.96\linewidth]{figures/anr-recommendations.png}}
+  \caption[ANR funding guideline]{From the ANR's funding guidelines: project source code is to be
+  stored in Software Heritage under a free licence, with the ANR grant referenced.}
+  \label{fig:anr}
+\end{figure}
 
 \takeaway{The policy is unambiguous: archive in Software Heritage, identify with a \textsc{swhid}.}
 
