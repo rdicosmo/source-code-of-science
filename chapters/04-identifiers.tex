@@ -153,6 +153,15 @@ as Wikidata property P6138~\autocite{isoiec18670}. And it is not theoretical for
 the Colophon explains, this document is named and verified by its own \textsc{swhid} --- which is
 also exactly why it cannot contain that identifier inside itself.
 
+\begin{callout}{Getting a SWHID: three ways, no Rust required}
+\small You do \emph{not} need a particular toolchain to obtain or check a \textsc{swhid}; pick the
+one that fits your setup. \textbf{(1) Zero install:} the archive's red \emph{Permalinks} tab and the
+\emph{updateswh} browser extension hand you a ready-made qualified \textsc{swhid} from any browser.
+\textbf{(2) Python:} \texttt{pip install 'swh.model[cli]'} gives the \texttt{swh identify} command.
+\textbf{(3) The Rust reference tool}, used in the labs below, is the fast, standalone option:
+\texttt{cargo install swhid}. Appendix~\ref{app:swhid-tools} compares all three.
+\end{callout}
+
 \begin{handson}[Hands-on: watch the name follow the bytes]
 Install the Rust reference implementation of the \textsc{swhid} standard --- \texttt{swhid-rs},
 released under the MIT licence --- with \texttt{cargo install swhid}.\footnote{\url{https://github.com/swhid/swhid-rs}.

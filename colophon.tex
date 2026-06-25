@@ -17,8 +17,9 @@ Software Heritage, and the intrinsic identifier of the archived source directory
 \paragraph{Why this identifier is not written into the source.}
 A \textsc{swhid} is a cryptographic hash of the content it names. Writing a document's own
 \textsc{swhid} \emph{into} that document would change the document's bytes, and therefore
-change its hash --- a self-reference no hash function can satisfy (a fixed point it does not
-have). This is not a limitation of Software Heritage; it is what makes the identifier
+change its hash --- and you cannot, in any case, embed a digest you have not computed yet, and
+cannot compute until the bytes are fixed. This is not a limitation of Software Heritage; it is what
+makes the identifier
 trustworthy: the name is forced to follow the bytes, so it cannot be faked. The source is
 therefore archived first, and the resulting identifier is stamped only into \emph{this
 rendered PDF}, which is not part of the hashed source tree.

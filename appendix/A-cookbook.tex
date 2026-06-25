@@ -35,3 +35,11 @@ swh scanner scan ./repo                    # what is already archived?
 # Archive a public repo:  https://save.softwareheritage.org
 # Resolve any SWHID:      https://archive.softwareheritage.org/<swhid>
 \end{verbatim}
+
+\noindent\textbf{One caveat for \texttt{dir} hashes.} A directory \textsc{swhid} depends on file
+\emph{permissions} as well as content, so a tree's hash can differ between a fresh filesystem
+checkout and the git index. \texttt{swhid dir}/\texttt{verify} expose
+\texttt{-{}-permissions-source} (\texttt{auto}, \texttt{fs}, \texttt{git-index}, \texttt{git-tree},
+\dots); to match what the archive stored from a git repository, compute from the git tree (e.g.\
+over a clean \texttt{git archive} export, as the Colophon capstone does). If a directory check
+mismatches where a content check would pass, suspect permission bits, not the bytes.

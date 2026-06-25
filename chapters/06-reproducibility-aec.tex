@@ -26,10 +26,12 @@ the code could not be obtained, or could not be built~\autocite{Collberg2016}. N
 simply \emph{unavailable}, or unbuildable, and so impossible to check at all. You cannot reproduce
 what you cannot run; and, as the free-software tradition has always insisted, you cannot truly
 inspect what you cannot read. A result resting on code is only as solid as our ability to get
-\emph{that} code, at \emph{that} version, and run it again --- the gold standard being a
-\emph{reproducible build} that yields, bit for bit, the same artifact from the same
-source.\footnote{\url{https://reproducible-builds.org/}} The whole apparatus of artifact evaluation
-exists to push back against this state of affairs.
+\emph{that} code, at \emph{that} version, and run it again. A \textsc{swhid} secures the first half
+of that sentence --- the \emph{identity} of the source, exactly; getting the \emph{same build} out
+of it, bit for bit, is a separate (and harder) problem, the province of reproducible-build systems
+such as Guix and Nix.\footnote{\url{https://reproducible-builds.org/}.} The two are complementary:
+an intrinsic identifier pins what you built from, a reproducible build pins what you get. The whole
+apparatus of artifact evaluation exists to push back on both fronts.
 
 \section{Artifact evaluation and badging}
 
