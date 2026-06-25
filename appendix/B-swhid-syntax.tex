@@ -1,18 +1,75 @@
 \chapter{SWHID syntax cheat-sheet}
 \label{app:swhid-syntax}
 
-% TODO draft from: swh-id-syntax.org::#swh-id-syntax; spec v1.2 / ISO 18670.
+This appendix summarises the \textsc{swhid} grammar. It is \emph{not} normative: the authority is
+the \emph{SWHID Specification, version 1.2}~\autocite{swhidspec}, published openly on
+swhid.org and standardised, word for word, as ISO/IEC~18670:2025~\autocite{isoiec18670}. The
+section pointers below refer to that specification.
 
-A core \textsc{swhid} is \swhid{swh:1:<type>:<40-hex>} where \texttt{<type>} is one of
-\texttt{cnt} (file), \texttt{dir} (directory), \texttt{rev} (commit), \texttt{rel}
-(release), \texttt{snp} (snapshot).
+\section{Core identifiers (spec \S5)}
 
-A qualified \textsc{swhid} appends context and fragment qualifiers:
+A \emph{core} \textsc{swhid} is four colon-separated fields,
+\swhid{swh:1:\textit{type}:\textit{hash}}\,:\footnote{\url{https://www.swhid.org/specification/v1.2/5.Core_identifiers/}}
+the scheme \texttt{swh}; the schema version (\texttt{1}); a three-letter object \emph{type}; and a
+40-digit, lowercase-hex object \emph{identifier}. That identifier is a \textsc{sha}-1 computed over a
+git-style serialisation of the object --- so a revision \textsc{swhid} is exactly the Git commit
+hash with \texttt{swh:1:rev:} prepended. The five types are:
+
+\begin{table}[htbp]
+  \centering\small
+  \begin{tabularx}{\linewidth}{@{}llX@{}}
+    \toprule
+    \textbf{Code} & \textbf{Object} & \textbf{Identifies} \\
+    \midrule
+    \texttt{cnt} & content   & the bytes of a single file \\
+    \texttt{dir} & directory & a directory tree (names, permissions, and child hashes) \\
+    \texttt{rev} & revision  & a commit, with its parents, author, and date \\
+    \texttt{rel} & release   & a named release (annotated tag) \\
+    \texttt{snp} & snapshot  & a repository's full state at one visit (all branches and tags) \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\section{Qualified identifiers (spec \S6)}
+
+A \emph{qualified} \textsc{swhid} appends a sequence of qualifiers to a core identifier, each
+introduced by \texttt{;} and written \texttt{name=value}.\footnote{\url{https://www.swhid.org/specification/v1.2/6.Qualified_identifiers/}}
+The core \emph{identifies}; the qualifiers \emph{locate} and \emph{contextualise}.
+
+\begin{table}[htbp]
+  \centering\small
+  \begin{tabularx}{\linewidth}{@{}llX@{}}
+    \toprule
+    \textbf{Qualifier} & \textbf{Kind} & \textbf{Meaning} \\
+    \midrule
+    \texttt{origin} & context  & the URI the code was harvested from \\
+    \texttt{visit}  & context  & the snapshot \textsc{swhid} of the visit \\
+    \texttt{anchor} & context  & a node (\texttt{dir}/\texttt{rev}/\texttt{rel}/\texttt{snp}) the \texttt{path} is rooted at \\
+    \texttt{path}   & context  & an absolute path from the anchor's root directory \\
+    \texttt{lines}  & fragment & a line range within a \texttt{cnt} (1-based, inclusive; \texttt{A} or \texttt{A-B}) \\
+    \texttt{bytes}  & fragment & a byte range within a \texttt{cnt} (0-based, inclusive) \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+The rules (spec \S6): each qualifier appears at most once; \texttt{visit} requires \texttt{origin};
+\texttt{anchor} requires \texttt{path}; and the fragment qualifiers \texttt{lines}/\texttt{bytes}
+apply only to a \texttt{cnt}. The recommended order is \texttt{origin}, \texttt{visit},
+\texttt{anchor}, \texttt{path}, then \texttt{lines} or \texttt{bytes}.
+
+\section{A worked example}
+
+The specification's own example pins lines 9--15 of one file, in one revision, of one archived
+repository:
 
 \begin{verbatim}
-swh:1:cnt:<hex>;origin=<url>;visit=swh:1:snp:<hex>;
-            anchor=swh:1:rev:<hex>;path=/src/file.ml;lines=192-228
+swh:1:cnt:4d99d2d18326621ccdd70f5ea66c2e2ac236ad8b;
+  origin=https://gitorious.org/ocamlp3l/ocamlp3l_cvs.git;
+  visit=swh:1:snp:d7f1b9eb7ccb596c2622c4780febaa02549830f9;
+  anchor=swh:1:rev:2db189928c94d62a3b4757b3eec68f0a4d4113f0;
+  path=/Examples/SimpleFarm/simplefarm.ml;
+  lines=9-15
 \end{verbatim}
 
-% TODO: qualifier rules (visit requires origin; anchor+path; lines only on cnt);
-% worked examples (Apollo 11, Quake III).
+\noindent(written on a single line in practice). To compute or verify a \textsc{swhid}, see
+Appendix~\ref{app:swhid-tools}.

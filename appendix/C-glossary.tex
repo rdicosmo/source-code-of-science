@@ -1,18 +1,60 @@
 \chapter{Glossary}
 \label{app:glossary}
 
-% TODO: flesh out definitions.
-\begin{description}[leftmargin=!,labelwidth=2.6cm,font=\bfseries]
-  \item[ARDC] Archive, Reference, Describe, Cite \& credit --- the four needs for research
-        software.
-  \item[SWHID] \emph{Software Hash Identifier} --- an intrinsic identifier (ISO/IEC~18670:2025).
-        The acronym was originally read \enquote{Software Heritage Identifier}; since the
-        specification and the ISO standard it is \enquote{Software \emph{Hash} Identifier}.
-  \item[Core SWHID] \swhid{swh:1:<type>:<hash>}; the content fingerprint.
-  \item[Qualified SWHID] a core \textsc{swhid} plus \texttt{origin}/\texttt{visit}/%
-        \texttt{anchor}/\texttt{path}/\texttt{lines} qualifiers.
-  \item[Origin] the URL where the code was found (a \texttt{visit} target).
-  \item[Snapshot] the full state of a repository at one visit (\texttt{snp}).
-  \item[Forge] a development platform (GitHub, GitLab, \dots) --- \emph{not} an archive.
-  \item[Intrinsic identifier] computed from the content; verifiable offline, no registry.
+\begin{description}[leftmargin=!,labelwidth=3.1cm,font=\bfseries,style=nextline]
+  \item[Anchor] a context qualifier of a \textsc{swhid}: the node (\texttt{dir}/\texttt{rev}/%
+        \texttt{rel}/\texttt{snp}) against which a \texttt{path} is resolved.
+  \item[Archive] a system whose purpose is to \emph{keep} content for the long term --- as opposed
+        to a forge, which is built to \emph{develop} it.
+  \item[ARDC] Archive, Reference, Describe, Cite \& credit --- the four operations that make up the
+        practice at the heart of this note.
+  \item[Artifact evaluation] the process, now standard at computer-science conferences, of checking
+        that the software behind a paper exists, runs, and supports its claims.
+  \item[Badge (ACM)] one of the ACM \emph{Artifact Review and Badging} marks: Artifacts Available;
+        Artifacts Evaluated --- Functional / Reusable; Results Reproduced / Replicated.
+  \item[\texttt{biblatex-software}] the \LaTeX{} bibliography style for citing software, adding four
+        entry types and a \texttt{swhid=} field.
+  \item[CITATION.cff] the Citation File Format, a lightweight YAML file describing how to cite a
+        repository.
+  \item[CODE] the beyond-FAIR roadmap for research software: \textbf{O}pen, \textbf{D}ocument,
+        \textbf{E}xecute, \textbf{C}ollaborate.
+  \item[CodeMeta] a JSON-LD vocabulary for software metadata, written to a \texttt{codemeta.json}.
+  \item[Content (\texttt{cnt})] the bytes of a single file; the leaf of the Merkle DAG.
+  \item[Core SWHID] \swhid{swh:1:\textit{type}:\textit{hash}}; the part that \emph{identifies}, a
+        fingerprint of the content alone.
+  \item[Deposit] the \textsc{sword}-based archival channel, for trusted partners and registered
+        accounts, used to push code that is not in a public forge.
+  \item[Directory (\texttt{dir})] a directory-tree node: names, permissions, and the hashes of its
+        children.
+  \item[DOI] Digital Object Identifier; an \emph{extrinsic} identifier resolved through the Handle
+        System.
+  \item[Extrinsic identifier] a name assigned by a registry; it means nothing without that registry.
+  \item[FAIR] the Findable, Accessible, Interoperable, Reusable principles --- designed for research
+        \emph{data}.
+  \item[FAIR4RS] the effort to adapt the FAIR principles to research software.
+  \item[Forge] a collaborative development platform (GitHub, GitLab, Bitbucket, \dots) --- \emph{not}
+        an archive.
+  \item[Intrinsic identifier] a name computed from the content itself; verifiable offline, with no
+        registry and no middle-man.
+  \item[Lister / loader] the components that, respectively, enumerate the repositories on a hosting
+        platform and ingest each one into the archive.
+  \item[Merkle DAG] the content-addressed directed acyclic graph in which Software Heritage stores
+        all code and history; each node is named by the hash of everything beneath it.
+  \item[Origin] a context qualifier: the URI a piece of code was harvested from.
+  \item[Path] a context qualifier: an absolute path from the anchor's root directory.
+  \item[Qualified SWHID] a core \textsc{swhid} plus context (\texttt{origin}, \texttt{visit},
+        \texttt{anchor}, \texttt{path}) and fragment (\texttt{lines}, \texttt{bytes}) qualifiers.
+  \item[Release (\texttt{rel})] a named release node (an annotated tag).
+  \item[REUSE] a specification for declaring per-file licensing in a machine-readable way.
+  \item[Revision (\texttt{rev})] a commit node --- identical to the underlying Git commit hash.
+  \item[Save Code Now] the web entry point (\url{https://save.softwareheritage.org}) that triggers
+        archival of a public repository.
+  \item[Snapshot (\texttt{snp})] the full state of a repository at one visit --- all of its branches
+        and tags.
+  \item[SPDX] the standard catalogue of machine-readable software-licence identifiers.
+  \item[SWHID] \emph{Software Hash Identifier} --- the intrinsic identifier for source code
+        (ISO/IEC~18670:2025). Originally read \enquote{Software Heritage Identifier}; since the
+        specification it is \enquote{Software \emph{Hash} Identifier}.
+  \item[Visit] a crawl of an origin by the archive; also the context qualifier giving that visit's
+        snapshot \textsc{swhid}.
 \end{description}
