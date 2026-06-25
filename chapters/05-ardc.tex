@@ -22,6 +22,12 @@ with a hands-on lab.
 
 \section{Archive}
 
+\begin{callout}{If you only do one thing}
+Go to \url{https://save.softwareheritage.org}, paste your repository's clone URL, and submit. Your
+code, with its history, is now preserved and has a permanent \textsc{swhid}. Everything else in this
+chapter is worthwhile polish on top of that one irreversible win.
+\end{callout}
+
 Recall the one hard requirement from the CODE roadmap: \emph{publish and archive}. Publishing on a
 forge you already do. Archiving means depositing the code, with its history, into Software
 Heritage, and there are four ways in, in rising order of automation~\autocite{SwhCACM2018}.
@@ -106,6 +112,17 @@ rest of this chapter:
         SourceForge) so each new tag is archived without your lifting a finger.
 \end{enumerate}
 \end{handson}
+
+\begin{callout}{Over time, and when it does not work}
+For a \emph{maintained} project, make archival a habit, not an event: the release webhook above means
+every tagged version is preserved as you go, and keeping \texttt{codemeta.json} and
+\texttt{CITATION.cff} updated alongside each release keeps your citations current. A few common
+snags: a visit that stays \texttt{pending} or \texttt{partial} usually just needs time (large
+histories take a while) --- re-check rather than re-submit; \emph{private} repositories cannot be
+archived until they are public; a \emph{monorepo} is archived whole, and you reference the
+sub-directory with a \texttt{path} qualifier; and a very large artifact is better archived as its
+git repository than as a tarball.
+\end{callout}
 
 \section{Reference}
 
@@ -194,6 +211,23 @@ machine-readably with an \textsc{spdx} identifier, and, if you like, automate th
 the REUSE specification. (Resist the temptation to reach for Creative Commons: it was not designed
 for software.) The community has distilled all of this into the FAIR Software Five
 recommendations.\footnote{\url{https://fair-software.eu/}}
+
+None of this is much work. Declaring a licence is one line at the top of each source file, and a
+citable record is a few lines of \textsc{yaml}:
+\begin{quote}\footnotesize
+\begin{verbatim}
+# SPDX-License-Identifier: MIT      (one line, at the top of each file)
+
+# CITATION.cff
+cff-version: 1.2.0
+title: My Research Tool
+authors:
+  - family-names: Curie
+    given-names: Marie
+version: 1.0.0
+license: MIT
+\end{verbatim}
+\end{quote}
 
 \takeaway{About 90\% of public repositories carry no licence --- so by default nobody may legally
 reuse them. A one-line \textsc{spdx} tag fixes it.}
