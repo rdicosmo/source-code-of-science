@@ -106,6 +106,25 @@ Collaborate}~\autocite{NatureSD2026}.
         community.
 \end{description}
 
+\begin{figure}[htbp]
+  \centering
+  \resizebox{\linewidth}{!}{%
+  \begin{tikzpicture}[font=\sffamily\small,
+    rung/.style={draw=swhdark, rounded corners=1pt, minimum width=4.6cm, minimum height=0.9cm}]
+    \node[rung, fill=swhaccent!85, text=white] (o) {\textbf{Open}\ \ {\footnotesize publish + archive}};
+    \node[rung, fill=swhaccent!45, above right=2mm and 10mm of o] (d) {\textbf{Document}\ \ {\footnotesize docs, examples}};
+    \node[rung, fill=swhaccent!22, above right=2mm and 10mm of d] (e) {\textbf{Execute}\ \ {\footnotesize deps, container, tests}};
+    \node[rung, fill=swhbg, above right=2mm and 10mm of e] (c) {\textbf{Collaborate}\ \ {\footnotesize issues, community}};
+    \node[below=1mm of o, font=\scriptsize\itshape] {mandatory};
+    \node[above=1mm of c, font=\scriptsize\itshape] {optional};
+  \end{tikzpicture}}
+  \caption[The CODE roadmap]{The CODE roadmap as a ladder: only the first rung --- \textbf{Open}
+  (publish the source and archive it in Software Heritage) --- is mandatory; \textbf{Document},
+  \textbf{Execute}, and \textbf{Collaborate} are a progression you climb as far as your project
+  warrants (the fill fades from mandatory to optional).}
+  \label{fig:code}
+\end{figure}
+
 \takeaway{\textbf{CODE} --- Open, Document, Execute, Collaborate --- and only \emph{Open} is
 mandatory.}
 

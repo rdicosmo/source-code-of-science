@@ -27,9 +27,32 @@ concerns together. Pulling them apart is the single most clarifying move in this
         decides which objects deserve metadata, or even a name, at all.
 \end{description}
 
-Only the first is \emph{identification}. The other four are real and important --- but they are
-not the same thing, and most arguments about identifiers turn out to be arguments about one of the
-latter four, wearing identification's clothes. One example makes this unforgettable.
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}[font=\sffamily\small,
+    c/.style={draw=swhdark, rounded corners=2pt, minimum width=2.9cm, minimum height=0.8cm, align=center}]
+    \node[c, fill=swhaccent!85, text=white] (id) {\textbf{Identification}};
+    \node[below=1pt of id, font=\scriptsize\itshape, text width=2.9cm, align=center] {the identifier proper};
+    \node[c, fill=swhbg, right=2cm of id] (loc) {Location};
+    \node[c, fill=swhbg, below=0.3cm of loc] (met) {Metadata};
+    \node[c, fill=swhbg, below=0.3cm of met] (org) {Organization};
+    \node[c, fill=swhbg, below=0.3cm of org] (cur) {Curation};
+    \begin{scope}[on background layer]
+      \node[draw=swhdark!55, dashed, rounded corners, fit=(loc)(met)(org)(cur), inner sep=6pt] (grp) {};
+    \end{scope}
+    \node[below=2pt of grp, font=\scriptsize\itshape, text width=3.6cm, align=center]
+      {what \enquote{a better identifier} usually really means};
+  \end{tikzpicture}
+  \caption[Five concerns behind one word]{The five concerns bundled into \enquote{has a DOI}. Only
+  the first is identification; the other four are where almost every argument about identifiers
+  actually lives.}
+  \label{fig:five-concerns}
+\end{figure}
+
+Only the first is \emph{identification} (Figure~\ref{fig:five-concerns}). The other four are real
+and important --- but they are not the same thing, and most arguments about identifiers turn out to
+be arguments about one of the latter four, wearing identification's clothes. One example makes this
+unforgettable.
 
 \section{``Crossref DOIs are better than DataCite DOIs''}
 

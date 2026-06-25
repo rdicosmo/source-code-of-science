@@ -129,8 +129,28 @@ the qualifiers --- \texttt{origin}, \texttt{visit}, \texttt{anchor} --- while th
 identifier proper, reveals nothing about authorship. So the \emph{only} difference between the double-blind
 submission and the camera-ready version is removing, then restoring, those qualifiers: the core
 hashes are identical, and every pinpoint a reviewer checked during blind review stays valid, to the
-character, in the final paper. One mechanical, fully reversible edit --- no history-rewriting, no
-risk of a leak.
+character, in the final paper. One mechanical, fully reversible edit (Figure~\ref{fig:doubleblind})
+--- no history-rewriting, no risk of a leak.
+
+\begin{figure}[htbp]
+  \centering
+  \resizebox{\linewidth}{!}{%
+  \begin{tikzpicture}[font=\sffamily\footnotesize,
+    core/.style={draw=swhdark, fill=swhaccent!85, text=white, rounded corners=1pt, minimum height=0.75cm, inner xsep=5pt},
+    qual/.style={draw=swhdark!55, fill=swhbg, rounded corners=1pt, minimum height=0.75cm, inner xsep=5pt}]
+    \node[core] (b) {\ttfamily swh:1:cnt:43a6b232\ldots};
+    \node[font=\itshape, above=1.5mm of b] {double-blind: core only};
+    \node[core, right=3.4cm of b] (c) {\ttfamily swh:1:cnt:43a6b232\ldots};
+    \node[qual, right=-0.4pt of c] (q) {\ttfamily ;origin=\ldots;anchor=\ldots};
+    \node[font=\itshape, above=1.5mm of c] {camera-ready: core $+$ qualifiers};
+    \draw[{Stealth[]}-{Stealth[]}, swhdark, thick] (b.east) -- node[above=-1pt, font=\scriptsize] {restore} node[below=-1pt, font=\scriptsize] {strip} (c.west);
+  \end{tikzpicture}}
+  \caption[Double-blind in one reversible edit]{The core hash (red) is identical on both sides and
+  reveals nothing about authorship; only the locating qualifiers are stripped for blind review and
+  restored for the camera-ready version. Every pinpoint a reviewer checks survives the round trip
+  unchanged.}
+  \label{fig:doubleblind}
+\end{figure}
 
 \takeaway{Double-blind vs camera-ready: strip, then restore, the qualifiers --- the content hash
 never changes.}
