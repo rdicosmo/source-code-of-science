@@ -134,6 +134,23 @@ Each badge then maps cleanly onto a SWH-native check:
 \takeaway{A reviewer can verify a \textsc{swhid} offline in a minute --- a DOI offers nothing of the
 kind.}
 
+\begin{callout}{Ready to paste: a call for artifacts}
+\small For an organiser, here is language to drop into a call for artifacts, and a reviewer check:
+\begin{quote}\itshape
+Authors of accepted papers must archive the source code behind their results in Software Heritage
+(\url{https://save.softwareheritage.org}) and include in the paper the \emph{qualified}
+\textsc{swhid} of the precise artifact. A \textsc{doi} (e.g.\ via Zenodo, which forwards to Software
+Heritage) may be supplied additionally for discoverability. For double-blind submission, give a
+\emph{directory} \textsc{swhid}, which reveals no author or origin.
+\end{quote}
+\textbf{Reviewer check (offline, $<$1 min):} resolve the \textsc{swhid} at
+\texttt{archive.softwareheritage.org/<swhid>}; recompute it from the bytes (\texttt{swhid verify});
+confirm it pins the \emph{exact} code the claims rest on. A mismatch is itself a finding. \emph{When
+it doesn't fit:} for artifacts that cannot be public (licensed data, large binaries, special
+hardware), require the public part archived and the rest escrowed --- SWH solves \emph{identity and
+availability}, not buildability, which \emph{Functional}/\emph{Reusable} still test by running.
+\end{callout}
+
 \section{Double-blind review, and dense pinpointing}
 
 Artifact evaluation often happens under \emph{double-blind} review --- where reviewers do not know

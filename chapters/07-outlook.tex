@@ -104,6 +104,26 @@ that nothing essential can vanish --- a shared, open, non-rival archive that ben
 leaving each free to build on it. That is digital sovereignty rightly understood: not autarky, but
 \emph{resilience}.
 
+\section{A fair question: what about Software Heritage itself?}
+
+This note has argued that platforms fail and that we should plan for it --- so it must turn the same
+lens on the archive it recommends. Software Heritage is a non-profit initiative launched in 2016,
+hosted by Inria and run as an international, multi-stakeholder effort under an agreement with UNESCO;
+it is funded by a range of institutional members and sponsors rather than by any single company or
+state, with foundational support from bodies such as the Alfred P.\ Sloan and NLnet foundations. Its
+answer to its own single-point-of-failure risk is a \emph{network of independent mirrors} --- full
+copies of the archive held by partner institutions, so the corpus survives the loss of any one
+operator. It is the same resilience-by-redundancy the archive offers your build chain, turned on
+itself. For an editor or a funder weighing a ten-year commitment, that --- not a metaphor --- is the
+due-diligence answer.
+
+It is equally worth being clear about the \emph{limits}. A \textsc{swhid} secures the \emph{identity}
+and \emph{availability} of source code; it does not make a build deterministic
+(Chapter~\ref{ch:repro}), and it cannot open code that was never public. Adoption, though real and
+growing, is still offered as one option among several at most venues rather than a default. The
+claim of this note is not that the work is finished --- it is that the infrastructure, the standard,
+and the practice are now ready to be made the default.
+
 \section{Call to action}
 
 Which brings us, finally, back to you. The tools are built, the policy is written, the adoption is
@@ -120,6 +140,23 @@ every time, it changes the norms of a whole community.
 \emph{As an institution or a funder:} write Software Heritage into your open-science policy, become a
 member or run a mirror, and --- not least --- count high-quality software contributions in the
 careers of the people who make them.
+
+\begin{callout}{Ready to paste: a grant condition and a policy line}
+\small \textbf{Grant condition} (it costs the grantee nothing --- archival is free):
+\begin{quote}\itshape
+Source code produced with this grant must be released under an open licence and archived in Software
+Heritage, and the resulting \textsc{swhid} reported in the project's outputs. (Further documentation,
+testing, and packaging are encouraged but not required.)
+\end{quote}
+\textbf{Open-science / sovereignty policy line:}
+\begin{quote}\itshape
+We adopt intrinsic, standard identifiers (\textsc{swhid}, ISO/IEC~18670) and a shared, non-profit
+archive (Software Heritage) for research software, ensuring that publicly funded code remains
+verifiable, citable, and recoverable independently of any commercial platform.
+\end{quote}
+A funder can audit compliance across a whole portfolio with one HAL-API call
+(\S\,\ref{ch:ardc}'s \texttt{collCode\_s} query), no per-project chasing required.
+\end{callout}
 
 Software source code is a precious, unique form of knowledge, and for too long we have treated it as
 an afterthought. We no longer have to. The argument is settled and the machinery is ready; what is
