@@ -159,10 +159,13 @@ one that fits your setup. \textbf{(1) Zero install:} the archive's red \emph{Per
 \emph{updateswh} browser extension hand you a ready-made qualified \textsc{swhid} from any browser.
 \textbf{(2) Python:} \texttt{pip install 'swh.model[cli]'} gives the \texttt{swh identify} command.
 \textbf{(3) The Rust reference tool}, used in the labs below, is the fast, standalone option:
-\texttt{cargo install swhid}. Appendix~\ref{app:swhid-tools} compares all three.
+\texttt{cargo install swhid}. Appendix~\ref{app:swhid-tools} compares all three. \emph{Setting one
+up is your Lab~0}; for a class, the zero-install path (1) or a shared container avoids per-machine
+setup.
 \end{callout}
 
 \begin{handson}[Hands-on: watch the name follow the bytes]
+\labmeta{$\sim$10 min \textperiodcentered{} needs any SWHID tool (Appendix~\ref{app:swhid-tools}) \textperiodcentered{} in-class, offline}
 Install the Rust reference implementation of the \textsc{swhid} standard --- \texttt{swhid-rs},
 released under the MIT licence --- with \texttt{cargo install swhid}.\footnote{\url{https://github.com/swhid/swhid-rs}.
 A pre-built binary for your platform is also available from the project's releases page. The
@@ -179,6 +182,7 @@ it exits cleanly only when the bytes still match the name.
 \end{handson}
 
 \begin{handson}[Hands-on: a readable link]
+\labmeta{$\sim$10 min \textperiodcentered{} needs \LaTeX{} and a browser \textperiodcentered{} in-class}
 Reference a routine you care about so the prose stays short but the link stays complete: put the
 full qualified \textsc{swhid} (the \texttt{https://archive.softwareheritage.org/} resolver prefix
 followed by \texttt{swh:1:cnt:\textellipsis;origin=\textellipsis;path=\textellipsis;lines=\textellipsis})

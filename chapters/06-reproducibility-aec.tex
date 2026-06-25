@@ -102,6 +102,7 @@ holds cryptographic proof that the artifact in hand is exactly the artifact the 
 does not, that too is a finding.
 
 \begin{handson}[Hands-on: verify an artifact as a reviewer]
+\labmeta{$\sim$10 min \textperiodcentered{} needs a SWHID tool $+$ the artifact files \textperiodcentered{} in-class, offline}
 You are handed an artifact and the \textsc{swhid} the authors published for it.
 \begin{enumerate}[nosep,leftmargin=*]
   \item Verify a file against its claimed content \textsc{swhid}: \texttt{swhid verify file.c
@@ -198,6 +199,7 @@ character, in the final paper. One mechanical, fully reversible edit (Figure~\re
 never changes.}
 
 \begin{handson}[Hands-on: a double-blind artifact]
+\labmeta{$\sim$10 min \textperiodcentered{} needs a SWHID tool \textperiodcentered{} in-class, offline}
 Compute the directory \textsc{swhid} of your artifact tree (\texttt{swhid dir ./}; see
 Appendix~\ref{app:swhid-tools}) and submit \emph{that}. It names your exact bytes and nothing else.
 After acceptance, archive the repository and add the \texttt{origin}/\texttt{anchor} qualifiers ---
