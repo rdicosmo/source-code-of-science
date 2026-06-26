@@ -69,9 +69,9 @@ deserves to be treated as one.
   \label{fig:matplotlib-deps}
 \end{figure}
 
-\section{What is at stake: reproducibility and preservation}
+\section{What is at stake}
 
-Two things are at stake, and they are worth naming plainly.
+The two most visible stakes are worth naming plainly, first.
 
 The first is \emph{reproducibility}. A computational result is only as solid as our ability to
 get hold of the exact code that produced it and run it again --- not code \emph{like} it, not a
@@ -91,20 +91,46 @@ there.
 
 \takeaway{Forges are for developing code; they make no promise to keep it.}
 
+But reproducibility and preservation are only the most visible of a \emph{plurality} of needs ---
+and those needs stack, scale by scale, each resting on the one beneath it.
+
+A \emph{researcher} needs to archive and reference the exact code behind each result, so it can be
+retrieved and re-run; to find and reuse the software of others; and --- not least --- to get
+\emph{credit} for the software they build themselves, as for any other research output.
+
+A \emph{laboratory or team director} needs to know what the group actually produces: to track its
+software contributions, fold them into activity reports and a public software page, and not lose
+them when the student who wrote them moves on.
+
+A \emph{research organization} --- a university president, a funding agency --- needs to know its
+\emph{software assets} at all: for technology transfer, for honest impact metrics, for funding
+strategy, and for the fair career evaluation of the people who write software.
+
+And here is the point that organises this whole note. Every one of these needs, from the lone result
+to the institutional dashboard, rests on the same minimal foundation --- four things you must be
+able to do to a piece of software: \textbf{archive} it (so it can be retrieved), \textbf{reference}
+it exactly (so it can be identified), \textbf{describe} it (so it can be discovered and reused), and
+\textbf{cite} it (so its authors are credited). Those four verbs --- \textbf{A}rchive,
+\textbf{R}eference, \textbf{D}escribe, \textbf{C}ite \& credit, or \textsc{ardc} --- are the floor
+beneath all the layers. Get them right, and reproducibility, visibility, and assessment all become
+\emph{possible}; skip them, and none of the higher needs can be met, however much metadata or policy
+is piled on top.
+
+\takeaway{From the lone result to the institutional dashboard, every need rests on one floor:
+\textsc{ardc}.}
+
 And yet, collectively, we have not been taking good care of this precious form of
 knowledge~\autocite{SwhCACM2018}. Closing that gap is the whole purpose of this note.
 
 \section{How to read this note}
 
-The good news is that the practice already exists, the tools are built, and you can adopt them
-today. Throughout the note we organise that practice under four verbs --- \textbf{A}rchive,
-\textbf{R}eference, \textbf{D}escribe, \textbf{C}ite \& credit, or \textsc{ardc} --- and rest it
-on two foundations: the Software Heritage archive, which preserves the world's source code with
-its full development history, and the \textsc{swhid}, an identifier computed \emph{from the code
-itself} (and now the international standard ISO/IEC~18670) that lets you point at exactly the code
-you mean. \textsc{ardc} is the spine of the whole note; Chapter~\ref{ch:ardc} makes each of its
-four verbs hands-on. We will meet the FAIR principles along the way and then, deliberately, go
-\emph{beyond} them, for the reasons the next chapter makes precise~\autocite{NatureSD2026}.
+The good news is that \textsc{ardc} is not aspirational: the practice exists, the tools are built,
+and you can adopt them today. It rests on two foundations --- the Software Heritage archive, which
+preserves the world's source code with its full development history, and the \textsc{swhid}, an
+identifier computed \emph{from the code itself} (and now the international standard ISO/IEC~18670)
+that lets you point at exactly the code you mean. Chapter~\ref{ch:ardc} makes each of the four verbs
+hands-on. We will meet the FAIR principles along the way and then, deliberately, go \emph{beyond}
+them, for the reasons the next chapter makes precise~\autocite{NatureSD2026}.
 
 This note is meant to be read \emph{and} done. The practical chapters end with \textbf{Hands-on}
 boxes you run on a repository of your choice --- your own code, a library you depend on, a result
