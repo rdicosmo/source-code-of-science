@@ -132,7 +132,23 @@ you do want to point a reader into the archive --- to say not merely \emph{which
 \emph{where it came from, and in what context} --- you add qualifiers: \texttt{origin} (the URL the
 code was harvested from), \texttt{visit} (which archived crawl), \texttt{anchor} (the node the
 \texttt{path} is rooted at), \texttt{path}, and \texttt{lines}. The core name still identifies; the
-qualifiers merely locate. Appendix~\ref{app:swhid-syntax} gives the full grammar.
+qualifiers merely locate. Figure~\ref{fig:swhid-anatomy} lays out a fully qualified
+\textsc{swhid} with every part labelled; Appendix~\ref{app:swhid-syntax} gives the full grammar.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{figures/swhid-components.png}
+  \caption[Anatomy of a SWHID]{Anatomy of a fully qualified \textsc{swhid} (schema version~1). The
+  \emph{core} identifier (top) is four colon-separated parts: the \texttt{swh} prefix, the schema
+  version (\texttt{1}), the object type (\texttt{cnt} here --- one of the five at left:
+  \texttt{snp}, \texttt{rel}, \texttt{rev}, \texttt{dir}, \texttt{cnt}), and the object's hash
+  (\texttt{object\_id}). The optional \emph{qualifiers} (right) add context without changing what
+  is identified: \texttt{origin} (where the code was harvested), \texttt{visit} (which archived
+  snapshot), \texttt{anchor} (the node the path is rooted at), \texttt{path} (the file within that
+  tree), and \texttt{lines} (the span within that file). The example points at lines 64--72 of the
+  Apollo-11 guidance routine \texttt{BURN\_BABY\_BURN}.}
+  \label{fig:swhid-anatomy}
+\end{figure}
 
 A fully qualified \textsc{swhid} is precise but long --- it can run to several lines, and dropped
 raw into a sentence it overflows the page. The remedy is the oldest trick in hypertext: show the
