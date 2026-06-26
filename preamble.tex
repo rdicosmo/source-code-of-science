@@ -71,6 +71,8 @@
 % Usage: \swhref{visible (core) swhid}{full qualified swhid, without the resolver prefix}
 \newcommand{\swhresolver}{https://archive.softwareheritage.org/}
 \newcommand{\swhref}[2]{\href{\swhresolver#2}{\swhid{#1}}}
+% Same, but with a long, line-breakable visible text (\nolinkurl breaks at ; = : /).
+\newcommand{\swhreflong}[2]{\href{\swhresolver#2}{\small\nolinkurl{#1}}}
 
 % Diagrams.
 \usepackage{tikz}

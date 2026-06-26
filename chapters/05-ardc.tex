@@ -306,14 +306,24 @@ only the short \emph{core} one --- and in both cases the complete identifier sta
 hyperlink (Figure~\ref{fig:biblatex-swh}).
 
 \begin{figure}[htbp]
-  \centering
-  \fbox{\includegraphics[width=.93\linewidth]{figures/samplebib/samplebib-full-crop.pdf}}\\[5pt]
-  \fbox{\includegraphics[width=.93\linewidth]{figures/samplebib/samplebib-short-crop.pdf}}
-  \caption[A software bibliography typeset by biblatex-software]{The same two entries typeset by
-  \texttt{biblatex-software} with \texttt{shortswhid=false} (top) and \texttt{shortswhid=true}
-  (bottom). The top prints the \emph{full} qualified \textsc{swhid} (\texttt{;origin=\ldots;visit=\ldots;path=\ldots}); the
-  bottom prints only the readable \emph{core}, while the complete identifier remains live in the
-  link. Each entry also shows its \texttt{[SW]} kind, version, licence, and repository.}
+  \centering\footnotesize
+  \setlength{\fboxsep}{5pt}%
+  \fbox{\begin{minipage}{0.93\linewidth}
+    {\sffamily\bfseries shortswhid = false}\hfill\textit{the full qualified SWHID is printed}\par\smallskip
+    [SW\,Rel.] Di Cosmo \& Danelutto, \emph{The Parmap library} version 1.1.1. \textsc{lic}: LGPL-2.0.
+    \textsc{swhid}: \swhreflong{swh:1:rel:373e2604d96de4ab1d505190b654c5c4045db773;origin=https://github.com/rdicosmo/parmap;visit=swh:1:snp:2a6c348c53eb77d458f24c9cbcecaf92e3c45615}{swh:1:rel:373e2604d96de4ab1d505190b654c5c4045db773;origin=https://github.com/rdicosmo/parmap;visit=swh:1:snp:2a6c348c53eb77d458f24c9cbcecaf92e3c45615}
+  \end{minipage}}\\[5pt]
+  \fbox{\begin{minipage}{0.93\linewidth}
+    {\sffamily\bfseries shortswhid = true}\hfill\textit{only the core is shown --- the link is unchanged}\par\smallskip
+    [SW\,Rel.] Di Cosmo \& Danelutto, \emph{The Parmap library} version 1.1.1. \textsc{lic}: LGPL-2.0.
+    \textsc{swhid}: \swhref{swh:1:rel:373e2604d96de4ab1d505190b654c5c4045db773}{swh:1:rel:373e2604d96de4ab1d505190b654c5c4045db773;origin=https://github.com/rdicosmo/parmap;visit=swh:1:snp:2a6c348c53eb77d458f24c9cbcecaf92e3c45615}
+  \end{minipage}}
+  \caption[A biblatex-software entry, shortswhid off and on]{How \texttt{biblatex-software} prints the
+  same Parmap release with \texttt{shortswhid=false} (top) and \texttt{shortswhid=true} (bottom).
+  \textbf{Both \textsc{swhid}s are live links} --- click either, and you reach the \emph{same} fully
+  qualified identifier in the archive. The switch changes only what is \emph{shown}, never what the
+  link \emph{carries}: the top displays the qualifiers (\texttt{;origin=\ldots;visit=\ldots}) in
+  full, the bottom hides them from view but keeps them in the hyperlink.}
   \label{fig:biblatex-swh}
 \end{figure}
 
