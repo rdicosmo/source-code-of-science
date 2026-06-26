@@ -280,23 +280,42 @@ forced into \texttt{@misc} entries that lost the version, the licence, and any v
 identifier~\autocite{2020GtCitation}. The \texttt{biblatex-software} style fixes
 that~\autocite{DiCosmoSEN2020}. It adds four entry types --- \texttt{@software} for a project,
 \texttt{@softwareversion} for a release, \texttt{@softwaremodule} for a component, and
-\texttt{@codefragment} for a precise span of code --- chained with \texttt{crossref} so shared
-metadata is written once and, above all, it carries a \texttt{swhid=} field. A few lines of
-\textsc{Bib}\TeX{} suffice:
+\texttt{@codefragment} for a precise span of code --- each carrying a \texttt{swhid=} field. The
+power comes from \texttt{crossref}: shared metadata (authors, repository, licence) is written
+\emph{once} on the parent \texttt{@software} entry, and each version, fragment, or snapshot adds only
+what is specific to it. So citing several versions and several fragments of the \emph{same} project
+costs almost nothing:
 
 \begin{quote}\footnotesize
 \begin{verbatim}
-@softwareversion{parmap-1.1.1, crossref={parmap}, version={1.1.1},
-  swhid={swh:1:rel:373e2604d96de4ab1d505190b654c5c4045db773;
-         origin=https://github.com/rdicosmo/parmap}}
+@software{parmap,                       % the project: shared metadata, written once
+  title   = {The Parmap library},
+  author  = {Di Cosmo, Roberto and Danelutto, Marco},
+  url     = {https://github.com/rdicosmo/parmap},
+  license = {LGPL-2.0}}
 
-@codefragment{simplemapper, crossref={parmap-1.1.1},
-  subtitle={Core mapping routine},
-  swhid={swh:1:cnt:43a6b232768017b03da934ba22d9cc3f2726a6c5;
-         origin=https://github.com/rdicosmo/parmap;
-         path=/src/parmap.ml;lines=192-228}}
+@softwareversion{parmap-1.1.1, crossref={parmap},          % a released VERSION
+  version = {1.1.1}, date = {2020},
+  swhid   = {swh:1:rel:373e2604d96de4ab1d505190b654c5c4045db773;
+             origin=https://github.com/rdicosmo/parmap}}
+
+@codefragment{simplemapper, crossref={parmap-1.1.1},       % a code FRAGMENT
+  subtitle = {Core mapping routine},
+  swhid    = {swh:1:cnt:43a6b232768017b03da934ba22d9cc3f2726a6c5;
+              path=/src/parmap.ml;lines=192-228}}
+
+@softwareversion{parmap-dev, crossref={parmap},            % a whole-repo SNAPSHOT
+  version = {dev snapshot 2017-05},
+  swhid   = {swh:1:snp:2a6c348c53eb77d458f24c9cbcecaf92e3c45615;
+             origin=https://github.com/rdicosmo/parmap}}
 \end{verbatim}
 \end{quote}
+
+\noindent In the text you then write \texttt{\textbackslash cite\{parmap-1.1.1\}} for the release,
+\texttt{\textbackslash cite\{simplemapper\}} for the routine, or \texttt{\textbackslash cite\{parmap-dev\}}
+for the archived snapshot --- and the bibliography fills in the inherited authors, repository, and
+licence for each, with the right \textsc{swhid} type (\texttt{rel}, \texttt{cnt}, \texttt{snp})
+rendered automatically.
 
 \noindent The package is on CTAN and in TeX\,Live, and has shipped in the ACM \texttt{acmart} class
 since 2022, so the \textsc{swhid} renders natively in an ACM paper. It also solves, for the
