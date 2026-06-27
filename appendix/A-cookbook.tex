@@ -1,22 +1,25 @@
 \chapter{Command cookbook}
 \label{app:cookbook}
 
-The reference implementation of the \textsc{swhid} standard (ISO/IEC~18670) is
-\texttt{swhid-rs}, a Rust tool released under the MIT licence; use it as the primary local
-tool. The Python \texttt{swh identify} (from \texttt{swh.model}) and \texttt{swh scanner} remain
-useful for a few operations the Rust CLI does not yet cover --- chiefly snapshot identifiers and
-scanning a tree against the archive.
+There are two interchangeable local toolchains for computing and checking \textsc{swhid}s, and
+they produce the \emph{same} identifiers for the same bytes --- pick whichever suits your
+environment. \textbf{Path~A} is \texttt{swhid-rs}, the Rust reference implementation of the
+standard (ISO/IEC~18670, MIT licence): fast, standalone, and the one that tracks the specification
+most closely. \textbf{Path~B} is the original Python implementation --- \texttt{swh identify}
+(from \texttt{swh.model}) and \texttt{swh scanner} --- which adds two things the Rust CLI does not
+yet cover: snapshot identifiers, and scanning a working tree against the archive. Appendix~%
+\ref{app:swhid-tools} compares all the implementations in full. The two paths below mirror each
+other operation for operation; the shared section at the end is the same whichever you chose.
 
+\paragraph{Path A --- the Rust reference tool (\texttt{swhid-rs}).}
 \begin{verbatim}
 # --- Install -------------------------------------------------------------
 cargo install swhid                  # swhid-rs (Rust reference impl., MIT)
 cargo install swhid --features git   # ...with VCS (revision) support
 # or download a pre-built binary from the project's releases page:
 #   https://github.com/swhid/swhid-rs
-pip install 'swh.model[cli]'         # swh identify (Python)
-pip install swh.scanner              # swh scanner  (Python)
 
-# --- Compute core SWHIDs locally (Rust reference tool) -------------------
+# --- Compute core SWHIDs locally ----------------------------------------
 swhid content --file file.c          # -> swh:1:cnt:...
 swhid dir src/                       # -> swh:1:dir:...  (Merkle hash of tree)
 swhid parse "swh:1:cnt:<hex>"        # validate / pretty-print a SWHID
@@ -28,10 +31,30 @@ echo "swh:1:rev:$(git rev-parse HEAD)"     # -> swh:1:rev:...
 swhid verify file.c swh:1:cnt:<hex>        # PATH first, then SWHID
 swhid verify src/   swh:1:dir:<hex>
 
-# --- Operations still served by the Python tools ------------------------
-swh identify --type snapshot repo.git/     # -> swh:1:snp:... (snapshot)
-swh scanner scan ./repo                    # what is already archived?
+# Snapshot SWHIDs and tree scanning: use Path B below.
+\end{verbatim}
 
+\paragraph{Path B --- the Python tools (\texttt{swh.model} + \texttt{swh.scanner}).}
+\begin{verbatim}
+# --- Install -------------------------------------------------------------
+pip install 'swh.model[cli]'         # swh identify
+pip install swh.scanner              # swh scanner
+
+# --- Compute SWHIDs locally (auto-detects type, or force with --type) ---
+swh identify file.c                  # -> swh:1:cnt:...
+swh identify --type directory src/   # -> swh:1:dir:...
+swh identify .                       # a git checkout -> swh:1:rev:...
+swh identify --type snapshot repo.git/     # -> swh:1:snp:...  (snapshot)
+
+# --- Verify bytes against a claimed SWHID (exit 0 iff they match) --------
+swh identify --verify swh:1:cnt:<hex> file.c    # SWHID first, then PATH
+
+# --- Scan a working tree against the archive ----------------------------
+swh scanner scan ./repo                    # what is already archived?
+\end{verbatim}
+
+\paragraph{Shared --- archive and resolve (no install needed).}
+\begin{verbatim}
 # Archive a public repo:  https://save.softwareheritage.org
 # Resolve any SWHID:      https://archive.softwareheritage.org/<swhid>
 \end{verbatim}
