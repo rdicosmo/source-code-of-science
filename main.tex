@@ -50,6 +50,40 @@ can verify it offline (Chapter~\ref{ch:repro}, with a ready call-for-artifacts b
 policy (Chapter~\ref{ch:outlook}, with a model clause and a governance/sustainability note).
 \end{callout}
 
+\newcommand{\pathcore}{\tikz[baseline=-0.5ex]\fill[swhaccent](0,0)circle(1.8pt);}
+\newcommand{\pathskim}{\tikz[baseline=-0.5ex]{\draw[swhaccent,line width=0.4pt](0,0)circle(1.8pt);%
+  \fill[swhaccent](0,0)--(90:1.8pt) arc(90:270:1.8pt)--cycle;}}
+\newcommand{\pathskip}{\textcolor{swhdark!30}{\textperiodcentered}}
+
+\clearpage
+\begin{samepage}
+\begin{callout}{How to read this note, by audience}
+\small Not everyone needs every chapter. Pick a row and follow it; the rest can wait. The chapters
+do build on one another --- the \textsc{swhid} (4) rests on the data model (3), and the practical
+core (5) uses both --- so a skipped chapter is there when you need it.
+\smallskip
+
+\centering
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{@{}l*{7}{c}c@{}}
+\toprule
+\textbf{Reader} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{App.}\\
+\midrule
+Researcher \emph{(just do it)} & \pathcore & \pathskip & \pathskip & \pathskim & \pathcore & \pathskip & \pathskip & A\\
+Reviewer / editor / AEC        & \pathcore & \pathskip & \pathskip & \pathcore & \pathskim & \pathcore & \pathskip & ---\\
+Funder / policy maker          & \pathcore & \pathskip & \pathskip & \pathskip & \pathskip & \pathskip & \pathcore & E\\
+Full course / student          & \pathcore & \pathcore & \pathcore & \pathcore & \pathcore & \pathcore & \pathcore & all\\
+\bottomrule
+\end{tabular}
+
+\smallskip
+{\footnotesize \pathcore~core \quad \pathskim~skim / optional \quad \pathskip~skip. \quad
+\textbf{1}~Why \enspace \textbf{2}~Beyond FAIR \enspace \textbf{3}~Foundations \enspace
+\textbf{4}~The \textsc{swhid} \enspace \textbf{5}~\textsc{ardc} \enspace
+\textbf{6}~Reproducibility \enspace \textbf{7}~Policy.}
+\end{callout}
+\end{samepage}
+
 \tableofcontents
 
 % --- Chapters ------------------------------------------------------------
