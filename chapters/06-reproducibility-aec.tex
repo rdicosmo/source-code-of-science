@@ -65,10 +65,6 @@ papers earned the \emph{Functional} badge, and nearly half pursued \emph{Results
 communities go further still: in computer graphics, the \emph{Graphics Replicability Stamp} awards a
 public seal only to papers whose code has been independently built and run to reproduce the results
 --- hundreds of papers now carry it (Figure~\ref{fig:stamp}).\footnote{\url{http://www.replicabilitystamp.org/}.}
-And the idea is spreading beyond computer science: the AEA Data Editor now mandates a code-and-data
-audit for the economics journals, initiatives such as CodeCheck and ReScience C independently re-run
-published code, and NISO has generalised the whole badging scheme across the
-sciences~\autocite{nisorp31}.
 
 \begin{figure}[htbp]
   \centering
@@ -78,6 +74,68 @@ sciences~\autocite{nisorp31}.
   stamp --- reproducibility certified by re-execution, not by author assertion.}
   \label{fig:stamp}
 \end{figure}
+
+\subsection{Artifact evaluation beyond computer science}
+
+And the idea no longer stops at computer science. The same uncomfortable question ---
+\emph{can the result actually be re-run?} --- is now being put, in each discipline's own
+idiom, far outside our field; and, tellingly, the answers are hardening into standing
+institutions rather than one-off favours to a reviewer.
+
+Economics moved first, and moved hardest. Since 2019 the American Economic Association has
+subjected \emph{every} empirical paper accepted at its journals to a mandatory code-and-data
+audit, run before publication by a dedicated Data Editor --- not a badge an author may opt
+into, but a gate the paper must pass~\autocite{aeadataeditor}. Beside that public mandate sits
+a non-profit service, \emph{cascad}, which independently re-executes the code behind a study
+and issues a reproducibility certificate; it has signed off on more than 170 of them to
+date~\autocite{cascad}.
+
+Other fields have built instruments of their own. In the life sciences and computational
+geography, \emph{CodeCheck} pairs each submission with an independent \emph{codechecker} who
+re-runs the analysis and issues a citable certificate, in partnership with venues such as
+\emph{GigaScience} and the Reproducible AGILE conference~\autocite{codecheck}. Image processing
+sets perhaps the most exacting bar of all: \emph{IPOL} publishes each algorithm together with a
+peer-reviewed reference implementation and a runnable in-browser demo, so that a reader
+reproduces the result in the very act of reading the paper~\autocite{ipol}. And security has
+joined at the level of policy --- USENIX Security made artifact availability \emph{mandatory} in
+2025~\autocite{usenixsec2025artifacts}.
+
+Two efforts aim past any single discipline. \emph{ReScience~C} publishes independent
+re-implementations that reproduce a paper's findings from scratch~\autocite{resciencec}, and
+NISO's RP-31:2021 lifts the whole badging vocabulary out of computing into a discipline-neutral
+recommended practice~\autocite{nisorp31} (Table~\ref{tab:beyond-cs}). Across every one of these
+the instrument differs, but the need underneath is identical: a durable, publicly resolvable,
+\emph{verifiable} handle on the exact code that was checked. Intrinsic identification does not
+care which discipline minted the artifact --- a \textsc{swhid} names bytes, not a field --- which
+is precisely why the same \textsc{ardc} discipline serves an economist, a geographer and a systems
+researcher without changing a line.
+
+\takeaway{Reproducibility policy has outgrown computer science --- but the handle it needs is the
+same everywhere: a verifiable \textsc{swhid}.}
+
+\begin{table}[htbp]
+  \centering\footnotesize
+  \setlength{\tabcolsep}{4pt}
+  \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{2.4cm} >{\raggedright\arraybackslash}p{2.6cm} X >{\raggedright\arraybackslash}p{1.55cm} >{\raggedright\arraybackslash}p{1.9cm}@{}}
+    \toprule
+    \textbf{Field} & \textbf{Venue / body} & \textbf{Instrument} & \textbf{Mandatory?} & \textbf{URL} \\
+    \midrule
+    Economics \& social science & AEA journals & AEA Data Editor audit & Yes (2019) & \href{https://aeadataeditor.github.io}{\scriptsize\nolinkurl{aeadataeditor.github.io}} \\
+    Economics \& social science & CNRS, HEC Paris, Université d'Orléans & \emph{cascad} certification (170+) & No (opt-in) & \href{https://cascad.tech}{\scriptsize\nolinkurl{cascad.tech}} \\
+    Life sciences \& geography & GigaScience, Reproducible AGILE & CodeCheck & No (opt-in) & \href{https://codecheck.org.uk}{\scriptsize\nolinkurl{codecheck.org.uk}} \\
+    Image processing & IPOL journal & Reference impl.\ + online demo & Yes (built-in) & \href{https://www.ipol.im/}{\scriptsize\nolinkurl{ipol.im}} \\
+    Computer graphics & SIGGRAPH, TVCG, \ldots & Graphics Replicability Stamp (478)~\autocite{replicabilitystamp} & No (opt-in) & \href{http://www.replicabilitystamp.org/}{\scriptsize\nolinkurl{replicabilitystamp.org}} \\
+    Security & USENIX Security & Artifact availability & Yes (2025) & \href{https://www.usenix.org/conference/usenixsecurity25}{\scriptsize\nolinkurl{usenix.org}} \\
+    Cross-domain & ReScience C & Independent re-implementation & --- & \href{https://rescience.github.io}{\scriptsize\nolinkurl{rescience.github.io}} \\
+    Pan-disciplinary & NISO & RP-31:2021 badging standard & --- & \href{https://www.niso.org/publications/rp-31-2021-badging}{\scriptsize\nolinkurl{niso.org}} \\
+    \bottomrule
+  \end{tabularx}
+  \caption[Artifact evaluation beyond computer science]{Reproducibility and artifact-evaluation
+  instruments across research fields. The instruments differ by discipline; what they share is the
+  need for a durable, verifiable handle on the exact code under review --- the gap \textsc{ardc}
+  fills with a \textsc{swhid}.}
+  \label{tab:beyond-cs}
+\end{table}
 
 \section{Artifact evaluation with Software Heritage}
 

@@ -612,3 +612,254 @@
               path=/src/parmap.ml;
               lines=192-228},
 }
+
+% =====================================================================
+% Enrichment from the SNS / Science Europe slides and the SWH HOWTO.
+% Fields web-verified 2026-06-27. Residual VERIFY flags noted inline.
+% =====================================================================
+
+% ---- Policy landscape: international / EU / national instruments ----
+@online{ECRec2018_790,
+  author  = {{European Commission}},
+  title   = {Commission Recommendation ({EU}) 2018/790 of 25 April 2018 on access to
+             and preservation of scientific information},
+  year    = {2018},
+  month   = apr,
+  note    = {Non-binding Recommendation; OJ~L~134, 31.5.2018, p.~12--18},
+  url     = {https://eur-lex.europa.eu/eli/reco/2018/790/oj},
+  urldate = {2026-06-27},
+}
+
+@online{EU_CopyrightDir2019,
+  author  = {{European Parliament and Council of the European Union}},
+  title   = {Directive ({EU}) 2019/790 of 17 April 2019 on copyright and related rights in the
+             {Digital} {Single} {Market}},
+  year    = {2019},
+  month   = apr,
+  note    = {Dated 17 April 2019 (EP vote 26 March 2019); OJ~L~130, 17.5.2019},
+  url     = {https://eur-lex.europa.eu/eli/dir/2019/790/oj},
+  urldate = {2026-06-27},
+}
+
+@online{EOSC_TaskForce2021,
+  author  = {{EOSC Association}},
+  title   = {Task Force on Infrastructures for Quality Research Software},
+  year    = {2021},
+  note    = {EOSC Association advisory group (term 2021--2023); fosters archiving,
+             referencing, describing and quality of research software},
+  url     = {https://eosc.eu/advisory-groups/infrastructures-quality-research-software/},
+  urldate = {2026-06-27},
+}
+
+@online{FAIRCORE4EOSC2022,
+  author  = {{FAIRCORE4EOSC Consortium}},
+  title   = {{FAIRCORE4EOSC}: Core Components Supporting a {FAIR} {EOSC}},
+  year    = {2022},
+  note    = {Horizon Europe project 101057264, started 1 June 2022; includes an EOSC
+             Software Heritage Mirror component},
+  url     = {https://faircore4eosc.eu/},
+  urldate = {2026-06-27},
+}
+
+@online{OECD2021ResearchData,
+  author  = {{OECD}},
+  title   = {Recommendation of the Council concerning Access to Research Data from Public Funding},
+  year    = {2021},
+  note    = {OECD/LEGAL/0347; adopted 2006, revised 20 January 2021 to cover algorithms,
+             workflows, models and software/code},
+  url     = {https://legalinstruments.oecd.org/en/instruments/OECD-LEGAL-0347},
+  urldate = {2026-06-27},
+}
+
+@online{LoiLemaire2016,
+  author  = {{R\'epublique fran\c{c}aise}},
+  title   = {Loi n\textsuperscript{o}~2016-1321 du 7 octobre 2016 pour une R\'epublique num\'erique},
+  year    = {2016},
+  month   = oct,
+  note    = {\enquote{Loi Lemaire}; makes administrations' source code a communicable
+             administrative document, open by default},
+  url     = {https://www.legifrance.gouv.fr/loda/id/JORFTEXT000033202746},
+  urldate = {2026-06-27},
+}
+
+@online{PMdirective2021,
+  author  = {{Premier ministre (France)}},
+  title   = {Circulaire n\textsuperscript{o}~6264/SG du 27 avril 2021 relative \`a la politique
+             publique de la donn\'ee, des algorithmes et des codes sources},
+  year    = {2021},
+  month   = apr,
+  note    = {Opens public data, algorithms and source code by default; creates the AMDAC
+             ministerial-officer network and routes public code to code.gouv.fr},
+  url     = {https://www.legifrance.gouv.fr/circulaire/id/45162},
+  urldate = {2026-06-27},
+}
+
+@online{LoiArticle163_2022,
+  author  = {{R\'epublique fran\c{c}aise}},
+  title   = {Loi n\textsuperscript{o}~2022-217 du 21 f\'evrier 2022 (loi 3DS), article 163},
+  year    = {2022},
+  month   = feb,
+  note    = {Loi 3DS, JO 22.2.2022. Art.~163 requires the Government to deliver to Parliament,
+             within 18 months, a report on the production and valorization of free and proprietary
+             software issued from French public research; fulfilled by the 2023 Rapport Boulet},
+  url     = {https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000045197395},
+  urldate = {2026-06-27},
+}
+
+@techreport{boulet2023etatdeslieux,
+  author      = {Boulet, Pierre},
+  title       = {{\'E}tat des lieux de la production et de la valorisation des logiciels issus de la
+                 recherche publique fran{\c c}aise},
+  institution = {Minist\`ere de l'Enseignement sup\'erieur et de la Recherche (DGRI)},
+  year        = {2023},
+  month       = sep,
+  type        = {Rapport au Parlement (art.~163, loi n\textsuperscript{o}~2022-217 dite \enquote{3DS})},
+  note        = {Survey of 1331 research-software entries; the \enquote{Rapport Boulet}},
+  url         = {https://hal-lara.archives-ouvertes.fr/hal-04844037},
+  urldate     = {2026-06-27},
+}
+
+% NOTE (verify before relying on as a public citation): the Acad-Hal-Fr report is a
+% Software-Heritage-generated analysis, Version 1.0 dated 2025-12-29. Confirm its public
+% availability / preferred citation form with RDC; URL/DOI to be added once known.
+@techreport{swhAcadHalFr2025,
+  author      = {{Software Heritage}},
+  title       = {Report on the public software collected, preserved and referenced for {Acad-Hal-Fr}},
+  institution = {Software Heritage},
+  year        = {2025},
+  month       = dec,
+  type        = {Version 1.0},
+  note        = {Data-driven analysis of the French public-research software corpus archived via HAL:
+                 bird's-eye view, licence-status distribution, hosting-platform concentration},
+}
+
+@online{USEO14028_2021,
+  author  = {{The White House}},
+  title   = {Executive Order 14028: Improving the Nation's Cybersecurity},
+  year    = {2021},
+  month   = may,
+  note    = {Signed 12 May 2021; Federal Register 86 FR 26633, 17 May 2021},
+  url     = {https://www.federalregister.gov/documents/2021/05/17/2021-10460/improving-the-nations-cybersecurity},
+  urldate = {2026-06-27},
+}
+
+@online{NASA_OSI_2022,
+  author  = {{NASA Science Mission Directorate}},
+  title   = {Scientific Information Policy for the {Science} {Mission} {Directorate} ({SPD-41a})},
+  year    = {2022},
+  month   = dec,
+  note    = {Effective 2 December 2022; open sharing of publications, data and software
+             from SMD-funded research},
+  url     = {https://science.nasa.gov/researchers/science-information-policy/},
+  urldate = {2026-06-27},
+}
+
+@online{DFG_CV_2022,
+  author  = {{Deutsche Forschungsgemeinschaft}},
+  title   = {Package of Measures to Support a Shift in the Culture of Research Assessment},
+  year    = {2022},
+  month   = sep,
+  note    = {DFG Information f\"ur die Wissenschaft Nr.~61; research software added to the
+             model academic CV (template mandatory from 1 March 2023)},
+  url     = {https://www.dfg.de/en/research_funding/announcements_proposals/2022/info_wissenschaft_22_61},
+  urldate = {2026-06-27},
+}
+
+% ---- French research-software award (cross-disciplinary winners) ----
+@article{ResearchSoftwareAward2023,
+  author  = {Blanc Catala, Isabelle and Di Cosmo, Roberto and Giraud, Mathieu and
+             Le Berre, Daniel and Louvet, Violaine and Renaudin, Sophie},
+  title   = {Establishing a national research software award},
+  journal = {Open Research Europe},
+  volume  = {3},
+  pages   = {185},
+  year    = {2023},
+  doi     = {10.12688/openreseurope.16069.1},
+}
+
+@online{PrixSwLibre2023,
+  author  = {{Minist\`ere de l'Enseignement sup\'erieur et de la Recherche}},
+  title   = {Prix science ouverte du logiciel libre de la recherche},
+  year    = {2023},
+  url     = {https://www.ouvrirlascience.fr/category/openscience-prices/open-source-software-prices/},
+  urldate = {2026-06-27},
+  note    = {Second (2023) edition: 66 submissions across four categories},
+}
+
+% ---- Artifact evaluation beyond computer science ----
+@online{aeadataeditor,
+  author  = {{American Economic Association}},
+  title   = {Data and Code Availability Policy and the Office of the {AEA} Data Editor},
+  year    = {2019},
+  url     = {https://aeadataeditor.github.io/},
+  urldate = {2026-06-27},
+  note    = {Mandatory pre-publication code-and-data reproducibility check for all AEA
+             journals since the July 2019 policy; Data Editor Lars Vilhuber, Cornell University},
+}
+
+@online{cascad,
+  author  = {{cascad}},
+  title   = {{cascad}: Certification Agency for Scientific Code and Data},
+  year    = {2026},
+  url     = {https://www.cascad.tech/},
+  urldate = {2026-06-27},
+  note    = {Non-profit reproducibility certification (CNRS UAR2007; founders CNRS,
+             HEC Paris and Universit\'e d'Orl\'eans); 170+ certifications to date},
+}
+
+@online{codecheck,
+  author  = {Eglen, Stephen J. and N{\"u}st, Daniel},
+  title   = {{CODECHECK}: Independent Execution of Computations Underlying Research Articles},
+  year    = {2026},
+  url     = {https://codecheck.org.uk/},
+  urldate = {2026-06-27},
+  note    = {Partner venues include GigaScience and Reproducible AGILE},
+}
+
+@online{ipol,
+  author  = {{IPOL Journal}},
+  title   = {{IPOL}: Image Processing On Line},
+  year    = {2026},
+  url     = {https://www.ipol.im/},
+  urldate = {2026-06-27},
+  note    = {Each article ships a peer-reviewed reference implementation and a runnable online demo},
+}
+
+@online{resciencec,
+  author  = {{ReScience C}},
+  title   = {{ReScience C}: A Journal of Reproducible Replications in Computational Science},
+  year    = {2026},
+  url     = {https://rescience.github.io/},
+  urldate = {2026-06-27},
+  note    = {Publishes independent re-implementations that reproduce a paper's findings from scratch},
+}
+
+@online{replicabilitystamp,
+  author  = {{Graphics Replicability Stamp Initiative}},
+  title   = {The Graphics Replicability Stamp Initiative},
+  year    = {2026},
+  url     = {http://www.replicabilitystamp.org/},
+  urldate = {2026-06-27},
+  note    = {478 papers with code awarded the stamp since 2017},
+}
+
+@online{usenixsec2025artifacts,
+  author  = {{USENIX Association}},
+  title   = {{USENIX Security '25} Call for Artifacts},
+  year    = {2025},
+  url     = {https://www.usenix.org/conference/usenixsecurity25/call-for-artifacts},
+  urldate = {2026-06-27},
+  note    = {Phase-1 artifact-availability evaluation made mandatory for all accepted papers},
+}
+
+% ---- Goodhart's law (Strathern's reformulation) ----
+@article{strathern1997improving,
+  author    = {Strathern, Marilyn},
+  title     = {`Improving ratings': audit in the {British} {University} system},
+  journal   = {European Review},
+  volume    = {5},
+  number    = {3},
+  pages     = {305--321},
+  year      = {1997},
+  publisher = {Cambridge University Press},
+}

@@ -1,0 +1,149 @@
+\chapter{Policy reference: the instrument matrix}
+\label{app:policy}
+
+Policy is the part of an argument that ages fastest and scatters worst. Across
+Chapter~\ref{ch:outlook} the instruments arrive one at a time, in the order the prose needs
+them --- a UNESCO recommendation here, an EOSC report there, a French national plan a paragraph
+later --- and that is the right way to make the case, but the wrong way to \emph{act} on it. A
+reader who wants to write a clause, brief a funder, or check whether their own jurisdiction has
+already moved should not have to reassemble the list from the body text; and a future drafter of
+this note should not have to rediscover, each time, which mandate said exactly what.
+
+\takeaway{One matrix, every instrument: jurisdiction, date, mandate, link --- the deduplicated
+landing point for the policy that backs the practice.}
+
+\noindent And so, here, deduplicated into a single matrix, is every policy instrument surfaced in
+this note and in the inventories behind it. Read each row as a pointer, not a paraphrase: the
+mandate column quotes the source \emph{verbatim} where a quotable line exists, and otherwise gives
+the shortest faithful summary, with the citation and the live link carrying the rest. The list
+leans European, and French in particular --- that is where the convergence happened first and
+hardest --- but the international and national rows show that the direction of travel is the same
+everywhere: open the code, preserve it, and name it intrinsically.
+
+{\footnotesize
+\setlength{\extrarowheight}{2pt}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{2.7cm}%
+                    >{\raggedright\arraybackslash}p{2.15cm}%
+                    >{\raggedright\arraybackslash}p{0.95cm}%
+                    >{\raggedright\arraybackslash}p{1.15cm}%
+                    >{\raggedright\arraybackslash}p{4.7cm}@{}}
+\caption[Policy instrument matrix]{Deduplicated matrix of policy instruments pointing research
+software at open licensing, preservation, and intrinsic identification. Mandates are quoted
+verbatim where a quotable line exists; links resolve the full text.}\label{tab:policy}\\
+\toprule
+\textbf{Instrument} & \textbf{Issuing body} & \textbf{Juris.} & \textbf{Date} &
+\textbf{Core mandate (verbatim where available)} \\
+\midrule
+\endfirsthead
+\multicolumn{5}{l}{\footnotesize\itshape Table~\ref{tab:policy}, continued from previous page}\\
+\toprule
+\textbf{Instrument} & \textbf{Issuing body} & \textbf{Juris.} & \textbf{Date} &
+\textbf{Core mandate} \\
+\midrule
+\endhead
+\midrule
+\multicolumn{5}{r}{\footnotesize\itshape continued on next page}\\
+\endfoot
+\bottomrule
+\endlastfoot
+
+% --- International ---------------------------------------------------------
+\textbf{Rec.\ on access to research data from public funding}~\autocite{OECD2021ResearchData}%
+  \newline\scriptsize\url{https://legalinstruments.oecd.org/en/instruments/OECD-LEGAL-0347}
+  & OECD Council & Intl & 2006 (rev.\ 2021)
+  & Access to, and re-use of, publicly funded research data as a default principle. \\
+\addlinespace
+\textbf{Paris Call on Software Source Code}~\autocite{ParisCall2019}%
+  \newline\scriptsize\url{https://en.unesco.org/foss/paris-call-software-source-code}
+  & UNESCO, Inria, Software Heritage & Global & Feb 2019
+  & \enquote{recognise software source code as a fundamental enabler in all aspects of human
+    endeavour}; build shared infrastructures to preserve it. \\
+\addlinespace
+\textbf{Recommendation on Open Science}~\autocite{UNESCO2021OpenScience}%
+  \newline\scriptsize\url{https://unesdoc.unesco.org/ark:/48223/pf0000379949}
+  & UNESCO & Global & 2021
+  & Open science including open-source code: \enquote{source code must be included in the software
+    release}. \\
+\addlinespace[4pt]
+
+% --- European Union -------------------------------------------------------
+\textbf{Rec.\ 2018/790 on access to \& preservation of scientific information}~\autocite{ECRec2018_790}%
+  \newline\scriptsize\url{https://eur-lex.europa.eu/eli/reco/2018/790/oj}
+  & European Commission & EU & 25 Apr 2018
+  & Open access to, and long-term preservation of, scientific information and the outputs of
+    publicly funded research. \\
+\addlinespace
+\textbf{Directive 2019/790 (Copyright in the DSM)}~\autocite{EU_CopyrightDir2019}%
+  \newline\scriptsize\url{https://eur-lex.europa.eu/eli/dir/2019/790/oj}
+  & EU Parliament \& Council & EU & 2019
+  & Copyright reform bearing on text-and-data mining and the legal status of source-code re-use. \\
+\addlinespace
+\textbf{EOSC SIRS report}~\autocite{SIRSReport2020}%
+  \newline\scriptsize\url{https://data.europa.eu/doi/10.2777/28598}
+  & EOSC Executive Board (EC) & EU & Dec 2020
+  & Archive in Software Heritage, use the \textsc{swhid}; \enquote{all research software \textellipsis\
+    Open Source license by default \textellipsis\ deviations \textellipsis\ properly motivated}. \\
+\addlinespace
+\textbf{Task Force on quality research software}~\autocite{EOSC_TaskForce2021}%
+  \newline\scriptsize\url{https://eosc.eu/advisory-groups/infrastructures-quality-research-software/}
+  & EOSC Association & EU & 2021
+  & Recommendations for FAIR, open, and sustainable research software. \\
+\addlinespace
+\textbf{FAIRCORE4EOSC}~\autocite{FAIRCORE4EOSC2022}%
+  \newline\scriptsize\url{https://faircore4eosc.eu/}
+  & Horizon Europe consortium & EU & 2022
+  & Builds core EOSC persistent-identifier and metadata components, with Software Heritage among the
+    partners. \\
+\addlinespace[4pt]
+
+% --- France ---------------------------------------------------------------
+\textbf{Loi pour une R\'epublique num\'erique (Loi Lemaire)}~\autocite{LoiLemaire2016}%
+  \newline\scriptsize\url{https://www.legifrance.gouv.fr/loda/id/JORFTEXT000033202746}
+  & R\'epublique fran\c{c}aise & France & Oct 2016
+  & Open public data and the source code of administrations as a default. \\
+\addlinespace
+\textbf{PM circular on data, algorithms \& source code}~\autocite{PMdirective2021}%
+  \newline\scriptsize\url{https://www.legifrance.gouv.fr/circulaire/id/45162}
+  & Premier ministre & France & 27 Apr 2021
+  & Public data, algorithms and source code open by default across the State. \\
+\addlinespace
+\textbf{2\textsuperscript{nd} National Plan for Open Science (PNSO2)}~\autocite{PNSO2_2021}%
+  \newline\scriptsize\url{https://www.ouvrirlascience.fr/wp-content/uploads/2021/10/Second_French_Plan-for-Open-Science_web.pdf}
+  & Minist\`ere de l'ESR & France & 6 Jul 2021
+  & Names Software Heritage and the \textsc{swhid} explicitly; open-source research software by
+    default. \\
+\addlinespace
+\textbf{Law 2022-217 (loi 3DS), art.\ 163}~\autocite{LoiArticle163_2022}%
+  \newline\scriptsize\url{https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000045197395}
+  & R\'epublique fran\c{c}aise & France & 21 Feb 2022
+  & 18-month report to Parliament on the production and valorization of public-research software
+    (the 2023 \emph{Rapport Boulet}~\autocite{boulet2023etatdeslieux}). \\
+\addlinespace[4pt]
+
+% --- United States --------------------------------------------------------
+\textbf{Executive Order 14028, \S4}~\autocite{USEO14028_2021}%
+  \newline\scriptsize\url{https://www.federalregister.gov/d/2021-10460}
+  & White House & US & 12 May 2021
+  & Software supply-chain security; mandates a software bill of materials (\textsc{sbom}). \\
+\addlinespace
+\textbf{Scientific Information Policy (SPD-41a)}~\autocite{NASA_OSI_2022}%
+  \newline\scriptsize\url{https://science.nasa.gov/researchers/science-information-policy/}
+  & NASA & US & Dec 2022
+  & Open code, data and publications by default for NASA-funded research. \\
+\addlinespace[4pt]
+
+% --- Germany --------------------------------------------------------------
+\textbf{Model curriculum vitae}~\autocite{DFG_CV_2022}%
+  \newline\scriptsize\url{https://www.dfg.de/en/research_funding/announcements_proposals/2022/info_wissenschaft_22_61}
+  & DFG & Germany & Sept 2022
+  & Recognises research software as a citable scholarly output in evaluation and CVs. \\
+
+\end{longtable}}
+
+\noindent A practical rule of thumb for reading the matrix: the \emph{global} rows (OECD, the Paris
+Call, UNESCO) set the principle; the \emph{European} rows turn it into operational guidance ---
+SIRS is the one to quote when someone asks for chapter and verse, because it names Software Heritage
+and the \textsc{swhid} outright; and the \emph{national} rows are what a researcher or a funder
+points to in their own jurisdiction. Strip the acronyms from any of them and the same instruction
+remains, the one this whole note has been arguing for: open the code, preserve it, and identify it
+with an intrinsic, standard name.

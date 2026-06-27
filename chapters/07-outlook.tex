@@ -32,15 +32,62 @@ Dagstuhl's \emph{DROPS} interconnect the same way.\footnote{\url{https://drops.d
 themselves now carry not one identifier but many, pinpointing their code passages with qualified
 \textsc{swhid}s throughout the text~\autocite{spinellis2026hotspots}.
 
-And the stakes are real, not niche. When the French ministry surveyed its research-software
-producers, the picture that emerged was of long-lived, widely-used, high-impact work: half of the
-software reported was more than nine years old, a third had over a hundred users, and nearly
-two-thirds had impact beyond academia --- overwhelmingly released as free and open
-source.\footnote{French Ministry of Higher Education and Research, research-software survey, 2023.}
-This is not a fringe of scientific practice; it is a load-bearing part of it, and it has been going
-uncared-for.
+And the stakes are real, not niche. French law took the measure of this directly: article~163 of
+the 2022 \enquote{3DS} law required the government to report to Parliament, within eighteen months,
+on the software produced by public research --- a mandate answered in 2023 by the \emph{Rapport
+Boulet}~\autocite{boulet2023etatdeslieux,LoiArticle163_2022}. Surveying the research units
+themselves, it found long-lived, widely-used, high-impact work: half of the software reported was
+more than nine years old, a third had over a hundred users, and nearly two-thirds had impact beyond
+academia --- overwhelmingly released as free and open source. This is not a fringe of scientific
+practice; it is a load-bearing part of it, and it has been going uncared-for.
 
-\section{The policy that backs it}
+That survey, though, was deliberately narrow: a stock-take of \emph{production and valorization},
+answering a precise legal question, not an examination of the code itself. Point the same lens at the
+actual corpus --- the software French public research has archived in Software Heritage, some
+32\,694 projects carrying contributions from the country's universities and research organisations
+--- and a sharper picture emerges (Figure~\ref{fig:fr-corpus}). Only about a fifth of those projects
+carry any licence at all, so by default most of them cannot legally be reused; and roughly seven in
+ten live on a single commercial platform, \texttt{github.com}, a concentration that is itself a
+systemic risk. The law asked \emph{how much}; the archive can show \emph{in what state} --- and the
+state is exactly what the rest of this note is written to improve.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=.92\linewidth]{figures/acad-hal-fr-birdseye.pdf}\\[1.4ex]
+  \includegraphics[height=4.0cm]{figures/acad-hal-fr-license-status.pdf}\hfill
+  \includegraphics[height=4.0cm]{figures/acad-hal-fr-platforms.pdf}
+  \caption[The French public-research software corpus]{The French public-research software corpus
+  archived in Software Heritage, as of 2025. \emph{Top}: the bird's-eye view --- some 32\,694
+  projects (2\,880 active in the last twelve months), 3.4~million contributions by 29\,741
+  contributors, spanning 1994--2025, with 1\,270 projects preserved although they have since vanished
+  from their forge. \emph{Bottom left}: only \(19.7\%\) of projects carry a licence --- three-quarters
+  have none at all, so by default they cannot legally be reused. \emph{Bottom right}: hosting is
+  heavily concentrated, with \(70.7\%\) of projects on a single commercial platform,
+  \texttt{github.com} --- a systemic single point of failure. (Software Heritage, Acad-Hal-Fr
+  analysis, v1.0, 2025.)}
+  \label{fig:fr-corpus}
+\end{figure}
+
+Recognition, not just adoption, has begun to follow. In 2022 the French ministry created a standing
+national award for free and open-source research software --- the \emph{Prix science ouverte du
+logiciel libre de la recherche} --- and its inaugural edition drew 129 nominations, from which the
+jury singled out four winners and six honourable mentions
+(\emph{accessit})~\autocite{ResearchSoftwareAward2023}. The roll of winners shows exactly the breadth
+this note keeps asserting, made concrete: the proof assistant \emph{Coq} from computer
+science,\footnote{\url{https://coq.inria.fr/}} \emph{scikit-learn} from machine
+learning,\footnote{\url{https://scikit-learn.org/}} \emph{Faust} from computer music and
+audio,\footnote{\url{https://faust.grame.fr/}} and \emph{Gammapy} from gamma-ray
+astronomy\footnote{\url{https://gammapy.org/}} --- four fields, one practice. The prize is now
+annual; its second edition, in 2023, drew 66 projects~\autocite{PrixSwLibre2023}. The reasoning
+behind it --- why a country should reward research software at all, and how a jury should judge it
+--- has itself been written up as a reusable blueprint for other nations to
+copy~\autocite{ResearchSoftwareAward2023}. Career credit for the people who write software, the very
+thing this chapter's call to action will ask of institutions, is here already national policy.
+
+\takeaway{Coq, scikit-learn, Faust, Gammapy: a national award whose winners span four disciplines ---
+software matters in every field, made concrete.}
+
+\section{The policy landscape}\label{sec:policy-backs}
 
 The direction of travel, at every level, is now unambiguous. The \textbf{UNESCO Recommendation on
 Open Science} (2021) calls for source code to be released openly, and for open-science
@@ -56,6 +103,26 @@ same: France's second \textbf{National Plan for Open Science} names Software Her
 standing College for research software carries the agenda forward~\autocite{PNSO2_2021,osec_2022}.
 Strip away the acronyms and a single instruction remains: archive in Software Heritage, and identify
 with a \textsc{swhid}.
+
+There is, though, a difference in \emph{kind} that France draws more sharply than anyone, and
+it is worth making explicit.\takeaway{Soft policy urges; France's 2016 \emph{loi Lemaire} and
+its 2021 Prime-Ministerial directive \emph{compel} open source by default.} Everything cited so
+far --- recommendations, plans, roadmaps, funding conditions --- is \emph{soft} policy: it urges
+and it nudges, and a determined laggard can still decline. France has also \emph{legislated}. The
+2016 \emph{Law for a Digital Republic} --- the \enquote{loi Lemaire} --- made the source code of
+software both \emph{produced by} and \emph{received by} the administration an administrative
+document, open by default and communicable on request~\autocite{LoiLemaire2016}. A 2021 directive
+of the Prime Minister then turned the principle into machinery: it opens public-administration
+data and source code by default, stands up a dedicated \enquote{open-source software mission}, and
+installs in each ministry a network of data, algorithm and source-code officers --- the
+\textsc{amdac} --- charged with carrying the obligation out~\autocite{PMdirective2021}. The effect
+is not a pledge but a pipeline: code written for the French public administration now flows into
+Software Heritage through \texttt{code.gouv.fr}, on the authority of a statute rather than a
+recommendation.\footnote{The public-sector codebase is published and archived through
+\url{https://code.gouv.fr/} (formerly \texttt{code.etalab.gouv.fr}); see
+\url{https://www.etalab.gouv.fr/code-etalab-gouv-fr-les-codes-sources-de-logiciels-publies-par-des-organismes-publics}.}
+The distinction is not pedantry: a recommendation tells you what good practice looks like; a law
+makes its absence a fault.
 
 \begin{figure}[htbp]
   \centering
@@ -79,6 +146,31 @@ Software Heritage, with the grant referenced (Figure~\ref{fig:anr}).
   stored in Software Heritage under a free licence, with the ANR grant referenced.}
   \label{fig:anr}
 \end{figure}
+
+Step back from France, though, and the same instruction reappears in jurisdiction after jurisdiction
+--- which is what turns a national success story into a landscape. At the European level it predates
+all of them: already in 2018 the Commission formally called on every Member State to adopt a national
+action plan \enquote{reinforcing the preservation and re-use of scientific information} ---
+publications, datasets, and other research outputs, source code among
+them~\autocite{ECRec2018_790}. France's plan is, in this light, one Member State doing what the
+Commission asked; others are doing the same. Nor does the agreement stop at Europe's edge: in the
+United States, NASA's open science-information policy makes the software behind agency-funded research
+an expected, openly available output in its own right, alongside the data and the
+papers~\autocite{NASA_OSI_2022}.
+
+Funders, too, have moved beyond France, and tellingly the lever several of them reach for is the one
+this note keeps coming back to --- recognition. Germany's Deutsche Forschungsgemeinschaft, the
+country's central research funder, added \emph{research software} to its template academic CV in 2022,
+so that the code a researcher writes can be listed, and weighed, next to their
+publications~\autocite{DFG_CV_2022}. And the funders have begun to act not one agency at a time but
+together: Science Europe --- the association of Europe's major public research-funding and
+research-performing organisations --- has taken research software into its open-science work, with a
+dedicated software strand at the 2022 Open Science European Conference~\autocite{osec_2022}. The
+signatures differ, the languages differ, the legal instruments differ; the instruction does not.
+
+The full set of instruments behind this convergence --- international, European, and national,
+deduplicated into one matrix with issuing body, jurisdiction, date, mandate, and link --- is
+collected in Appendix~\ref{app:policy}.
 
 \takeaway{The policy is unambiguous: archive in Software Heritage, identify with a \textsc{swhid}.}
 
@@ -156,6 +248,55 @@ verifiable, citable, and recoverable independently of any commercial platform.
 \end{quote}
 A funder can audit compliance across a whole portfolio with one HAL-API call
 (\S\,\ref{ch:ardc}'s \texttt{collCode\_s} query), no per-project chasing required.
+\end{callout}
+
+\subsection{A working agenda for funders and policymakers}
+
+The three scales above are things one person can act on tomorrow. But the deepest leverage sits one
+level up --- with those who write the calls, set the rules, and sign the cheques --- and there the
+choices are systemic, not personal. Four of them, in particular, decide whether the practice this
+note describes becomes the default or stays a curiosity. They are worth stating plainly, as an
+agenda.
+
+\emph{First, default to open.} Software produced with public money should be open source as a matter
+of course, and any departure should have to be justified --- not the reverse. This is the European
+line (\S\ref{sec:policy-backs}) taken to its conclusion: where the EOSC SIRS report asks that
+deviations be \enquote{properly motivated}~\autocite{SIRSReport2020}, a funder can go one step
+further and make open the default, putting the burden of proof squarely on the exception.
+Closed-by-default is the costly choice; it is the one that should have to argue for itself.
+
+\emph{Second, avoid balkanisation.} The instinct, once a need is recognised, is for each institution
+to stand up its own archive, its own identifiers, its own registry. That way lies a patchwork of
+silos that do not interoperate and that each carry the full cost of survival alone. The alternative
+is to build on shared, open, non-profit infrastructure --- Software Heritage for the source code
+itself --- so that effort accumulates instead of fragmenting.
+
+\emph{Third, fund the commons as a commons.} A mutualised infrastructure is not free because it is
+shared; it needs recurrent, predictable funding rather than one-off project grants, and it must be
+evaluated as the long-lived service it is. Above all it must be funded for what it predominantly
+\emph{is}: not a server bill, but the people who curate, maintain, and run it. The human component is
+the larger part of the cost, and the first to be cut when infrastructure is mistaken for hardware.
+
+\emph{Fourth, incentivise intelligently.} If we want researchers to write, share, and maintain good
+software, the careers of the people who do it must reward exactly that --- high-quality
+contributions, counted as first-class scholarly output. The temptation is to reach instead for a
+number (papers, citations, downloads) and let it stand in for worth. Goodhart's law warns where that
+ends: \enquote{when a measure becomes a target, it ceases to be a good
+measure}~\autocite{strathern1997improving}. Keep a human in the loop, and judge contributions on
+their merits rather than on a metric that will, predictably, be gamed.
+
+\begin{callout}{A four-point agenda for research-software policy}
+\small For those who design the rules, not just follow them:
+\begin{enumerate}[nosep,leftmargin=*]
+  \item \textbf{Default to open.} Publicly funded research software is open source by default;
+        exceptions \emph{must} be justified.
+  \item \textbf{Avoid balkanisation.} Build on common, shared, open, non-profit infrastructure
+        (Software Heritage), not per-institution silos.
+  \item \textbf{Fund the commons as a commons.} Recurrent funding and proper service evaluation,
+        recognising that the human component is the predominant cost.
+  \item \textbf{Incentivise intelligently.} Count quality contributions in careers; avoid purely
+        numerical indicators; keep a human in the loop.
+\end{enumerate}
 \end{callout}
 
 Software source code is a precious, unique form of knowledge, and for too long we have treated it as
