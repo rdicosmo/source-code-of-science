@@ -277,8 +277,23 @@ populate from your metadata --- and use it to produce the citation you actually 
 
 \section{Cite and credit}
 
-Finally, cite software as you would cite anything else in research: in the bibliography, as a
-first-class reference. For decades there was no proper way to do this, and software citations were
+Before the mechanics, the principle. The FORCE11 \emph{Software Citation Principles} settled what had
+long been contested: software that underpins a result is a legitimate, first-class research product,
+to be cited like any article or dataset, and cited with enough metadata --- authors, version, and a
+\emph{persistent, verifiable} identifier --- to find and credit the exact code a claim relied
+on~\autocite{force11citationprinciples}. That last word, \emph{credit}, is where it gets genuinely
+hard. A research code is rarely the work of one pair of hands, and the contribution that matters is
+rarely only the code: testing, documentation, design, and the unglamorous labour of long-term
+maintenance all earn a place on the author line. \emph{And yet} an attribution mined automatically
+from the \texttt{git} history sees only commits, and quietly writes the non-coding contributors out of
+the record~\autocite{2020GtCitation}. Crediting a collective --- \enquote{The Givaro group} rather
+than a roster of names --- keeps the record honest about a team effort, but at the cost of the
+individual recognition on which academic careers still turn. No bibliography style can resolve that
+tension; what a good one \emph{can} do is carry the version, the licence, and the verifiable
+identifier on every reference, and leave the human judgement of credit to people.
+
+So, finally, the mechanics. Cite software as you would cite anything else in research: in the
+bibliography, as a first-class reference. For decades there was no proper way to do this, and software citations were
 forced into \texttt{@misc} entries that lost the version, the licence, and any verifiable
 identifier~\autocite{2020GtCitation}. The \texttt{biblatex-software} style fixes
 that~\autocite{DiCosmoSEN2020}. It adds four entry types --- \texttt{@software} for a project,

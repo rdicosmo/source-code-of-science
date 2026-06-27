@@ -35,10 +35,11 @@ themselves now carry not one identifier but many, pinpointing their code passage
 And the stakes are real, not niche. French law took the measure of this directly: article~163 of
 the 2022 \enquote{3DS} law required the government to report to Parliament, within eighteen months,
 on the software produced by public research --- a mandate answered in 2023 by the \emph{Rapport
-Boulet}~\autocite{boulet2023etatdeslieux,LoiArticle163_2022}. Surveying the research units
-themselves, it found long-lived, widely-used, high-impact work: half of the software reported was
-more than nine years old, a third had over a hundred users, and nearly two-thirds had impact beyond
-academia --- overwhelmingly released as free and open source. This is not a fringe of scientific
+Boulet}~\autocite{boulet2023etatdeslieux,LoiArticle163_2022}. Built on 1\,331 detailed responses,
+it found long-lived, widely-used, high-impact work: half of the software reported was more than nine
+years old, over a third (36\%) had more than a hundred users, nearly two-thirds (62\%) reported
+impact beyond academia, and almost a quarter (23\%) already fed technology transfer --- and it was
+overwhelmingly open, with only about a tenth kept proprietary. This is not a fringe of scientific
 practice; it is a load-bearing part of it, and it has been going uncared-for.
 
 That survey, though, was deliberately narrow: a stock-take of \emph{production and valorization},
@@ -87,6 +88,23 @@ thing this chapter's call to action will ask of institutions, is here already na
 \takeaway{Coq, scikit-learn, Faust, Gammapy: a national award whose winners span four disciplines ---
 software matters in every field, made concrete.}
 
+And we are no longer measuring this by hand. The French Open Science Monitor we met in
+Chapter~\ref{ch:why} (Figure~\ref{fig:os-monitor}) does not count software paper by paper: it mines
+the open-access literature automatically, with an improved software-mention extractor in the
+\emph{Softcite} lineage --- the same dataset the Chan Zuckerberg Initiative used to train the model
+that surfaced the hidden footprint of open-source software in the biomedical
+literature~\autocite{czi_oss_2022}. Building it on open technologies was always a bet that others
+could run it too --- and the bet is paying off. Under a joint UNESCO and French impulse, the method
+is being generalised into an \textbf{Open Science Monitoring Framework}: a shared, reproducible
+recipe for monitoring open science with open tools, rather than with the proprietary bibliometric
+databases the task has long depended on~\autocite{osmf_unesco_2023}. The software strand of that
+framework has its own dedicated infrastructure --- \textbf{SoFAIR} --- which identifies software
+mentions across the scholarly literature and links each one back to the archived code in Software
+Heritage, closing the loop between a citation in a paper and a verifiable
+\textsc{swhid}~\autocite{sofair2023}. So the very figure that opened our case is itself on the move:
+a national dashboard becoming a worldwide instrument, and what a community can finally measure, it
+can finally choose to value.
+
 \section{The policy landscape}\label{sec:policy-backs}
 
 The direction of travel, at every level, is now unambiguous. The \textbf{UNESCO Recommendation on
@@ -103,6 +121,18 @@ same: France's second \textbf{National Plan for Open Science} names Software Her
 standing College for research software carries the agenda forward~\autocite{PNSO2_2021,osec_2022}.
 Strip away the acronyms and a single instruction remains: archive in Software Heritage, and identify
 with a \textsc{swhid}.
+
+A fair objection is that a report, however specific, is still just a report --- a recommendation can
+sit on a shelf. This one did not. In 2021 the EOSC Association stood up a \emph{Task Force on
+Infrastructures for Quality Research Software}, chartered to foster the tools and services that let
+researchers archive, reference, describe, share, and reuse their software, to raise its quality
+technically and organisationally, and to win recognition for the people who build and maintain
+it~\autocite{EOSC_TaskForce2021}. And in 2022 the \textbf{FAIRCORE4EOSC} project began building it:
+one of its work packages implements the very architecture the SIRS report had sketched, wiring
+Software Heritage to the repositories, publishers, and aggregators around it through concrete
+connectors --- InvenioRDM, Episciences, Dagstuhl, swMATH, Zenodo, OpenAIRE~\autocite{FAIRCORE4EOSC2022}.
+The line runs 2020 report, 2021 task force, 2022 implementation: not a recommendation gathering dust,
+but a blueprint being wired into the European research infrastructure.
 
 There is, though, a difference in \emph{kind} that France draws more sharply than anyone, and
 it is worth making explicit.\takeaway{Soft policy urges; France's 2016 \emph{loi Lemaire} and
@@ -174,6 +204,47 @@ collected in Appendix~\ref{app:policy}.
 
 \takeaway{The policy is unambiguous: archive in Software Heritage, identify with a \textsc{swhid}.}
 
+\begin{callout}{A policy we helped shape: the 2019 ``upload filters'' episode}
+\small
+Policy is not only something that backs us from above --- it is something a community can help write.
+When the European Union finalised its \textbf{Copyright Directive} (Directive (EU)~2019/790) in the
+spring of 2019, one provision --- the so-called \enquote{upload filters} --- would have obliged
+platforms to screen everything their users post against rights-holders'
+databases~\autocite{EU_CopyrightDir2019}. Drafted with music and video in mind, it swept up the entire
+machinery of modern software development: the forges where code is written, the distribution
+platforms that carry it (Maven, PyPI, CRAN, CTAN), and preservation archives such as Software
+Heritage. Source code that legitimately reuses or quotes other source code would have been caught in a
+filter built for pop songs. After sustained engagement from the open-source and research-software
+community --- in which Software Heritage helped raise policymakers' awareness, briefed NGOs, and
+opened channels to governments --- an explicit exclusion was obtained for open-source software
+developing \emph{and} sharing platforms, and the \enquote{not-for-profit} qualifier that would have
+gutted it was struck. The lesson is worth keeping: the same community that asks for policy to protect
+its infrastructure can, when it shows up, keep bad policy from breaking it.
+\end{callout}
+
+\section{The engine that carries it out: the OSPO}
+
+Policy written at the top does not execute itself. A national plan can name Software Heritage and the
+\textsc{swhid}, a funder can ask for an open licence and a deposit --- and still nothing changes in a
+lab unless someone, locally, turns the principle into the default path. In industry that someone has a
+name: the \emph{Open Source Program Office}, or \textsc{ospo} --- a small competence centre that owns
+an organisation's open-source strategy, its compliance, and its security, and that has by now become
+common enough to warrant an annual census of its own~\autocite{lfospo2024,todogroup_ospo}.
+
+Universities are standing up the same thing, adapted to research. A university \textsc{ospo} is the
+local execution engine that connects national open-science policy to the daily life of a group: it
+makes open-by-default the path of least resistance, and absorbs the licence and compliance questions
+so that researchers need not; it runs the archiving and citation plumbing --- the
+\texttt{CITATION.cff} file, the \textsc{swhid}, the curated deposit --- so that \textsc{ardc}
+(Chapter~\ref{ch:ardc}) becomes routine rather than heroic; it trains people in reproducibility and
+continuous integration; and it sees to it that software contributions are recognised and counted in
+careers. Registries such as OSPO-RADAR (Chapter~\ref{ch:ardc}) are exactly the kind of catalogue such
+an office keeps current. In short, the \textsc{ospo} is where the policy of the previous section meets
+the practice of the whole of this note.
+
+\takeaway{Policy needs a local engine: the university OSPO is where open-science mandates become
+ordinary research practice.}
+
 \section{The wider mission: resilience, sovereignty, transparent AI}
 
 Open science is only one of the things this archive makes possible, and stepping back reveals why it
@@ -181,7 +252,14 @@ matters beyond the library. The same uniform record of the world's source code i
 several urgent agendas at once. It underpins \emph{software supply-chain traceability}: an
 intrinsic identifier is exactly what a software bill of materials (an \textsc{sbom}) needs, and what
 regulators reaching for the EU Cyber Resilience Act will
-require~\autocite{EU_CRA_2024,barais2025swhidcyber}. It underpins
+require~\autocite{EU_CRA_2024,barais2025swhidcyber}. And the scale of that dependency problem is not
+guesswork: industry audits find open-source components in \(96\)--\(97\%\) of the commercial codebases
+they examine, making up around three-quarters (some \(77\%\)) of the code, with an average of over
+five hundred distinct open-source components in a single
+application~\autocite{ossra2024,ossra2025}. Modern software is, by an overwhelming margin, assembled
+rather than written --- and every one of those components can move, change, or quietly disappear, so
+preserving the \emph{dependency graph}, not merely the top-level repository, is the whole of the
+supply-chain argument. It underpins
 \emph{transparent AI}: the very large code corpora that train today's models --- The Stack, on which
 StarCoder is built --- are drawn from Software Heritage, and provenance for that data is becoming a
 legal as well as an ethical demand~\autocite{StarCoder2_2024}. And it underpins \emph{resilience}:
