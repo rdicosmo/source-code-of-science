@@ -1,4 +1,4 @@
-\chapter{Why this note}
+\chapter{Why these notes}
 \label{ch:why}
 
 \begin{objectives}\small
@@ -22,7 +22,7 @@ model that was simulated, the data that were cleaned, the figure that was produc
 And yet, when a published result rests on code, that code is too often the first thing we lose.
 The article is archived, typeset, given a DOI; the data, increasingly, are deposited in a
 repository; the software --- the one artifact that actually produced the numbers --- is left on
-a personal web page, in a forge that may close next year, or nowhere at all. This note is about
+a personal web page, in a forge that may close next year, or nowhere at all. These notes are about
 taking that software as seriously as we take the paper, and about the concrete,
 already-available practice that lets you do so --- starting with your next paper.
 
@@ -120,9 +120,9 @@ is piled on top.
 \textsc{ardc}.}
 
 And yet, collectively, we have not been taking good care of this precious form of
-knowledge~\autocite{SwhCACM2018}. Closing that gap is the whole purpose of this note.
+knowledge~\autocite{SwhCACM2018}. Closing that gap is the whole purpose of these notes.
 
-\section{How to read this note}
+\section{How to read these notes}
 
 The good news is that \textsc{ardc} is not aspirational: the practice exists, the tools are built,
 and you can adopt them today. It rests on two foundations --- the Software Heritage archive, which
@@ -132,33 +132,45 @@ that lets you point at exactly the code you mean. Chapter~\ref{ch:ardc} makes ea
 hands-on. We will meet the FAIR principles along the way and then, deliberately, go \emph{beyond}
 them, for the reasons the next chapter makes precise~\autocite{NatureSD2026}.
 
-This note is meant to be read \emph{and} done. The practical chapters end with \textbf{Hands-on}
+These notes are meant to be read \emph{and} done. The practical chapters end with \textbf{Hands-on}
 boxes you run on a repository of your choice --- your own code, a library you depend on, a result
 you want to cite. Margin notes flag the one idea worth carrying away from each section; each chapter
 opens with its \textbf{learning objectives}; and any unfamiliar term --- \textsc{swhid}, snapshot,
-forge, qualified identifier --- is defined in the Glossary (Appendix~\ref{app:glossary}). And the
-note practises what it preaches: it is itself archived in Software Heritage, and the Colophon shows
-you how to recompute and verify its own identifier --- the entire workflow, applied to the very
-document in your hands.
+forge, qualified identifier --- is defined in the Glossary (Appendix~\ref{app:glossary}). And these
+notes practise what they preach: they are themselves archived in Software Heritage, and the Colophon
+shows you how to recompute and verify their own identifier --- the entire workflow, applied to the
+very document in your hands.
 
 You do not need to be a computer scientist to use any of this. Different readers will want
 different routes through it:
 
 \begin{callout}{Reading paths}
-\begin{description}[nosep,leftmargin=2.6cm,style=nextline,font=\bfseries\sffamily]
-  \item[Researcher] read straight through; Chapters~\ref{ch:ardc} (the practice) and
-        \ref{ch:repro} (reproducibility and artifact evaluation) are where the work gets done.
-  \item[Developer / intern] if you build software but are not (yet) writing papers, go to
-        Chapter~\ref{ch:ardc}, \S\,Archive, plus the licence advice and
-        Appendix~\ref{app:cookbook}; the citation, artifact-evaluation, and policy chapters are
-        optional.
-  \item[Already convinced] skip to Chapter~\ref{ch:identifiers} (what a \textsc{swhid} is) and
-        Chapter~\ref{ch:ardc} (how to use it); the foundations are there if you want them.
-  \item[Editor / funder / policy maker] Chapters~\ref{ch:repro}--\ref{ch:outlook} and the
-        ready-to-use boxes therein are addressed to you; you need not run the labs.
-\end{description}
+\small Pick a row and follow it; the rest can wait. The chapters do build on one another --- the
+\textsc{swhid} (4) rests on the data model (3), and the practical core (5) uses both --- so a skipped
+chapter is there when you need it.
+\smallskip
+
+\centering
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{@{}l*{7}{c}c@{}}
+\toprule
+\textbf{Reader} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{App.}\\
+\midrule
+Researcher                     & \pathcore & \pathskip & \pathskip & \pathskim & \pathcore & \pathskim & \pathskip & A\\
+Developer / intern             & \pathskim & \pathskip & \pathskip & \pathskim & \pathcore & \pathskip & \pathskip & A\\
+Reviewer / editor / AEC        & \pathcore & \pathskip & \pathskip & \pathcore & \pathskim & \pathcore & \pathskip & ---\\
+Funder / policy maker          & \pathcore & \pathskip & \pathskip & \pathskip & \pathskip & \pathskip & \pathcore & E\\
+Full course / student          & \pathcore & \pathcore & \pathcore & \pathcore & \pathcore & \pathcore & \pathcore & all\\
+\bottomrule
+\end{tabular}
+
+\smallskip
+{\footnotesize \pathcore~core \quad \pathskim~skim / optional \quad \pathskip~skip. \quad
+\textbf{1}~Why \enspace \textbf{2}~Beyond FAIR \enspace \textbf{3}~Foundations \enspace
+\textbf{4}~The \textsc{swhid} \enspace \textbf{5}~\textsc{ardc} \enspace
+\textbf{6}~Reproducibility \enspace \textbf{7}~Policy.}
 \end{callout}
 
 If you write or run code for your research --- whether a few lines of analysis or a library
-maintained for decades --- this note is for you. The tools are ready; the habit is the only thing
+maintained for decades --- these notes are for you. The tools are ready; the habit is the only thing
 missing. Let us build it, starting with your next paper.

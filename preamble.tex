@@ -64,6 +64,12 @@
 % Key-takeaway margin note.
 \newcommand{\takeaway}[1]{\marginnote{\footnotesize\sffamily\itshape\color{swhaccent}#1}}
 
+% Reading-path marks for the audience guide (core / skim / skip).
+\newcommand{\pathcore}{\tikz[baseline=-0.5ex]\fill[swhaccent](0,0)circle(1.8pt);}
+\newcommand{\pathskim}{\tikz[baseline=-0.5ex]{\draw[swhaccent,line width=0.4pt](0,0)circle(1.8pt);%
+  \fill[swhaccent](0,0)--(90:1.8pt) arc(90:270:1.8pt)--cycle;}}
+\newcommand{\pathskip}{\textcolor{swhdark!30}{\textperiodcentered}}
+
 % SWHID display helper (small monospace, allows breaks).
 \newcommand{\swhid}[1]{\texttt{\small #1}}
 
