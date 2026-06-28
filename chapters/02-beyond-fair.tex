@@ -148,6 +148,34 @@ Collaborate}~\autocite{NatureSD2026}.
 \takeaway{\textbf{CODE} --- Open, Document, Execute, Collaborate --- and only \emph{Open} is
 mandatory.}
 
+Above the mandatory rung, most of the work is simply choosing among well-worn tools --- none of them
+required, all of them ordinary. Table~\ref{tab:toolbox} names the usual suspects for the
+\textbf{Document} and \textbf{Execute} rungs; the point is not to use all of it, but to know the menu
+exists.
+
+\begin{table}[htbp]
+  \centering\small
+  \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{3.3cm} X@{}}
+    \toprule
+    \textbf{Concern} & \textbf{Common tools (pick what fits; none mandatory)} \\
+    \midrule
+    Version control & \texttt{git} --- used by more than nine in ten professional
+      developers~\autocite{stackoverflow2022} --- with Conventional Commits, semantic versioning, and
+      tagged releases that auto-archive to Zenodo and Software Heritage \\
+    Build & Make, CMake, \texttt{cargo}, \texttt{poetry}, \texttt{npm} \\
+    Scientific workflows & Snakemake, Nextflow, CWL \\
+    Pinned environments & conda, pixi, uv; Nix, Guix; Docker, Apptainer \\
+    Continuous integration & GitHub Actions, GitLab CI \\
+    Executable papers & Jupyter notebooks served by BinderHub \\
+    Reproducible builds & bit-for-bit determinism (\url{https://reproducible-builds.org/}) \\
+    \bottomrule
+  \end{tabularx}
+  \caption[A toolbox for the CODE rungs]{A sampling of the tooling behind the \textbf{Document} and
+  \textbf{Execute} rungs of CODE. None of it is mandatory --- the only required step remains
+  \textbf{Open} (publish and archive) --- but knowing the menu is half the battle.}
+  \label{tab:toolbox}
+\end{table}
+
 Notice where the single hard requirement lands: \emph{publish and archive}. Everything above it is
 a ladder you climb as far as your project warrants. This is liberating, not lax --- it says, in
 effect, that the worst outcome is not imperfect software but \emph{lost} software, and that
