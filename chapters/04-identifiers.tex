@@ -203,8 +203,14 @@ Reference a routine you care about so the prose stays short but the link stays c
 full qualified \textsc{swhid} (the \texttt{https://archive.softwareheritage.org/} resolver prefix
 followed by \texttt{swh:1:cnt:\textellipsis;origin=\textellipsis;path=\textellipsis;lines=\textellipsis})
 in the \emph{target} of a \texttt{\textbackslash href}, and show only the core \textsc{swhid} as the
-visible text. Click it: the archive should open exactly the lines you meant. You now have readable
-prose and a working permalink in the same breath.
+visible text. The result reads short but resolves in full ---
+\swhref{swh:1:cnt:43a6b232768017b03da934ba22d9cc3f2726a6c5}{swh:1:cnt:43a6b232768017b03da934ba22d9cc3f2726a6c5;origin=https://github.com/rdicosmo/parmap;anchor=swh:1:rel:373e2604d96de4ab1d505190b654c5c4045db773;path=/src/parmap.ml;lines=192-228}
+shows only \texttt{swh:1:cnt:43a6b232\textellipsis}, yet the link behind it carries the
+\texttt{origin}, \texttt{path}, and \texttt{lines} and opens exactly those lines in the archive.
+Click it to check. You now have readable prose and a working permalink in the same breath. Rather than
+hand-build the \texttt{\textbackslash href} each time, these notes use a one-line
+\texttt{\textbackslash swhref} helper --- visible core, full qualified target --- which you will meet
+again in Chapter~\ref{ch:ardc}.
 \end{handson}
 
 We now have what the rest of these notes need: a name we can trust, that identifies code exactly,

@@ -150,6 +150,19 @@ straight to it in the archive and see where it came from. And when no precise ve
 when you simply want to point at ``the project, as the archive saw it'' --- an origin-qualified
 \textsc{swhid} serves as a Wayback-machine-style pointer into the crawl history.
 
+\begin{callout}{Which \textsc{swhid} to cite? When in doubt, a directory}
+\small To reference a version of the code \emph{as a whole}, Software Heritage recommends a full,
+qualified \emph{directory} (\texttt{dir}) \textsc{swhid}~\autocite{swhfaq_swhidtype}: print the short
+core \texttt{dir} identifier, and carry the full qualified one in the hyperlink behind it --- exactly
+the split the \texttt{\textbackslash swhref} helper makes. The core \texttt{dir} identifier is the most
+useful one for reproducibility, because it is computed \emph{locally, from the directory's content
+alone}: it stays the same no matter which release, commit, or repository that directory belongs to, and
+anyone can recompute it from a copy of the files. A \texttt{rev} identifier, by contrast, is tied to
+one commit's history, and a bare \texttt{cnt} names only a single file. So prefer the directory, and
+add an \texttt{anchor} qualifier linking it to a release or revision, so a reader can still recover the
+version and origin from the archive.
+\end{callout}
+
 Here is the last rung made concrete --- the \texttt{simplemapper} routine of the Parmap library,
 named to the exact line:
 
