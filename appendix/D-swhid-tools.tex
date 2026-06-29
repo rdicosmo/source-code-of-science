@@ -8,18 +8,19 @@ service would betray the idea. Now that the \textsc{swhid} is an international s
 in several languages, at several levels of ambition --- and they all compute, for the same bytes,
 the same name. That is the standard doing its job.
 
-It helps, though, to keep one distinction sharp, because the ecosystem is easy to misread: some of
-these tools \emph{compute} a \textsc{swhid} from bytes, and others, which look superficially similar,
-do not. Two command-line tools \emph{calculate and verify} a \textsc{swhid} from local files --- the
-Rust reference implementation \texttt{swhid-rs}, released under the \textsc{mit} licence and the one
-these notes reach for first, and the Python \texttt{swh.model} / \texttt{swh identify} CLI, the most
-complete in coverage (content, directory, revision, and snapshot). A few language libraries do the
-same arithmetic \emph{inside your own programs}. And a separate set of companion tools do \emph{not}
-compute a \textsc{swhid} at all, though they are easily mistaken for tools that do: \texttt{swh
-scanner} reports what the archive already holds, the \emph{updateswh} extension and the
-\emph{Permalinks} tab \emph{fetch} a ready-made \textsc{swhid} from the archive, and the resolvers
-turn a \textsc{swhid} back into the code it names. Table~\ref{tab:swhid-tools} sorts the ecosystem
-along exactly that line.
+It helps, though, to keep one distinction sharp, because the ecosystem is easy to misread. To
+\emph{obtain or check} the \textsc{swhid} of a software artefact, you want one of the dedicated
+calculators: two command-line tools that \emph{compute and verify} a \textsc{swhid} from local files
+--- the Rust reference implementation \texttt{swhid-rs}, released under the \textsc{mit} licence and
+the one these notes reach for first, and the Python \texttt{swh.model} / \texttt{swh identify} CLI,
+the most complete in coverage (content, directory, revision, and snapshot) --- or, to do the same
+arithmetic \emph{inside your own programs}, one of a few language libraries. The rest are
+\emph{companion} tools, built for other jobs: \texttt{swh scanner} reports what the archive already
+holds, the \emph{updateswh} extension and the \emph{Permalinks} tab \emph{fetch} a ready-made
+\textsc{swhid} from the archive, and the resolvers turn a \textsc{swhid} back into the code it names.
+Several of these do compute \textsc{swhid}s internally --- \texttt{swh scanner}, for one, hashes your
+files precisely so it can look them up --- but none is the blessed way to \emph{get} an artefact's
+name. Table~\ref{tab:swhid-tools} sorts the ecosystem along exactly that line.
 
 \begingroup
 \small
@@ -68,12 +69,13 @@ along exactly that line.
         \textsc{swhid}{s} in-process.
         \scriptsize\url{https://github.com/andrew/swhid-go} \\
     \midrule
-    \multicolumn{3}{@{}l@{}}{\sffamily\bfseries\small Companion tools --- they do \emph{not} compute a \textsc{swhid}} \\
+    \multicolumn{3}{@{}l@{}}{\sffamily\bfseries\small Companion tools --- built for other jobs, not for obtaining a \textsc{swhid}} \\
     \addlinespace
     \texttt{swh scanner}
       & Python
       & Walks a working tree and tells you which files and directories are \emph{already archived}
-        in Software Heritage --- coverage, not computation.
+        in Software Heritage; it hashes them to \textsc{swhid}{s} to look them up, but reporting
+        coverage --- not handing you a name to cite --- is its job.
         \texttt{pip install swh.scanner}; \texttt{swh scanner scan ./repo}.
         \scriptsize\url{https://gitlab.softwareheritage.org/swh/devel/swh-scanner} \\
     \addlinespace
@@ -97,9 +99,10 @@ along exactly that line.
 
 \noindent A practical rule of thumb: reach for \texttt{swhid-rs} when you want the
 reference behaviour and a single fast binary; fall back to \texttt{swh identify} for snapshots and
-the deeper archive workflow. But keep the grouping in mind --- only the tools in the first two rows
-actually \emph{compute} a \textsc{swhid}, so only they can \emph{verify} that a name still matches the
-bytes; the browser route fetches a name the archive already computed, and the resolvers turn a name
-back into code, but neither recomputes anything. For a one-off \emph{lookup}, then, you need install
-nothing at all --- the resolver at \url{https://archive.softwareheritage.org/} will take any
-\textsc{swhid} and hand you back the code it names.
+the deeper archive workflow. But keep the grouping in mind: the first two groups are the ones you
+reach for to \emph{obtain or verify} an artefact's name, while the companion tools are built for
+other jobs --- the browser route fetches a name the archive already computed, the resolvers turn a
+name back into code, and \texttt{swh scanner} hashes your tree only to check what is already archived.
+For a one-off \emph{lookup}, then, you need install nothing at all --- the resolver at
+\url{https://archive.softwareheritage.org/} will take any \textsc{swhid} and hand you back the code it
+names.
