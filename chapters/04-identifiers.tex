@@ -169,15 +169,19 @@ as Wikidata property P6138~\autocite{isoiec18670}. And it is not theoretical for
 the Colophon explains, this document is named and verified by its own \textsc{swhid} --- which is
 also exactly why it cannot contain that identifier inside itself.
 
-\begin{callout}{Getting a SWHID: three ways, no Rust required}
-\small You do \emph{not} need a particular toolchain to obtain or check a \textsc{swhid}; pick the
-one that fits your setup. \textbf{(1) Zero install:} the archive's red \emph{Permalinks} tab and the
-\emph{updateswh} browser extension hand you a ready-made qualified \textsc{swhid} from any browser.
-\textbf{(2) Python:} \texttt{pip install 'swh.model[cli]'} gives the \texttt{swh identify} command.
-\textbf{(3) The Rust reference tool}, used in the labs below, is the fast, standalone option:
-\texttt{cargo install swhid}. Appendix~\ref{app:swhid-tools} compares all three. \emph{Setting one
-up is your Lab~0}; for a class, the zero-install path (1) or a shared container avoids per-machine
-setup.
+\begin{callout}{Getting a SWHID: retrieve one, or compute one}
+\small Two different needs, and it is worth not confusing them. If the code is \emph{already in the
+archive} and you only want its name, nothing need be installed: the archive's red \emph{Permalinks}
+tab hands you a fully qualified \textsc{swhid} for whatever file, directory, or line range you are
+looking at, and the \emph{updateswh} browser extension will archive a GitHub/GitLab/Bitbucket
+repository and then do the same. But that is the archive \emph{reporting} a name it computed --- not a
+check of your own bytes. To \emph{compute} a \textsc{swhid} from local files, or to \emph{verify} that
+a claimed one still matches them --- offline, with no archive and no registry in the loop --- you need
+a command-line tool: \textbf{Python} (\texttt{pip install 'swh.model[cli]'}, the \texttt{swh identify}
+command) or the \textbf{Rust reference tool} used in the labs below (\texttt{cargo install swhid}).
+Appendix~\ref{app:swhid-tools} sorts the ecosystem by exactly this question --- what computes a
+\textsc{swhid}, and what is built for something else. \emph{Installing one is your Lab~0}; for a class,
+a shared container avoids per-machine setup.
 \end{callout}
 
 \begin{handson}[Hands-on: watch the name follow the bytes]

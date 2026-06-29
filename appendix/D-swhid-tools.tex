@@ -8,24 +8,27 @@ service would betray the idea. Now that the \textsc{swhid} is an international s
 in several languages, at several levels of ambition --- and they all compute, for the same bytes,
 the same name. That is the standard doing its job.
 
-For everyday work you need only two of them. The \emph{reference implementation} is
-\texttt{swhid-rs}, written in Rust and released under the \textsc{mit} licence; it tracks the ISO
-specification directly and is the tool these notes reach for first. The Python
-\texttt{swh.model} package (the \texttt{swh identify} command) remains the most complete in
-coverage --- snapshots, deposits, the full archive toolchain --- and \texttt{swh scanner} answers
-the complementary question of \emph{what the archive already holds}. The rest of the table records
-the alternatives you may meet in the wild, and the no-install resolvers that turn a \textsc{swhid}
-back into the code it names.
+It helps, though, to keep one distinction sharp, because the ecosystem is easy to misread: some of
+these tools \emph{compute} a \textsc{swhid} from bytes, and others, which look superficially similar,
+do not. Two command-line tools \emph{calculate and verify} a \textsc{swhid} from local files --- the
+Rust reference implementation \texttt{swhid-rs}, released under the \textsc{mit} licence and the one
+these notes reach for first, and the Python \texttt{swh.model} / \texttt{swh identify} CLI, the most
+complete in coverage (content, directory, revision, and snapshot). A few language libraries do the
+same arithmetic \emph{inside your own programs}. And a separate set of companion tools do \emph{not}
+compute a \textsc{swhid} at all, though they are easily mistaken for tools that do: \texttt{swh
+scanner} reports what the archive already holds, the \emph{updateswh} extension and the
+\emph{Permalinks} tab \emph{fetch} a ready-made \textsc{swhid} from the archive, and the resolvers
+turn a \textsc{swhid} back into the code it names. Table~\ref{tab:swhid-tools} sorts the ecosystem
+along exactly that line.
 
 \begingroup
 \small
 \setlength{\extrarowheight}{2pt}
 \begin{table}[htbp]
   \centering
-  \caption[SWHID tool implementations]{Implementations and resolvers for the \textsc{swhid}
-  standard (ISO/IEC~18670). The Rust tool \texttt{swhid-rs} is the reference implementation; the
-  Python \texttt{swh.model} CLI is the most feature-complete. Resolvers need no installation at
-  all.}
+  \caption[SWHID tool implementations]{Implementations and companion tools for the \textsc{swhid}
+  standard (ISO/IEC~18670), grouped by job: what \emph{computes} a \textsc{swhid} --- at the command
+  line, or as a library --- and what is built for something else (scanning, archiving, resolving).}
   \label{tab:swhid-tools}
   \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{2.5cm}%
                                   >{\raggedright\arraybackslash}p{2.0cm}%
@@ -33,6 +36,8 @@ back into the code it names.
     \toprule
     \textbf{Name} & \textbf{Language /\newline ecosystem} & \textbf{What it does \& how to use it} \\
     \midrule
+    \multicolumn{3}{@{}l@{}}{\sffamily\bfseries\small Compute (and verify) a \textsc{swhid} at the command line} \\
+    \addlinespace
     \texttt{swhid-rs}
       & Rust \newline (\textsc{mit})
       & \emph{Reference implementation} of ISO/IEC~18670. Computes and verifies core
@@ -48,38 +53,43 @@ back into the code it names.
         \texttt{-{}-verify}. \texttt{pip install 'swh.model[cli]'}, then e.g.\
         \texttt{swh identify -{}-type snapshot repo.git/}.
         \scriptsize\url{https://gitlab.softwareheritage.org/swh/devel/swh-model} \\
+    \midrule
+    \multicolumn{3}{@{}l@{}}{\sffamily\bfseries\small Compute a \textsc{swhid} inside your own program (libraries)} \\
+    \addlinespace
+    \texttt{swhid} for OCaml
+      & OCaml
+      & A community library (OCamlPro) to parse, build, and compute \textsc{swhid}{s} from OCaml
+        code. \texttt{opam install swhid}.
+        \scriptsize\url{https://github.com/OCamlPro/swhid} \\
+    \addlinespace
+    \texttt{swhid-go}, \texttt{swhid-ruby}
+      & Go, Ruby
+      & Independent library ports of the standard for the Go and Ruby toolchains --- compute
+        \textsc{swhid}{s} in-process.
+        \scriptsize\url{https://github.com/andrew/swhid-go} \\
+    \midrule
+    \multicolumn{3}{@{}l@{}}{\sffamily\bfseries\small Companion tools --- they do \emph{not} compute a \textsc{swhid}} \\
     \addlinespace
     \texttt{swh scanner}
       & Python
       & Walks a working tree and tells you which files and directories are \emph{already archived}
-        in Software Heritage --- the complement to computing a name.
+        in Software Heritage --- coverage, not computation.
         \texttt{pip install swh.scanner}; \texttt{swh scanner scan ./repo}.
         \scriptsize\url{https://gitlab.softwareheritage.org/swh/devel/swh-scanner} \\
     \addlinespace
     \emph{updateswh} \newline (Permalinks)
       & Browser \newline extension
-      & The point-and-click route: a button on GitHub / GitLab / Bitbucket pages that triggers
+      & Point-and-click in the browser: a button on GitHub / GitLab / Bitbucket pages that triggers
         archival and then exposes the artifact's \textsc{swhid} via the archive's \emph{Permalinks}
-        tab. No local install of a hashing tool needed.
+        tab. \emph{Fetches} a name from the archive; computes nothing locally.
         \scriptsize\url{https://www.softwareheritage.org/browser-extensions/} \\
     \addlinespace
     Archive \& \texttt{n2t.org} resolvers
       & Web service \newline (no install)
-      & Turn a \textsc{swhid} \emph{back} into code: paste it after
+      & The reverse direction --- turn a \textsc{swhid} \emph{back} into code: paste it after
         \texttt{https://archive.softwareheritage.org/} to browse the bytes, or resolve via the
         \texttt{n2t.org} name-resolver (\texttt{https://n2t.net/}).
         \scriptsize\url{https://archive.softwareheritage.org/} \\
-    \addlinespace
-    \texttt{swhid} for OCaml
-      & OCaml
-      & A community library (OCamlPro) to parse, build and manipulate \textsc{swhid}{s}.
-        \texttt{opam install swhid}.
-        \scriptsize\url{https://github.com/OCamlPro/swhid} \\
-    \addlinespace
-    \texttt{swhid-go}, \texttt{swhid-ruby}
-      & Go, Ruby
-      & Independent ports of the standard for Go and Ruby toolchains.
-        \scriptsize\url{https://github.com/andrew/swhid-go} \\
     \bottomrule
   \end{tabularx}
 \end{table}
@@ -87,6 +97,9 @@ back into the code it names.
 
 \noindent A practical rule of thumb: reach for \texttt{swhid-rs} when you want the
 reference behaviour and a single fast binary; fall back to \texttt{swh identify} for snapshots and
-the deeper archive workflow; and remember that for a one-off check you need install nothing at all
---- the resolver at \url{https://archive.softwareheritage.org/} will take any \textsc{swhid} and
-hand you back the code it names.
+the deeper archive workflow. But keep the grouping in mind --- only the tools in the first two rows
+actually \emph{compute} a \textsc{swhid}, so only they can \emph{verify} that a name still matches the
+bytes; the browser route fetches a name the archive already computed, and the resolvers turn a name
+back into code, but neither recomputes anything. For a one-off \emph{lookup}, then, you need install
+nothing at all --- the resolver at \url{https://archive.softwareheritage.org/} will take any
+\textsc{swhid} and hand you back the code it names.
