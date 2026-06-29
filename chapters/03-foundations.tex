@@ -10,11 +10,11 @@
 \end{itemize}
 \end{objectives}
 
-Before we can name a piece of code, we need somewhere that reliably keeps it. This chapter
+Before we can identify a piece of code, we need somewhere that reliably keeps it. This chapter
 builds that ground in three steps: why the places where we \emph{develop} software are not the
 places that \emph{preserve} it; what a universal archive of source code is, and how it works;
 and the simple, powerful data structure --- the Merkle DAG --- that turns ``keeping the code''
-into ``being able to name it exactly,'' which is the subject of the next chapter.
+into ``being able to identify it exactly,'' which is the subject of the next chapter.
 
 \takeaway{A forge is where code is developed; an archive is where it is kept.}
 
@@ -76,10 +76,14 @@ whole~\autocite{SwhCACM2018,SWHecosystems2023}.
   \label{fig:archive-growth}
 \end{figure}
 
-It fills itself automatically, by a division of labour worth understanding. \emph{Listers} walk
-a hosting platform and enumerate the repositories it holds; \emph{loaders} then ingest each
-repository --- its files, its directories, and, crucially, its full commit history --- whatever
-the version-control system (Git, Mercurial, Subversion) or package format. New listers and
+It fills itself automatically, by a division of labour worth understanding
+(Figure~\ref{fig:dataflow}). \emph{Listers} walk a hosting platform and enumerate the repositories
+(the \emph{origins}) it holds; \emph{loaders} then ingest each origin --- its files, its
+directories, and, crucially, its full commit history --- whatever the version-control system (Git,
+Mercurial, Subversion) or package format (a Debian source package, a PyPI tarball, \ldots),
+\emph{canonicalising} them all into the one uniform data model described below. The harvesting runs
+across thousands of distinct hosting platforms --- the big public forges, per-institution GitLab and
+Gitea servers, Linux-distribution archives, and language package registries. New listers and
 loaders are contributed by a broad community, with support from the Alfred P.\ Sloan and NLnet
 foundations. The result, at the time of writing, is hard to overstate: the development history of
 more than \emph{28 billion} unique source files from over \emph{430 million} projects, some three
@@ -87,12 +91,27 @@ petabytes of deduplicated content, organised as roughly sixty billion nodes join
 trillion edges (Figure~\ref{fig:archive-growth}). It is, by a wide margin, the largest body of
 source code ever gathered in one place.
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{figures/swh-dataflow.pdf}
+  \caption[How Software Heritage harvests and canonicalises code]{How the archive fills itself, and
+  \emph{canonicalises} as it goes. \emph{Listers} enumerate the repositories (\emph{origins}) held by
+  a hosting platform --- forges (GitHub, GitLab, Bitbucket, Gitea), Linux distributions (Debian,
+  Ubuntu, Fedora), and language package registries (PyPI, npm, CPAN, \ldots), across thousands of such
+  platforms. \emph{Loaders} then ingest each origin, whatever its version-control system (Git,
+  Mercurial, Subversion) or package format (Debian \texttt{.dsc}, PyPI tarballs, \ldots), and convert
+  them all into \emph{one} uniform representation: the Merkle DAG at right, with identical files and
+  directories deduplicated across every origin. Heterogeneous sources in; a single, canonical model
+  out.}
+  \label{fig:dataflow}
+\end{figure}
+
 The interesting question is not how big the archive is, but how it is \emph{organised} --- because
 the organisation is what makes it more than a very large backup.
 
 \section{The Merkle DAG data model}
 
-Archiving the world's code so that anyone can \emph{name} a precise piece of it calls for a
+Archiving the world's code so that anyone can \emph{identify} a precise piece of it calls for a
 particular kind of identifier. We want identifiers that are \emph{intrinsic} --- derived from the
 content itself, not handed out by a registry --- and that work not only for single files but for
 the \emph{tree structures}, directories-within-directories, that are the natural shape of
@@ -108,21 +127,21 @@ label every internal node with the hash of \emph{its children's labels}, repeati
 the root~\autocite{merkle1987digital}. The resulting \emph{Merkle tree} has a remarkable property:
 the label of the root is a fingerprint of the \emph{entire} structure beneath it. Change a single
 byte in a single leaf and every label on the path from that leaf to the root changes with it ---
-the root name simply cannot stay the same unless every byte below it is unchanged.
+the root's label simply cannot stay the same unless every byte below it is unchanged.
 
 Software adds one twist a plain tree does not capture: the same file, and the same directory,
 recur \emph{everywhere} --- the identical licence text sitting in a thousand projects, the
-identical sub-library vendored into hundreds. Because a node's name is computed purely from its
-content, two identical subtrees receive the \emph{same} name, so they can be stored once and
+identical sub-library vendored into hundreds. Because a node's identifier is computed purely from its
+content, two identical subtrees receive the \emph{same} identifier, so they can be stored once and
 pointed at from every place they occur. A tree with this sharing is no longer a tree but a
 \emph{directed acyclic graph}: a Merkle DAG. (It stays acyclic for a simple reason --- a node's
-name depends on its children's names, so no node can ever contain itself.)
+identifier depends on its children's identifiers, so no node can ever contain itself.)
 
 This single idea buys three properties we could not otherwise have together. Such identifiers are
 \emph{gratis} --- you can mint billions of them at no cost; they guarantee \emph{integrity} ---
-change one byte and the identifier changes, so an object cannot be altered behind its name; and
-they need \emph{no middle-man} --- no central authority has to exist for the name to mean
-something. Integrity \emph{and} no middle-man, at once, is exactly the combination a registry
+change one byte and the identifier changes, so an object cannot be altered without its identifier
+changing; and they need \emph{no middle-man} --- no central authority has to exist for the identifier
+to mean something. Integrity \emph{and} no middle-man, at once, is exactly the combination a registry
 cannot give you --- which is why the same construction underpins Git, Nix, IPFS, and the
 blockchains.
 
@@ -132,16 +151,16 @@ blockchains.
 
 Software Heritage stores \emph{all} the code it has ever collected, with its full history, in
 \emph{one} such Merkle DAG~\autocite{ICMS2020,pietri2019graph}. Its nodes come in five kinds.
-Each is named by the hash of its own content, and each is, in the main, built out of the kind
+Each is identified by the hash of its own content, and each is, in the main, built out of the kind
 below it --- so the five form a layered structure, contents at the bottom and whole-repository
-snapshots at the top:
+snapshots at the top (Figure~\ref{fig:merkle-layers}):
 
 \begin{description}[leftmargin=!,labelwidth=2.4cm,font=\bfseries\sffamily]
   \item[content (\texttt{cnt})] the raw bytes of a single file --- a \emph{blob}, in Git's
-        vocabulary. It is a leaf of the DAG: its name is computed directly from its bytes, and it
+        vocabulary. It is a leaf of the DAG: its identifier is computed directly from its bytes, and it
         knows nothing of its own filename.
   \item[directory (\texttt{dir})] a list of named entries, each pointing at a content (a file) or
-        another directory (a subdirectory), together with its permissions. Its name is the hash of
+        another directory (a subdirectory), together with its permissions. Its identifier is the hash of
         that list, so it fixes the \emph{exact} contents and layout of the tree beneath it.
   \item[revision (\texttt{rev})] a commit: a directory (the snapshot of the source tree at that
         point) plus metadata --- author, date, message, and a link to the parent revision(s). The
@@ -153,6 +172,18 @@ snapshots at the top:
         is the entry point from which everything else hangs.
 \end{description}
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=.82\linewidth]{figures/swh-merkle-overview.png}
+  \caption[The five node types as one layered DAG]{The five kinds of node, layered into one Merkle
+  DAG. From the top: \emph{origins} (the repositories crawled) point at \emph{snapshots}, which point
+  at \emph{releases} and \emph{revisions}, which point at \emph{directories}, which point at the
+  \emph{contents} (file blobs) at the bottom. Because every node is identified by the hash of
+  everything beneath it, a node reached from several parents --- the same directory or file shared
+  across revisions and across repositories --- is stored exactly once.}
+  \label{fig:merkle-layers}
+\end{figure}
+
 \subsection{A worked example: hashing your way up}
 
 The five layers are easiest to believe when you watch them being built, bottom to top, on a real
@@ -162,14 +193,14 @@ is carried upward from layer to layer.
 
 Start with a \textbf{content} (Figure~\ref{fig:merkle-cnt}). Feed a file --- here the text of the
 \textsc{gpl}\,v3 --- to a hash function and you get several digests; the one Software Heritage uses
-as the node's name is the Git-style \texttt{sha1\_git} (in red, \texttt{94a9ed02\ldots}). That
+as the node's identifier is the Git-style \texttt{sha1\_git} (in red, \texttt{94a9ed02\ldots}). That
 hash \emph{is} the identifier of this file's content, anywhere it ever appears.
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=.72\linewidth]{figures/merkle-1-contents.pdf}
   \caption[A content node]{A \texttt{content} node: the raw bytes of a file (the \textsc{gpl}\,v3
-  licence) hashed to a name. Software Heritage uses the Git-style \texttt{sha1\_git}
+  licence) hashed to an identifier. Software Heritage uses the Git-style \texttt{sha1\_git}
   (\texttt{94a9ed02\ldots}, red) --- so this content's \textsc{swhid} will be
   \swhid{swh:1:cnt:94a9ed02\ldots}, exactly the example met in the next chapter.}
   \label{fig:merkle-cnt}
@@ -177,10 +208,10 @@ hash \emph{is} the identifier of this file's content, anywhere it ever appears.
 
 Now gather files into a \textbf{directory} (Figure~\ref{fig:merkle-dir}). A directory is just a
 list: one line per entry, giving its permissions, its type (\texttt{blob} for a file,
-\texttt{tree} for a subdirectory), the \emph{name of the object it points to}, and the entry's
+\texttt{tree} for a subdirectory), the \emph{identifier of the object it points to}, and the entry's
 own filename. Notice the \texttt{LICENSE} line: it carries precisely the \texttt{94a9ed02\ldots}
-we just computed. Hash this whole listing and you get the directory's name,
-\texttt{515f00d4\ldots} --- a name that pins down every file in the tree and exactly which bytes
+we just computed. Hash this whole listing and you get the directory's identifier,
+\texttt{515f00d4\ldots} --- an identifier that pins down every file in the tree and exactly which bytes
 each contains.
 
 \begin{figure}[htbp]
@@ -189,22 +220,22 @@ each contains.
   \caption[A directory node]{A \texttt{directory} node: a list of entries, each naming a
   \texttt{content} (file) or a \texttt{tree} (subdirectory). The \texttt{LICENSE} entry points at
   the very content of Figure~\ref{fig:merkle-cnt} (\texttt{94a9ed02\ldots}); hashing the whole
-  list yields the directory name \texttt{515f00d4\ldots}}
+  list yields the directory identifier \texttt{515f00d4\ldots}}
   \label{fig:merkle-dir}
 \end{figure}
 
 A \textbf{revision} (Figure~\ref{fig:merkle-rev}) wraps a directory in history. Its content is a
 small record: a \texttt{tree} line --- here \texttt{515f00d4\ldots}, the very directory we just
 built --- a link to the parent revision, the author and committer, and the commit message.
-Hashing that record gives the commit's name, \texttt{963634dc\ldots}: change the tree, the
-message, or the parent, and the commit is a different commit, with a different name.
+Hashing that record gives the commit's identifier, \texttt{963634dc\ldots}: change the tree, the
+message, or the parent, and the commit is a different commit, with a different identifier.
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=.86\linewidth]{figures/merkle-3-revisions.pdf}
   \caption[A revision node]{A \texttt{revision} (commit) node: a \texttt{tree} (the directory of
   Figure~\ref{fig:merkle-dir}, \texttt{515f00d4\ldots}), a parent link, author/committer, and a
-  message --- hashed to the revision name \texttt{963634dc\ldots}}
+  message --- hashed to the revision identifier \texttt{963634dc\ldots}}
   \label{fig:merkle-rev}
 \end{figure}
 
@@ -219,7 +250,7 @@ a complete archived repository can be recovered.
   \centering
   \includegraphics[width=.82\linewidth]{figures/merkle-4-releases.pdf}
   \caption[A release node]{A \texttt{release} node: an annotated, signed tag (\texttt{v0.0.51})
-  pointing at one revision, with its own tagger, date, and message --- hashed to the release name
+  pointing at one revision, with its own tagger, date, and message --- hashed to the release identifier
   \texttt{85083a5c\ldots}}
   \label{fig:merkle-rel}
 \end{figure}
@@ -229,13 +260,13 @@ a complete archived repository can be recovered.
   \includegraphics[width=.85\linewidth]{figures/merkle-5-snapshots.pdf}
   \caption[A snapshot node]{A \texttt{snapshot} node: the full set of a repository's branches and
   tags and what each pointed to at archival time (the output of \texttt{git show-ref}) --- hashed
-  to the snapshot name \texttt{b464cad1\ldots}}
+  to the snapshot identifier \texttt{b464cad1\ldots}}
   \label{fig:merkle-snp}
 \end{figure}
 
 Stack these five layers and let identical subtrees be shared, and you have the whole picture:
 \emph{one} Merkle DAG in which contents feed directories, directories feed revisions, and those
-feed releases and snapshots (Figure~\ref{fig:merkle-dag}). Because every node is named by the hash
+feed releases and snapshots (Figure~\ref{fig:merkle-dag}). Because every node is identified by the hash
 of everything below it, identical files and directories --- of which the world's software has a
 staggering number --- are stored exactly once, and the archive as a whole becomes, in effect, a
 global ledger of public code whose integrity anyone can verify~\autocite{SWHecosystems2023}.
@@ -247,12 +278,12 @@ global ledger of public code whose integrity anyone can verify~\autocite{SWHecos
   acyclic graph in which file \emph{contents} (\texttt{cnt}) are gathered into \emph{directories}
   (\texttt{dir}), directories into \emph{revisions} (\texttt{rev}, i.e.\ commits), and those into
   \emph{releases} (\texttt{rel}) and \emph{snapshots} (\texttt{snp}) --- the five layers of the
-  worked example above. Each node's name is the hash of everything beneath it; identical subtrees
+  worked example above. Each node's identifier is the hash of everything beneath it; identical subtrees
   are stored once.}
   \label{fig:merkle-dag}
 \end{figure}
 
 That is the foundation. We now have somewhere to keep code, and a data model in which every
-artifact already \emph{has} a name, computed from its content. The next chapter takes that name
-seriously --- and shows how it untangles a confusion that has dogged digital identifiers for
-decades.
+artifact already \emph{has} an identifier, computed from its content. The next chapter takes that
+identifier seriously --- and shows how it untangles a confusion that has dogged digital identifiers
+for decades.
