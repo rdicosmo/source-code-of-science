@@ -124,10 +124,22 @@ real repository.
 Ralph Merkle, looking for an efficient way to authenticate many items at once, proposed
 marrying a tree to a cryptographic hash function: label every leaf with the hash of its data, then
 label every internal node with the hash of \emph{its children's labels}, repeating all the way to
-the root~\autocite{merkle1987digital}. The resulting \emph{Merkle tree} has a remarkable property:
-the label of the root is a fingerprint of the \emph{entire} structure beneath it. Change a single
-byte in a single leaf and every label on the path from that leaf to the root changes with it ---
-the root's label simply cannot stay the same unless every byte below it is unchanged.
+the root~\autocite{merkle1987digital}. The resulting \emph{Merkle tree}
+(Figure~\ref{fig:merkle-tree}) has a remarkable property: the label of the root is a fingerprint of
+the \emph{entire} structure beneath it. Change a single byte in a single leaf and every label on the
+path from that leaf to the root changes with it --- the root's label simply cannot stay the same
+unless every byte below it is unchanged.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=.8\linewidth]{figures/merkle-tree.pdf}
+  \caption[A Merkle tree]{A Merkle tree, in Merkle's original construction. Each data block
+  ($L_1$--$L_4$) is hashed; each internal node holds the hash of its children's hashes; and the
+  single \emph{Top Hash} fingerprints the entire structure. Change any block and every hash on the
+  path up to the root changes with it. Software Heritage applies the same idea to files and
+  directories --- and, by storing identical subtrees once, turns the tree into a \textsc{dag}.}
+  \label{fig:merkle-tree}
+\end{figure}
 
 Software adds one twist a plain tree does not capture: the same file, and the same directory,
 recur \emph{everywhere} --- the identical licence text sitting in a thousand projects, the
