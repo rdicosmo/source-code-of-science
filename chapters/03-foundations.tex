@@ -82,8 +82,9 @@ It fills itself automatically, by a division of labour worth understanding
 directories, and, crucially, its full commit history --- whatever the version-control system (Git,
 Mercurial, Subversion) or package format (a Debian source package, a PyPI tarball, \ldots),
 \emph{canonicalising} them all into the one uniform data model described below. The harvesting runs
-across thousands of distinct hosting platforms --- the big public forges, per-institution GitLab and
-Gitea servers, Linux-distribution archives, and language package registries. New listers and
+across more than 5{,}000 distinct code-hosting and distribution platforms --- the big public forges,
+per-institution GitLab and Gitea servers, Linux-distribution archives, and language package
+registries. New listers and
 loaders are contributed by a broad community, with support from the Alfred P.\ Sloan and NLnet
 foundations. The result, at the time of writing, is hard to overstate: the development history of
 more than \emph{28 billion} unique source files from over \emph{430 million} projects, some three
@@ -97,8 +98,8 @@ source code ever gathered in one place.
   \caption[How Software Heritage harvests and canonicalises code]{How the archive fills itself, and
   \emph{canonicalises} as it goes. \emph{Listers} enumerate the repositories (\emph{origins}) held by
   a hosting platform --- forges (GitHub, GitLab, Bitbucket, Gitea), Linux distributions (Debian,
-  Ubuntu, Fedora), and language package registries (PyPI, npm, CPAN, \ldots), across thousands of such
-  platforms. \emph{Loaders} then ingest each origin, whatever its version-control system (Git,
+  Ubuntu, Fedora), and language package registries (PyPI, npm, CPAN, \ldots), across more than
+  5{,}000 such platforms. \emph{Loaders} then ingest each origin, whatever its version-control system (Git,
   Mercurial, Subversion) or package format (Debian \texttt{.dsc}, PyPI tarballs, \ldots), and convert
   them all into \emph{one} uniform representation: the Merkle DAG at right, with identical files and
   directories deduplicated across every origin. Heterogeneous sources in; a single, canonical model
