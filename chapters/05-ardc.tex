@@ -74,13 +74,19 @@ the \textsc{swhid} for the verifiable identity of the exact bytes. It is the sam
 labour we have insisted on throughout: \emph{a \textsc{doi} for findability, a \textsc{swhid} for
 integrity} --- and here you get both, for the price of one upload, with no forge required.
 
-The second path stays inside Software Heritage: \emph{Save Code Now} can also ingest a
-\texttt{.zip} or tarball directly, rather than a clone URL --- but this is gated. It is open to
-registered accounts holding the \emph{ambassador} role, which Software Heritage grants on request
-(the account is free); an anonymous visitor can submit only a version-control
-URL.\footnote{See the \textsc{faq}: \url{https://docs.softwareheritage.org/user/faq/index.html}.}
-If you expect to archive tarballs regularly --- shepherding a journal's artifacts, say --- this
-is worth setting up; for a one-off, the Zenodo route is simpler.
+The second path stays inside Software Heritage: \emph{Save Code Now} can also ingest a \texttt{.zip}
+or tarball directly, rather than a clone URL. This is open to any registered account (the account is
+free; an anonymous visitor can still submit only a version-control URL), but a tarball deposit enters
+a \emph{review queue} and is archived only once a moderator has approved it --- and that queue is not
+always cleared quickly enough for time-sensitive needs, such as a journal that wants a paper's
+artifacts archived as soon as it is accepted. Holders of the \emph{ambassador} role bypass the queue,
+their tarball deposits being ingested directly; but the ambassador role is far more than a sign-up.
+It is a vetted community programme --- ambassadors are volunteers who actively promote and support
+Software Heritage in their field, and one joins by applying to the
+programme.\footnote{Software Heritage Ambassador programme:
+\url{https://www.softwareheritage.org/ambassadors/}.} So for a one-off the Zenodo route above is
+simpler and immediate; for archiving tarballs regularly --- shepherding a journal's artifacts, say
+--- the ambassador route is worth pursuing.
 
 However the code got in, the result is the same: it is now kept, and it now has a \textsc{swhid}. The official
 Software Heritage HOWTO walks through the whole recipe, and its three steps map directly onto the
