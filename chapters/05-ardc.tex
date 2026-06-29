@@ -82,7 +82,7 @@ URL.\footnote{See the \textsc{faq}: \url{https://docs.softwareheritage.org/user/
 If you expect to archive tarballs regularly --- shepherding a journal's artifacts, say --- this
 is worth setting up; for a one-off, the Zenodo route is simpler.
 
-However the code got in, the result is the same: it is now kept, and it now has a name. The official
+However the code got in, the result is the same: it is now kept, and it now has a \textsc{swhid}. The official
 Software Heritage HOWTO walks through the whole recipe, and its three steps map directly onto the
 rest of this chapter:
 
@@ -127,7 +127,7 @@ git repository than as a tarball.
 
 \section{Reference}
 
-Archiving gives the code a name; \emph{referencing} is the craft of choosing \emph{which} name to
+Archiving gives the code an identifier; \emph{referencing} is the craft of choosing \emph{which} one to
 quote, and at what granularity. Here the identifiers of Chapter~\ref{ch:identifiers} come into
 their own, because a paper rarely depends on ``the repository'' --- it depends on something far
 more specific. Match the identifier to the claim~\autocite{cise-2020-doi}:
@@ -144,7 +144,7 @@ more specific. Match the identifier to the claim~\autocite{cise-2020-doi}:
         \texttt{lines}.
 \end{description}
 
-For a paper you will usually want a \emph{qualified} \textsc{swhid}: the core name that identifies,
+For a paper you will usually want a \emph{qualified} \textsc{swhid}: the core identifier itself,
 plus the \texttt{origin}, \texttt{visit}, and \texttt{anchor} qualifiers that let a reader walk
 straight to it in the archive and see where it came from. And when no precise version is known ---
 when you simply want to point at ``the project, as the archive saw it'' --- an origin-qualified
@@ -193,7 +193,7 @@ and confirm it highlights exactly the code you meant.
 
 \section{Describe}
 
-A name keeps code findable; \emph{description} makes it understandable and reusable, and it is
+An identifier keeps code findable; \emph{description} makes it understandable and reusable, and it is
 where a little effort pays off enormously. Three files do most of the work, and you should add them
 in order of growing ambition~\autocite{boettiger2017codemeta}.
 

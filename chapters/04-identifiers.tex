@@ -145,8 +145,8 @@ qualifiers merely locate. Figure~\ref{fig:swhid-anatomy} lays out a fully qualif
   (\texttt{object\_id}). The optional \emph{qualifiers} (right) add context without changing what
   is identified: \texttt{origin} (where the code was harvested), \texttt{visit} (which archived
   snapshot), \texttt{anchor} (the node the path is rooted at), \texttt{path} (the file within that
-  tree), and \texttt{lines} (the span within that file). The example points at lines 64--72 of the
-  Apollo-11 guidance routine \texttt{BURN\_BABY\_BURN}.}
+  tree), and \texttt{lines} (the span within that file). \href{https://archive.softwareheritage.org/swh:1:cnt:41ddb23118f92d7218099a5e7a990cf58f1d07fa;origin=https://github.com/chrislgarry/Apollo-11;visit=swh:1:snp:206c27c0c031c6aac6b5fedddba8fe082dea9836;anchor=swh:1:rev:3913f198f4383d4d638c0485d6aa902ff2f35828;path=/Luminary099/BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc;lines=64-72}{The
+  example points at lines 64--72 of the Apollo-11 guidance routine \texttt{BURN\_BABY\_BURN}}.}
   \label{fig:swhid-anatomy}
 \end{figure}
 
@@ -171,11 +171,11 @@ also exactly why it cannot contain that identifier inside itself.
 
 \begin{callout}{Getting a SWHID: retrieve one, or compute one}
 \small Two different needs, and it is worth not confusing them. If the code is \emph{already in the
-archive} and you only want its name, nothing need be installed: the archive's red \emph{Permalinks}
+archive} and you only want its \textsc{swhid}, nothing need be installed: the archive's red \emph{Permalinks}
 tab hands you a fully qualified \textsc{swhid} for whatever file, directory, or line range you are
 looking at, and the \emph{updateswh} browser extension will archive a GitHub/GitLab/Bitbucket
-repository and then do the same. But that is the archive \emph{reporting} a name it computed --- not a
-check of your own bytes. To \emph{compute} a \textsc{swhid} from local files, or to \emph{verify} that
+repository and then do the same. But that is the archive \emph{reporting} an identifier it computed
+--- not a check of your own bytes. To \emph{compute} a \textsc{swhid} from local files, or to \emph{verify} that
 a claimed one still matches them --- offline, with no archive and no registry in the loop --- you need
 a command-line tool: \textbf{Python} (\texttt{pip install 'swh.model[cli]'}, the \texttt{swh identify}
 command) or the \textbf{Rust reference tool} used in the labs below (\texttt{cargo install swhid}).
@@ -217,8 +217,9 @@ hand-build the \texttt{\textbackslash href} each time, these notes use a one-lin
 again in Chapter~\ref{ch:ardc}.
 \end{handson}
 
-We now have what the rest of these notes need: a name we can trust, that identifies code exactly,
-that anyone can verify without asking permission, and that --- when we choose --- can also tell us
-where the code lived. The remaining chapters are about putting that name to work: archiving the
+We now have what the rest of these notes need: an intrinsic identifier we can trust --- one that
+identifies code exactly, that anyone can verify without asking permission, and that, when we choose,
+can also tell us where the code lived. The remaining chapters are about putting that identifier to
+work: archiving the
 code, referencing it at the right granularity, describing it, and citing it. That practice is
 \textsc{ardc}, and it is next.
