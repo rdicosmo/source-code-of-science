@@ -20,8 +20,15 @@ figures/ logos/     % reused SWH assets
 
 ## Build
 
-Requires TeX Live (xelatex, latexmk, biber), the `biblatex-software` package, and the TeX
-Gyre fonts.
+Requires TeX Live (xelatex, latexmk, biber) and the TeX Gyre fonts.
+
+The bibliography uses the concise `crossrefexpansion` rendering of `biblatex-software`
+(≥ `bltx-v1.2-8`, Dec 2025), so shared metadata is written once on a project entry and
+its versions/modules/fragments print only their delta. That release is vendored under
+`style/` and picked up automatically via `.latexmkrc`, so the note builds even where the
+system TeX Live predates the feature (e.g. Debian 13 ships the older v1.2-5). Once your
+system `biblatex-software` is ≥ v1.2-8 everywhere, `style/` and the `.latexmkrc`
+`TEXINPUTS` line can be removed.
 
 ```sh
 make            # -> main.pdf

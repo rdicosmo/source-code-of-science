@@ -38,7 +38,7 @@ of the object's meaning, the record of how the design was reached.
 It is \emph{diverse}. Behind the single word \enquote{software} hides a startling variety of
 objects, differing in structure (a one-file script, or a million-line assembly of modules),
 lifetime (a fire-and-forget analysis, or a library maintained for decades), community (one
-researcher, one team, a worldwide crowd), and size --- written in any of the more than nine
+researcher, one team, a worldwide crowd), size, and language --- written in any of the more than nine
 thousand programming languages humanity has invented~\autocite{NatureSD2026}. A rule that fits a
 tidy dataset will not fit all of this at once.
 
@@ -112,12 +112,12 @@ engineering~\autocite{Carver2022}, and who contribute, frequently, on goodwill a
 recommendation is built, deliberately, as a \emph{progressive roadmap}: a short list of
 \emph{mandatory} first steps, then a longer ladder of \emph{recommended} and \emph{optional}
 ones, climbing toward a gold standard that nobody is required to reach all at once. The whole
-roadmap fits a four-word mnemonic --- \textbf{CODE}: \emph{Open, Document, Execute,
-Collaborate}~\autocite{NatureSD2026}.
+roadmap fits a four-word mnemonic whose verbs --- \emph{Open, Document, Execute,
+Collaborate} --- reshuffle into a word you will not forget: \textbf{CODE}~\autocite{NatureSD2026}.
 
 \begin{description}[leftmargin=!,labelwidth=2.4cm,font=\bfseries\sffamily]
   \item[Open] publish the source on a public forge \emph{and} archive it in Software Heritage ---
-        the only two \emph{mandatory} steps; then license it openly and claim authorship.
+        the two things the one \emph{mandatory} rung asks of you; then license it openly and claim authorship.
   \item[Document] meaningful names and comments first, then API documentation, examples, and
         notebooks.
   \item[Execute] declare your software and hardware dependencies, then ship a container or a Guix
@@ -172,7 +172,7 @@ exists.
   \end{tabularx}
   \caption[A toolbox for the CODE rungs]{A sampling of the tooling behind the \textbf{Document} and
   \textbf{Execute} rungs of CODE. None of it is mandatory --- the only required step remains
-  \textbf{Open} (publish and archive) --- but knowing the menu is half the battle.}
+  \textbf{Open} (publish and archive) --- but knowing which tools exist is half the battle.}
   \label{tab:toolbox}
 \end{table}
 
@@ -181,6 +181,6 @@ a ladder you climb as far as your project warrants. This is liberating, not lax 
 effect, that the worst outcome is not imperfect software but \emph{lost} software, and that
 \enquote{ugly code is always better than no code}~\autocite{Leveque2013}. It also tells us where
 these notes go next. The mandatory rung of \textbf{O}pen --- archive your code, and be able to
-point at it --- is precisely the \textbf{A}rchive and \textbf{R}eference of the ARDC practice at
+point at it --- is precisely the \textbf{A}rchive and \textbf{R}eference of the \textsc{ardc} practice at
 the heart of these notes. To make good on it we need two things first: somewhere to keep code for
 the long term, and a way to name exactly the code we mean. Those are the next two chapters.

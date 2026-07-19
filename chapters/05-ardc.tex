@@ -5,13 +5,13 @@
 \begin{itemize}[nosep,leftmargin=*]
   \item archive your code by the channel that fits your situation (forge or tarball);
   \item reference it at the granularity a claim needs, with a qualified \textsc{swhid};
-  \item describe it (\texttt{codemeta.json}, \texttt{CITATION.cff}, an \textsc{spdx} licence)
+  \item describe it (\texttt{codemeta.json}, \texttt{CITATION.cff}, an \textsc{spdx} license)
         and cite it with \texttt{biblatex-software}.
 \end{itemize}
 \end{objectives}
 
-We now have everything we need to do the work: an archive that keeps source code for the long
-term, and an intrinsic identifier that names exactly the code we mean. This chapter is the
+With the archive and the \textsc{swhid} both in hand, we can finally do the work: keep the
+source code for the long term, and name exactly the code we mean. This chapter is the
 operational heart of these notes. It turns the principle ``treat software as a first-class output''
 into four concrete verbs you can apply to a repository of your choice --- your own code, a library
 you depend on, a result you want to cite. The verbs are \textbf{A}rchive, \textbf{R}eference,
@@ -90,7 +90,8 @@ simpler and immediate; for archiving tarballs regularly --- shepherding a journa
 
 However the code got in, the result is the same: it is now kept, and it now has a \textsc{swhid}.
 \href{https://www.softwareheritage.org/how-to-archive-reference-code/}{The official Software Heritage
-HOWTO} walks through the whole recipe, and its three steps map directly onto the rest of this chapter:
+HOWTO} walks through the whole recipe, and its three steps --- prepare, save, reference --- are
+exactly the ground the next two sections cover, before we go on to describe and cite:
 
 \begin{tcolorbox}[colback=swhbg!35,colframe=swhdark,fonttitle=\bfseries\sffamily,
   coltitle=white,
@@ -100,7 +101,7 @@ HOWTO} walks through the whole recipe, and its three steps map directly onto the
 \small
 \begin{enumerate}[nosep,leftmargin=*]
   \item \textbf{Prepare} your public repository: add a \texttt{README}, an \texttt{AUTHORS} file,
-        and licence information (a \texttt{LICENSE} file at the root, or a \texttt{LICENSES/}
+        and license information (a \texttt{LICENSE} file at the root, or a \texttt{LICENSES/}
         directory).
   \item \textbf{Save} your code in Software Heritage: manually with the \emph{updateswh} extension;
         manually via \emph{Save Code Now} (pick the version-control system, enter the repository URL,
@@ -205,7 +206,7 @@ where a little effort pays off enormously. Three files do most of the work, and 
 in order of growing ambition~\autocite{boettiger2017codemeta}.
 
 Start with a \texttt{README}: the human entry point, answering \emph{what, why, install, run, cite,
-licence} in plain words --- ten minutes today, and the single highest-value thing you can do. As a
+license} in plain words --- ten minutes today, and the single highest-value thing you can do. As a
 project grows, add a \texttt{codemeta.json}: a rich, machine-readable description --- authors,
 dependencies, funding, archival identifiers --- in a schema.org-based vocabulary that forges and
 Software Heritage can read to generate citations automatically. Do not write it by hand; use the
@@ -224,12 +225,12 @@ you can in turn generate a \texttt{CITATION.cff}, the lightweight format that ma
   \label{fig:codemeta}
 \end{figure}
 
-And do not forget the licence --- the most consequential one-line file in your repository. By the
+And do not forget the license --- the most consequential one-line file in your repository. By the
 Berne Convention, code is copyrighted the moment it is written, and the default is \emph{all rights
-reserved}: without a licence, nobody may legally reuse your work, however open you meant it to be.
-Yet roughly \emph{ninety per cent of public repositories on GitHub carry no licence at all}, and
+reserved}: without a license, nobody may legally reuse your work, however open you meant it to be.
+Yet roughly \emph{four in five public repositories on GitHub carry no license at all}~\autocite{github-license-usage}, and
 research code is no exception: in the corpus of French public-research software archived in Software
-Heritage, nearly three-quarters of the projects carry no licence information whatsoever
+Heritage, nearly three-quarters of the projects carry no license information whatsoever
 (Chapter~\ref{ch:outlook}). Choose
 one --- permissive (MIT, BSD, Apache-2.0) or copyleft (the GPL family) --- declare it
 machine-readably with an \textsc{spdx} identifier, and, if you like, automate the bookkeeping with
@@ -237,7 +238,7 @@ the REUSE specification. (Resist the temptation to reach for Creative Commons: i
 for software.) The community has distilled all of this into the FAIR Software Five
 recommendations.\footnote{\url{https://fair-software.eu/}}
 
-None of this is much work. Declaring a licence is one line at the top of each source file, and a
+None of this is much work. Declaring a license is one line at the top of each source file, and a
 citable record is a few lines of \textsc{yaml}:
 \begin{quote}\footnotesize
 \begin{verbatim}
@@ -254,7 +255,7 @@ license: MIT
 \end{verbatim}
 \end{quote}
 
-\takeaway{About 90\% of public repositories carry no licence --- so by default nobody may legally
+\takeaway{About four in five public repositories carry no license --- so by default nobody may legally
 reuse them. A one-line \textsc{spdx} tag fixes it.}
 
 To put your software forward as a citable output --- onto your CV, into your institution's portal
@@ -309,17 +310,17 @@ from the \texttt{git} history sees only commits, and quietly writes the non-codi
 the record~\autocite{2020GtCitation}. Crediting a collective --- \enquote{The Givaro group} rather
 than a roster of names --- keeps the record honest about a team effort, but at the cost of the
 individual recognition on which academic careers still turn. No bibliography style can resolve that
-tension; what a good one \emph{can} do is carry the version, the licence, and the verifiable
+tension; what a good one \emph{can} do is carry the version, the license, and the verifiable
 identifier on every reference, and leave the human judgement of credit to people.
 
 So, finally, the mechanics. Cite software as you would cite anything else in research: in the
 bibliography, as a first-class reference. For decades there was no proper way to do this, and software citations were
-forced into \texttt{@misc} entries that lost the version, the licence, and any verifiable
+forced into \texttt{@misc} entries that lost the version, the license, and any verifiable
 identifier~\autocite{2020GtCitation}. The \texttt{biblatex-software} style fixes
-that~\autocite{DiCosmoSEN2020}. It adds four entry types --- \texttt{@software} for a project,
+that~\autocite{DiCosmoSEN2020,biblatexsoftware}. It adds four entry types --- \texttt{@software} for a project,
 \texttt{@softwareversion} for a release, \texttt{@softwaremodule} for a component, and
 \texttt{@codefragment} for a precise span of code --- each carrying a \texttt{swhid=} field. The
-power comes from \texttt{crossref}: shared metadata (authors, repository, licence) is written
+power comes from \texttt{crossref}: shared metadata (authors, repository, license) is written
 \emph{once} on the parent \texttt{@software} entry, and each version, fragment, or snapshot adds only
 what is specific to it. So citing several versions and several fragments of the \emph{same} project
 costs almost nothing:
@@ -351,9 +352,42 @@ costs almost nothing:
 
 \noindent In the text you then write \texttt{\textbackslash cite\{parmap-1.1.1\}} for the release,
 \texttt{\textbackslash cite\{simplemapper\}} for the routine, or \texttt{\textbackslash cite\{parmap-dev\}}
-for the archived snapshot --- and the bibliography fills in the inherited authors, repository, and
-licence for each, with the right \textsc{swhid} type (\texttt{rel}, \texttt{cnt}, \texttt{snp})
-rendered automatically.
+for the archived snapshot --- and the bibliography prints the shared metadata (authors, repository,
+license) \emph{once} on the project entry, then gives each version, fragment, and snapshot only its
+own specifics and a live back-reference to its parent, with the right \textsc{swhid} type
+(\texttt{rel}, \texttt{cnt}, \texttt{snp}) rendered automatically. These very notes are typeset that
+way: in the References, the Parmap release and the \texttt{simplemapper} fragment each point back to
+the one shared Parmap record --- \emph{of} it, \emph{from} it --- rather than repeating its authors
+and license, and the CGAL module is likewise printed as \emph{part of} its release.
+
+\noindent The fourth entry type, \texttt{@softwaremodule}, names a \emph{component} of a larger
+project --- a distinct, often separately-authored part, perhaps added only at a certain version.
+Parmap is too small to want one; a deliberately \emph{modular} library like CGAL~\autocite{cgal}
+is the natural case. Its \emph{2D Voronoi Diagram Adaptor}, written by Menelaos Karavelas and first
+shipped in CGAL~3.1 (here in release~5.0.2~\autocite{cgal-5-0-2}), is exactly such a
+module~\autocite{cgal-voronoi}:
+
+\begin{quote}\footnotesize
+\begin{verbatim}
+@software{cgal,                                    % the modular PROJECT
+  title  = {The Computational Geometry Algorithms Library},
+  author = {{The CGAL Project}}, url = {https://cgal.org/}}
+
+@softwareversion{cgal-5-0-2, crossref={cgal},      % a released VERSION
+  version = {5.0.2}, date = {2020},
+  swhid   = {swh:1:rel:636541bbf6c77863908eae744610a3d91fa58855;
+             origin=https://github.com/CGAL/cgal}}
+
+@softwaremodule{cgal-voronoi, crossref={cgal-5-0-2},  % a MODULE
+  author       = {Karavelas, Menelaos},
+  subtitle     = {2D Voronoi Diagram Adaptor},
+  license      = {GPL}, introducedin = {CGAL 3.1}}
+\end{verbatim}
+\end{quote}
+
+\noindent The module carries its own author and the version that \emph{introduced} it, and inherits
+the project's title and the release's \textsc{swhid} through \texttt{crossref} --- so all four types
+(project, version, module, fragment) are now in play, each pinned by the identifier it deserves.
 
 \noindent The package is on CTAN and in TeX\,Live, and has shipped in the ACM \texttt{acmart} class
 since 2022, so the \textsc{swhid} renders natively in an ACM paper. It also solves, for the
@@ -367,20 +401,19 @@ hyperlink (Figure~\ref{fig:biblatex-swh}).
   \setlength{\fboxsep}{5pt}%
   \fbox{\begin{minipage}{0.93\linewidth}
     {\sffamily\bfseries shortswhid = false}\hfill\textit{the full qualified SWHID is printed}\par\smallskip
-    [SW\,Rel.] Di Cosmo \& Danelutto, \emph{The Parmap library} version 1.1.1. \textsc{lic}: LGPL-2.0.
-    \textsc{swhid}: \swhreflong{swh:1:rel:373e2604d96de4ab1d505190b654c5c4045db773;origin=https://github.com/rdicosmo/parmap;visit=swh:1:snp:2a6c348c53eb77d458f24c9cbcecaf92e3c45615}{swh:1:rel:373e2604d96de4ab1d505190b654c5c4045db773;origin=https://github.com/rdicosmo/parmap;visit=swh:1:snp:2a6c348c53eb77d458f24c9cbcecaf92e3c45615}
+    \includegraphics[width=\linewidth]{figures/biblatex-shortswhid-full.pdf}
   \end{minipage}}\\[5pt]
   \fbox{\begin{minipage}{0.93\linewidth}
     {\sffamily\bfseries shortswhid = true}\hfill\textit{only the core is shown --- the link is unchanged}\par\smallskip
-    [SW\,Rel.] Di Cosmo \& Danelutto, \emph{The Parmap library} version 1.1.1. \textsc{lic}: LGPL-2.0.
-    \textsc{swhid}: \swhref{swh:1:rel:373e2604d96de4ab1d505190b654c5c4045db773}{swh:1:rel:373e2604d96de4ab1d505190b654c5c4045db773;origin=https://github.com/rdicosmo/parmap;visit=swh:1:snp:2a6c348c53eb77d458f24c9cbcecaf92e3c45615}
+    \includegraphics[width=\linewidth]{figures/biblatex-shortswhid-core.pdf}
   \end{minipage}}
-  \caption[A biblatex-software entry, shortswhid off and on]{How \texttt{biblatex-software} prints the
-  same Parmap release with \texttt{shortswhid=false} (top) and \texttt{shortswhid=true} (bottom).
-  \textbf{Both \textsc{swhid}s are live links} --- click either, and you reach the \emph{same} fully
-  qualified identifier in the archive. The switch changes only what is \emph{shown}, never what the
-  link \emph{carries}: the top displays the qualifiers (\texttt{;origin=\ldots;visit=\ldots}) in
-  full, the bottom hides them from view but keeps them in the hyperlink.}
+  \caption[A biblatex-software entry, shortswhid off and on]{Real \texttt{biblatex-software} output
+  for the same Parmap release with \texttt{shortswhid=false} (top) and \texttt{shortswhid=true}
+  (bottom). Both encode the \emph{same} fully qualified identifier: the switch changes only what is
+  \emph{shown}, never what the \textsc{swhid} resolves to --- the top prints the qualifiers
+  (\texttt{;origin=\ldots;visit=\ldots}) in full, the bottom keeps just the readable core. In the
+  note's own References --- and in any document built with this style --- each \textsc{swhid} is a
+  live link to the archive.}
   \label{fig:biblatex-swh}
 \end{figure}
 

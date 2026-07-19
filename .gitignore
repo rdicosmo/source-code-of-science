@@ -27,3 +27,6 @@ swhid.tex
 # samplebib figure build (keep .tex and *-crop.pdf only)
 figures/samplebib/samplebib-full.pdf
 figures/samplebib/samplebib-short.pdf
+
+# fig-shortswhid panel build (keep .tex + README; final crops live in figures/)
+figures/fig-shortswhid-src/panel-*.pdf

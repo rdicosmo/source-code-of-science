@@ -21,7 +21,7 @@ sovereignty are others.}
 
 None of this is hypothetical. Journals and platforms across disciplines have wired Software Heritage
 into how they work: the HAL national repository offers a curated software-deposit workflow; IPOL
-publishes image-processing papers with runnable code and a SWHID; \emph{eLife} archives the code
+publishes image-processing papers with runnable code and a \textsc{swhid}; \emph{eLife} archives the code
 behind every article automatically; \emph{swMATH} references mathematical software in the archive;
 and Episciences journals such as JTCAM ask authors to cite their software with
 \texttt{biblatex-software} (itself shipped in the ACM article class since
@@ -45,9 +45,9 @@ practice; it is a load-bearing part of it, and it has been going uncared-for.
 That survey, though, was deliberately narrow: a stock-take of \emph{production and valorization},
 answering a precise legal question, not an examination of the code itself. Point the same lens at the
 actual corpus --- the software French public research has archived in Software Heritage, some
-32\,694 projects carrying contributions from the country's universities and research organisations
+32\,694 projects carrying contributions from the country's universities and research organizations
 --- and a sharper picture emerges (Figure~\ref{fig:fr-corpus}). Only about a fifth of those projects
-carry any licence at all, so by default most of them cannot legally be reused; and roughly seven in
+carry any license at all, so by default most of them cannot legally be reused; and roughly seven in
 ten live on a single commercial platform, \texttt{github.com}, a concentration that is itself a
 systemic risk. The law asked \emph{how much}; the archive can show \emph{in what state} --- and the
 state is exactly what the rest of these notes are written to improve.
@@ -61,7 +61,7 @@ state is exactly what the rest of these notes are written to improve.
   archived in Software Heritage, as of 2025. \emph{Top}: the bird's-eye view --- some 32\,694
   projects (2\,880 active in the last twelve months), 3.4~million contributions by 29\,741
   contributors, spanning 1994--2025, with 1\,270 projects preserved although they have since vanished
-  from their forge. \emph{Bottom left}: only \(19.7\%\) of projects carry a licence --- three-quarters
+  from their forge. \emph{Bottom left}: only \(19.7\%\) of projects carry a license --- four-fifths
   have none at all, so by default they cannot legally be reused. \emph{Bottom right}: hosting is
   heavily concentrated, with \(70.7\%\) of projects on a single commercial platform,
   \texttt{github.com} --- a systemic single point of failure. (Software Heritage, Acad-Hal-Fr
@@ -95,7 +95,7 @@ the open-access literature automatically, with an improved software-mention extr
 that surfaced the hidden footprint of open-source software in the biomedical
 literature~\autocite{czi_oss_2022}. Building it on open technologies was always a bet that others
 could run it too --- and the bet is paying off. Under a joint UNESCO and French impulse, the method
-is being generalised into an \textbf{Open Science Monitoring Framework}: a shared, reproducible
+is being generalized into an \textbf{Open Science Monitoring Framework}: a shared, reproducible
 recipe for monitoring open science with open tools, rather than with the proprietary bibliometric
 databases the task has long depended on~\autocite{osmf_unesco_2023}. The software strand of that
 framework has its own dedicated infrastructure --- \textbf{SoFAIR} --- which identifies software
@@ -126,7 +126,7 @@ A fair objection is that a report, however specific, is still just a report --- 
 sit on a shelf. This one did not. In 2021 the EOSC Association stood up a \emph{Task Force on
 Infrastructures for Quality Research Software}, chartered to foster the tools and services that let
 researchers archive, reference, describe, share, and reuse their software, to raise its quality
-technically and organisationally, and to win recognition for the people who build and maintain
+technically and organizationally, and to win recognition for the people who build and maintain
 it~\autocite{EOSC_TaskForce2021}. And in 2022 the \textbf{FAIRCORE4EOSC} project began building it:
 one of its work packages implements the very architecture the SIRS report had sketched, wiring
 Software Heritage to the repositories, publishers, and aggregators around it through concrete
@@ -166,14 +166,14 @@ makes its absence a fault.
 \end{figure}
 
 Funders have followed. France's national research agency, the ANR, asks in its own funding
-guidelines that project software be released under a libre licence and its source archived in
-Software Heritage, with the grant referenced (Figure~\ref{fig:anr}).
+guidelines that project software be released under a libre license and its source archived in
+Software Heritage, with the grant referenced~\autocite{anr-openscience} (Figure~\ref{fig:anr}).
 
 \begin{figure}[htbp]
   \centering
   \fbox{\includegraphics[width=.96\linewidth]{figures/anr-recommendations.png}}
   \caption[ANR funding guideline]{From the ANR's funding guidelines: project source code is to be
-  stored in Software Heritage under a free licence, with the ANR grant referenced.}
+  stored in Software Heritage under a free license, with the ANR grant referenced.}
   \label{fig:anr}
 \end{figure}
 
@@ -194,7 +194,7 @@ country's central research funder, added \emph{research software} to its templat
 so that the code a researcher writes can be listed, and weighed, next to their
 publications~\autocite{DFG_CV_2022}. And the funders have begun to act not one agency at a time but
 together: Science Europe --- the association of Europe's major public research-funding and
-research-performing organisations --- has taken research software into its open-science work through
+research-performing organizations --- has taken research software into its open-science work through
 a dedicated working group, with a software strand at the 2022 Open Science European
 Conference~\autocite{osec_2022}. That is a different kind of policy actor from the ones above: not a
 ministry issuing an instrument, but the funders themselves, collectively \emph{drafting} the policy
@@ -228,19 +228,19 @@ its infrastructure can, when it shows up, keep bad policy from breaking it.
 \section{The engine that carries it out: the OSPO}
 
 Policy written at the top does not execute itself. A national plan can name Software Heritage and the
-\textsc{swhid}, a funder can ask for an open licence and a deposit --- and still nothing changes in a
+\textsc{swhid}, a funder can ask for an open license and a deposit --- and still nothing changes in a
 lab unless someone, locally, turns the principle into the default path. In industry that someone has a
 name: the \emph{Open Source Program Office}, or \textsc{ospo} --- a small competence centre that owns
-an organisation's open-source strategy, its compliance, and its security, and that has by now become
+an organization's open-source strategy, its compliance, and its security, and that has by now become
 common enough to warrant an annual census of its own~\autocite{lfospo2024,todogroup_ospo}.
 
 Universities are standing up the same thing, adapted to research. A university \textsc{ospo} is the
 local execution engine that connects national open-science policy to the daily life of a group: it
-makes open-by-default the path of least resistance, and absorbs the licence and compliance questions
+makes open-by-default the path of least resistance, and absorbs the license and compliance questions
 so that researchers need not; it runs the archiving and citation plumbing --- the
 \texttt{CITATION.cff} file, the \textsc{swhid}, the curated deposit --- so that \textsc{ardc}
 (Chapter~\ref{ch:ardc}) becomes routine rather than heroic; it trains people in reproducibility and
-continuous integration; and it sees to it that software contributions are recognised and counted in
+continuous integration; and it sees to it that software contributions are recognized and counted in
 careers. Registries such as OSPO-RADAR (Chapter~\ref{ch:ardc}) are exactly the kind of catalogue such
 an office keeps current. In short, the \textsc{ospo} is where the policy of the previous section meets
 the practice of the whole of these notes.
@@ -280,7 +280,7 @@ leaving each free to build on it. That is digital sovereignty rightly understood
 \section{A fair question: what about Software Heritage itself?}
 
 These notes have argued that platforms fail and that we should plan for it --- so they must turn the same
-lens on the archive it recommends. Software Heritage is a non-profit initiative launched in 2016,
+lens on the archive they recommend. Software Heritage is a non-profit initiative launched in 2016,
 hosted by Inria and run as an international, multi-stakeholder effort under an agreement with UNESCO;
 it is funded by a range of institutional members and sponsors rather than by any single company or
 state, with foundational support from bodies such as the Alfred P.\ Sloan and NLnet foundations. Its
@@ -317,7 +317,7 @@ careers of the people who make them.
 \begin{callout}{Ready to paste: a grant condition and a policy line}
 \small \textbf{Grant condition} (it costs the grantee nothing --- archival is free):
 \begin{quote}\itshape
-Source code produced with this grant must be released under an open licence and archived in Software
+Source code produced with this grant must be released under an open license and archived in Software
 Heritage, and the resulting \textsc{swhid} reported in the project's outputs. (Further documentation,
 testing, and packaging are encouraged but not required.)
 \end{quote}
@@ -328,7 +328,7 @@ archive (Software Heritage) for research software, ensuring that publicly funded
 verifiable, citable, and recoverable independently of any commercial platform.
 \end{quote}
 A funder can audit compliance across a whole portfolio with one HAL-API call
-(\S\,\ref{ch:ardc}'s \texttt{collCode\_s} query), no per-project chasing required.
+(Chapter~\ref{ch:ardc}'s \texttt{collCode\_s} query), no per-project chasing required.
 \end{callout}
 
 \subsection{A working agenda for funders and policymakers}
@@ -346,19 +346,19 @@ deviations be \enquote{properly motivated}~\autocite{SIRSReport2020}, a funder c
 further and make open the default, putting the burden of proof squarely on the exception.
 Closed-by-default is the costly choice; it is the one that should have to argue for itself.
 
-\emph{Second, avoid balkanisation.} The instinct, once a need is recognised, is for each institution
+\emph{Second, avoid balkanization.} The instinct, once a need is recognized, is for each institution
 to stand up its own archive, its own identifiers, its own registry. That way lies a patchwork of
 silos that do not interoperate and that each carry the full cost of survival alone. The alternative
 is to build on shared, open, non-profit infrastructure --- Software Heritage for the source code
 itself --- so that effort accumulates instead of fragmenting.
 
-\emph{Third, fund the commons as a commons.} A mutualised infrastructure is not free because it is
+\emph{Third, fund the commons as a commons.} A mutualized infrastructure is not free because it is
 shared; it needs recurrent, predictable funding rather than one-off project grants, and it must be
 evaluated as the long-lived service it is. Above all it must be funded for what it predominantly
 \emph{is}: not a server bill, but the people who curate, maintain, and run it. The human component is
 the larger part of the cost, and the first to be cut when infrastructure is mistaken for hardware.
 
-\emph{Fourth, incentivise intelligently.} If we want researchers to write, share, and maintain good
+\emph{Fourth, incentivize intelligently.} If we want researchers to write, share, and maintain good
 software, the careers of the people who do it must reward exactly that --- high-quality
 contributions, counted as first-class scholarly output. The temptation is to reach instead for a
 number (papers, citations, downloads) and let it stand in for worth. Goodhart's law warns where that
@@ -371,11 +371,11 @@ their merits rather than on a metric that will, predictably, be gamed.
 \begin{enumerate}[nosep,leftmargin=*]
   \item \textbf{Default to open.} Publicly funded research software is open source by default;
         exceptions \emph{must} be justified.
-  \item \textbf{Avoid balkanisation.} Build on common, shared, open, non-profit infrastructure
+  \item \textbf{Avoid balkanization.} Build on common, shared, open, non-profit infrastructure
         (Software Heritage), not per-institution silos.
   \item \textbf{Fund the commons as a commons.} Recurrent funding and proper service evaluation,
-        recognising that the human component is the predominant cost.
-  \item \textbf{Incentivise intelligently.} Count quality contributions in careers; avoid purely
+        recognizing that the human component is the predominant cost.
+  \item \textbf{Incentivize intelligently.} Count quality contributions in careers; avoid purely
         numerical indicators; keep a human in the loop.
 \end{enumerate}
 \end{callout}

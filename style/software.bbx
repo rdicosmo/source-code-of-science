@@ -1,0 +1,1547 @@
+\ProvidesFile{software.bbx}[2022/08/01 bibliography driver extension for software entries, Roberto Di Cosmo]
+%
+% Reference implementation of a BibLaTeX style for the software family of bibliographic entries
+%
+% 2020 - 2022 Roberto Di Cosmo <roberto@dicosmo.org>
+%
+\RequireBiber[3]
+\RequirePackage{xurl}
+%
+% Toggles for typesetting additional ids and printing labels
+%
+\newtoggle{bbx:halid}
+\newtoggle{bbx:swhid}
+\newtoggle{bbx:shortswhid}
+\newtoggle{bbx:vcs}
+\newtoggle{bbx:swlabels}
+\newtoggle{bbx:license}
+\newtoggle{bbx:addendum}
+\newtoggle{bbx:crossrefexpansion}
+\newtoggle{bbx:parentcited}
+\newtoggle{bbx:institutionequal}
+\newtoggle{bbx:swhidequal}
+\newtoggle{bbx:repositoryequal}
+\newtoggle{bbx:introducedinequal}
+\newtoggle{bbx:swhidprinted}
+\newtoggle{bbx:repositoryprinted}
+\newsavebox{\bbx@tempbox}
+\newsavebox{\bbx@tempboxb}
+\newsavebox{\bbx@tempboxc}
+\newsavebox{\bbx@tempboxd}
+
+
+
+\DeclareBibliographyOption[boolean]{halid}[true]{%
+  \settoggle{bbx:halid}{#1}}
+\DeclareBibliographyOption[boolean]{swhid}[true]{%
+  \settoggle{bbx:swhid}{#1}}
+\DeclareBibliographyOption[boolean]{shortswhid}[false]{%
+  \settoggle{bbx:shortswhid}{#1}}
+\DeclareBibliographyOption[boolean]{swlabels}[true]{%
+  \settoggle{bbx:swlabels}{#1}}
+\DeclareBibliographyOption[boolean]{vcs}[true]{%
+  \settoggle{bbx:vcs}{#1}}
+\DeclareBibliographyOption[boolean]{license}[true]{%
+  \settoggle{bbx:license}{#1}}
+\DeclareBibliographyOption[boolean]{addendum}[true]{%
+  \settoggle{bbx:addendum}{#1}}
+\DeclareBibliographyOption{crossrefexpansion}[verbose]{%
+  \ifstrequal{#1}{conditional}{%
+    \settoggle{bbx:crossrefexpansion}{true}%
+  }{%
+    \settoggle{bbx:crossrefexpansion}{false}%
+  }%
+}
+
+\ExecuteBibliographyOptions{halid,swhid,shortswhid,swlabels,vcs,license,addendum,crossrefexpansion}
+
+%
+% Declare inheritance rules (valid only in LaTeX preamble!)
+%
+\DeclareDataInheritance{software}{softwareversion,softwaremodule,codefragment}{\inherit{*}{*}}
+\DeclareDataInheritance{softwareversion}{softwaremodule,codefragment}{\inherit{*}{*}}
+\DeclareDataInheritance{softwaremodule}{codefragment}{\inherit{*}{*}}
+
+%
+% Localization
+%
+\DeclareLanguageMapping{english}{english-software}
+\DeclareLanguageMapping{french}{french-software}
+
+%
+% Macros
+%
+
+%
+% Notice the use of \edef to force expansion of the macro parameters before calling \nolinkurl
+%
+\newbibmacro*{swurl+urldate}{%
+  \mkbibacro{URL}\addcolon\addspace%
+     \ifhyperref%
+        {\href{\strfield{url}}{\nolinkurl{\strfield{url}}}}%
+        {\edef\temp{\noexpand\nolinkurl{\strfield{url}}}\temp}%
+  \iffieldundef{urlyear}%
+    {}%
+    {\setunit*{\addspace}%
+     \usebibmacro{urldate}}}
+
+%
+% Support multiline SWHIDs and create swhidcore field from swhid if missing
+%
+\DeclareStyleSourcemap{
+  \maps[datatype=bibtex,overwrite=true]{
+    \map{
+      \step[fieldsource=swhid, match=\regexp{\s}, replace={}]
+    }
+    \map{
+      \step[fieldsource=swhid]
+      \step[fieldset=swhidcore, origfieldval]
+      \step[fieldsource=swhidcore, match=\regexp{;.*}, replace={}]
+    }
+  }
+}
+
+%
+% Formatting fields for the software entries
+%
+
+\DeclareFieldFormat[softwaremodule,codefragment]{subtitle}{\mkbibquote{#1\isdot}}
+\DeclareFieldFormat[software,softwareversion,softwaremodule,codefragment]{url}{
+  \iftoggle{bbx:url}%
+	   {\usebibmacro{swurl+urldate}}
+           {}%
+}
+\DeclareFieldFormat[software,softwareversion,softwaremodule,codefragment]{hal_id}{
+  \iftoggle{bbx:halid}%
+           {\mkbibacro{HAL}\addcolon\addspace%
+             \ifhyperref%
+                 {\href{https://hal.archives-ouvertes.fr/#1\thefield{hal_version}}{\(\langle\)\nolinkurl{#1\thefield{hal_version}}\(\rangle\)}}%
+                 {\(\langle\)\nolinkurl{#1}\thefield{hal_version}\(\rangle\)}%
+           }%
+           {}%
+}
+
+%
+% Notice the use of \edef to force expansion of the macro parameters before calling \nolinkurl
+%
+\DeclareFieldFormat[software,softwareversion,softwaremodule,codefragment]{swhid}{%
+  \iftoggle{bbx:swhid}%
+           {\mkbibacro{SWHID}\addcolon\addspace%
+             \ifhyperref%
+                 {\href{http://archive.softwareheritage.org/#1}{\(\langle\)\nolinkurl{%
+  		    \iftoggle{bbx:shortswhid}{\thefield{swhidcore}}{#1}%
+		    }\(\rangle\)}}%
+                 {\(\langle\){\edef\temp{\noexpand\nolinkurl{%
+  		    \iftoggle{bbx:shortswhid}{\thefield{swhidcore}}{#1}%
+		    }}\temp}\(\rangle\)}%
+           }%
+           {}%
+}
+\DeclareFieldFormat[software,softwareversion,softwaremodule,codefragment]{repository}{%
+  \iftoggle{bbx:vcs}%
+           {\mkbibacro{VCS}\addcolon\addspace%
+               \ifhyperref%
+                   {\href{#1}{\nolinkurl{#1}}}%
+                   {\nolinkurl{#1}}%
+           }%
+           {}%
+}
+\DeclareListFormat[software,softwareversion,softwaremodule,codefragment]{license}{%
+  \usebibmacro{list:delim}{#1}%
+  #1\isdot
+  \usebibmacro{list:andothers}}
+
+%
+% Add here special eprint formats
+%
+
+%
+% ASCL
+%
+\DeclareFieldFormat{eprint:ascl}{%
+ \mkbibacro{ASCL}\addcolon\addspace%
+  \ifhyperref
+    {\href{https://ascl.net/#1}{%
+         \(\langle\)ascl\addcolon\nolinkurl{#1}\(\rangle\)%
+       \iffieldundef{eprintclass}
+         {}
+         {\addspace\texttt{\mkbibbrackets{\thefield{eprintclass}}}}}}
+    {\(\langle\)ascl\addcolon\nolinkurl{#1}\(\rangle\)%
+     \iffieldundef{eprintclass}
+       {}
+       {\addspace\texttt{\mkbibbrackets{\thefield{eprintclass}}}}}
+}
+
+%
+% swMATH
+%
+\DeclareFieldFormat{eprint:swmath}{%
+ \mkbibacro{SWMATH}\addcolon\addspace%
+  \ifhyperref
+    {\href{https://www.zbmath.org/software/#1}{%
+         \(\langle\)swmath\addcolon\nolinkurl{#1}\(\rangle\)%
+       \iffieldundef{eprintclass}
+         {}
+         {\addspace\texttt{\mkbibbrackets{\thefield{eprintclass}}}}}}
+    {\(\langle\)swmath\addcolon\nolinkurl{#1}\(\rangle\)%
+     \iffieldundef{eprintclass}
+       {}
+       {\addspace\texttt{\mkbibbrackets{\thefield{eprintclass}}}}}
+}
+
+%
+% Macros to format output
+%
+
+%
+% Field comparison macros for crossref handling
+% These macros use official biblatex commands for field comparison:
+% - \savefield, \savelist, \savename for saving field values
+% - \iffieldequals, \iflistequals, \ifnameequals for comparison
+% See biblatex documentation for details on these commands.
+%
+
+% Toggles to store field comparison results
+\newtoggle{bbx:titleequal}
+\newtoggle{bbx:versionequal}
+\newtoggle{bbx:editorequal}
+\newtoggle{bbx:dateequal}
+\newtoggle{bbx:authorequal}
+\newtoggle{bbx:urlequal}
+\newtoggle{bbx:halidequal}
+\newtoggle{bbx:licenseequal}
+
+% Specific field comparison macros
+% Compare title field with parent entry
+% Compare actual field values (whether inherited or explicit) with parent
+% Uses official biblatex commands: \savefield and \iffieldequals
+\newbibmacro*{checktitleequal}{%
+  \iffieldundef{crossref}%
+    {\settoggle{bbx:titleequal}{false}}%
+    {% Compare title - actually compare field values
+     \iffieldundef{title}%
+       {% Child has no explicit title - inherited, so equal
+        \entrydata*{\strfield{crossref}}{%
+          \iffieldundef{title}%
+            {\global\settoggle{bbx:titleequal}{true}}%
+            {\global\settoggle{bbx:titleequal}{false}}%
+        }%
+       }%
+       {% Child has title - compare actual values using official biblatex commands
+        \savefield{title}{\bbx@childtitle}%
+        \entrydata*{\strfield{crossref}}{%
+          \iffieldundef{title}%
+            {\global\settoggle{bbx:titleequal}{false}}%
+            {% Both have title - compare using \iffieldequals
+             \iffieldequals{title}{\bbx@childtitle}%
+               {\global\settoggle{bbx:titleequal}{true}}%
+               {\global\settoggle{bbx:titleequal}{false}}%
+            }%
+        }%
+       }%
+    }%
+}
+
+% Compare version field with parent entry
+% Compare actual field values (whether inherited or explicit) with parent
+% Uses official biblatex commands: \savefield and \iffieldequals
+\newbibmacro*{checkversionequal}{%
+  \iffieldundef{crossref}%
+    {\settoggle{bbx:versionequal}{false}}%
+    {% Compare version - actually compare field values
+     \iffieldundef{version}%
+       {% Version not explicitly set - inherited, so equal
+        \entrydata*{\strfield{crossref}}{%
+          \iffieldundef{version}%
+            {\global\settoggle{bbx:versionequal}{true}}%
+            {\global\settoggle{bbx:versionequal}{false}}%
+        }%
+       }%
+       {% Version explicitly set - compare actual values using official biblatex commands
+        \savefield{version}{\bbx@childversion}%
+        \entrydata*{\strfield{crossref}}{%
+          \iffieldundef{version}%
+            {\global\settoggle{bbx:versionequal}{false}}%
+            {% Both have version - compare using \iffieldequals
+             \iffieldequals{version}{\bbx@childversion}%
+               {\global\settoggle{bbx:versionequal}{true}}%
+               {\global\settoggle{bbx:versionequal}{false}}%
+            }%
+        }%
+       }%
+    }%
+}
+
+% Compare editor field with parent entry (name list)
+% Compare actual field values (whether inherited or explicit) with parent
+% Uses official biblatex commands: \savename and \ifnameequals
+\newbibmacro*{checkeditorequal}{%
+  \iffieldundef{crossref}%
+    {\settoggle{bbx:editorequal}{false}}%
+    {% Compare editor - actually compare name list values
+     \ifnameundef{editor}%
+       {% Editor not explicitly set - inherited, so equal
+        \entrydata*{\strfield{crossref}}{%
+          \ifnameundef{editor}%
+            {\global\settoggle{bbx:editorequal}{true}}%
+            {\global\settoggle{bbx:editorequal}{false}}%
+        }%
+       }%
+       {% Editor explicitly set - compare actual values using official biblatex commands
+        \savename{editor}{\bbx@childeditor}%
+        \entrydata*{\strfield{crossref}}{%
+          \ifnameundef{editor}%
+            {\global\settoggle{bbx:editorequal}{false}}%
+            {% Both have editor - compare using \ifnameequals
+             \ifnameequals{editor}{\bbx@childeditor}%
+               {\global\settoggle{bbx:editorequal}{true}}%
+               {\global\settoggle{bbx:editorequal}{false}}%
+            }%
+        }%
+       }%
+    }%
+}
+
+% Compare date field with parent entry
+% Compare actual field values (whether inherited or explicit) with parent
+% NOTE: BibLaTeX stores dates as year, month, day fields, not a date field
+% So we need to check and compare these components
+\newbibmacro*{checkdateequal}{%
+  \iffieldundef{crossref}%
+    {\settoggle{bbx:dateequal}{false}}%
+    {% Compare date - actually compare date values
+     % Check if child has any date components (year, month, day)
+     \iffieldundef{year}%
+       {% Child has no year - inherited, so equal
+        \entrydata*{\strfield{crossref}}{%
+          \iffieldundef{year}%
+            {\global\settoggle{bbx:dateequal}{true}}%
+            {\global\settoggle{bbx:dateequal}{false}}%
+        }%
+       }%
+       {% Child has year - compare date components
+        % Capture child date components BEFORE entering entrydata
+        % Strategy: tempbox=child year, tempboxb=child month (if exists), tempboxc=child day (if exists), tempboxd=spare
+        \savebox{\bbx@tempbox}{\strfield{year}}%
+        \iffieldundef{month}%
+          {\def\bbx@childhasmonth{0}}%
+          {\def\bbx@childhasmonth{1}%
+           \savebox{\bbx@tempboxb}{\strfield{month}}%
+          }%
+        \iffieldundef{day}%
+          {\def\bbx@childhasday{0}}%
+          {\def\bbx@childhasday{1}%
+           \savebox{\bbx@tempboxc}{\strfield{day}}%
+          }%
+        % Get parent date INSIDE entrydata and compare
+        \entrydata*{\strfield{crossref}}{%
+          \iffieldundef{year}%
+            {\global\settoggle{bbx:dateequal}{false}}%
+            {% Both have year - compare components
+             % Compare year: child year (tempbox) vs parent year (save in tempboxd)
+             \savebox{\bbx@tempboxd}{\strfield{year}}%
+             \expandafter\ifstrequal\expandafter{\usebox{\bbx@tempbox}}{\usebox{\bbx@tempboxd}}%
+               {% Years equal - check month
+                \ifnum\bbx@childhasmonth=0%
+                  {% Child has no month - check if parent has month
+                   \iffieldundef{month}%
+                     {% Both have no month - check day
+                      \ifnum\bbx@childhasday=0%
+                        {% Child has no day - check if parent has day
+                         \iffieldundef{day}%
+                           {\global\settoggle{bbx:dateequal}{true}}%
+                           {\global\settoggle{bbx:dateequal}{false}}%
+                        }%
+                        {% Child has day - parent must have same day
+                         \iffieldundef{day}%
+                           {\global\settoggle{bbx:dateequal}{false}}%
+                           {% Both have day - compare: child day (tempboxc) vs parent day (save in tempboxd)
+                            \savebox{\bbx@tempboxd}{\strfield{day}}%
+                            \expandafter\ifstrequal\expandafter{\usebox{\bbx@tempboxc}}{\usebox{\bbx@tempboxd}}%
+                              {\global\settoggle{bbx:dateequal}{true}}%
+                              {\global\settoggle{bbx:dateequal}{false}}%
+                           }%
+                        }%
+                      }%
+                  }%
+                  {% Child has month - parent must have same month
+                   \iffieldundef{month}%
+                     {\global\settoggle{bbx:dateequal}{false}}%
+                     {% Both have month - compare: child month (tempboxb) vs parent month (save in tempboxd)
+                      \savebox{\bbx@tempboxd}{\strfield{month}}%
+                      \expandafter\ifstrequal\expandafter{\usebox{\bbx@tempboxb}}{\usebox{\bbx@tempboxd}}%
+                        {% Months equal - check day
+                         \ifnum\bbx@childhasday=0%
+                           {% Child has no day - check if parent has day
+                            \iffieldundef{day}%
+                              {\global\settoggle{bbx:dateequal}{true}}%
+                              {\global\settoggle{bbx:dateequal}{false}}%
+                           }%
+                           {% Child has day - parent must have same day
+                            \iffieldundef{day}%
+                              {\global\settoggle{bbx:dateequal}{false}}%
+                              {% Both have day - compare: child day (tempboxc) vs parent day (save in tempboxd)
+                               \savebox{\bbx@tempboxd}{\strfield{day}}%
+                               \expandafter\ifstrequal\expandafter{\usebox{\bbx@tempboxc}}{\usebox{\bbx@tempboxd}}%
+                                 {\global\settoggle{bbx:dateequal}{true}}%
+                                 {\global\settoggle{bbx:dateequal}{false}}%
+                              }%
+                           }%
+                        }%
+                        {% Months differ
+                         \global\settoggle{bbx:dateequal}{false}}%
+                     }%
+                  }%
+               }%
+               {% Years differ
+                \global\settoggle{bbx:dateequal}{false}}%
+            }%
+        }%
+       }%
+    }%
+}
+
+% Compare author field with parent entry (name list)
+% Compare actual field values (whether inherited or explicit) with parent
+% Uses official biblatex commands: \savename and \ifnameequals
+\newbibmacro*{checkauthorequal}{%
+  \iffieldundef{crossref}%
+    {\settoggle{bbx:authorequal}{false}}%
+    {% Compare author - actually compare name list values
+     \ifnameundef{author}%
+       {% Author not explicitly set - inherited, so equal
+        \entrydata*{\strfield{crossref}}{%
+          \ifnameundef{author}%
+            {\global\settoggle{bbx:authorequal}{true}}%
+            {\global\settoggle{bbx:authorequal}{false}}%
+        }%
+       }%
+       {% Author explicitly set - compare actual values using official biblatex commands
+        \savename{author}{\bbx@childauthor}%
+        \entrydata*{\strfield{crossref}}{%
+          \ifnameundef{author}%
+            {\global\settoggle{bbx:authorequal}{false}}%
+            {% Both have author - compare using \ifnameequals
+             \ifnameequals{author}{\bbx@childauthor}%
+               {\global\settoggle{bbx:authorequal}{true}}%
+               {\global\settoggle{bbx:authorequal}{false}}%
+            }%
+        }%
+       }%
+    }%
+}
+
+% Compare institution field with parent
+% Uses official biblatex commands: \savelist and \iflistequals
+\newbibmacro*{checkinstitutionequal}{%
+  \iffieldundef{crossref}%
+    {\settoggle{bbx:institutionequal}{false}}%
+    {% Compare institution - actually compare list values
+     \iflistundef{institution}%
+       {% Institution not explicitly set - inherited, so equal
+        \entrydata*{\strfield{crossref}}{%
+          \iflistundef{institution}%
+            {\global\settoggle{bbx:institutionequal}{true}}%
+            {\global\settoggle{bbx:institutionequal}{false}}%
+        }%
+       }%
+       {% Institution explicitly set - compare actual values using official biblatex commands
+        \savelist{institution}{\bbx@childinstitution}%
+        \entrydata*{\strfield{crossref}}{%
+          \iflistundef{institution}%
+            {\global\settoggle{bbx:institutionequal}{false}}%
+            {% Both have institution - compare using \iflistequals
+             \iflistequals{institution}{\bbx@childinstitution}%
+               {\global\settoggle{bbx:institutionequal}{true}}%
+               {\global\settoggle{bbx:institutionequal}{false}}%
+            }%
+        }%
+       }%
+    }%
+}
+
+% Compare swhid field with parent
+% Uses official biblatex commands: \savefield and \iffieldequals
+\newbibmacro*{checkswhidequal}{%
+  \iffieldundef{crossref}%
+    {\settoggle{bbx:swhidequal}{true}}%
+    {% Compare swhid - actually compare field values
+     \iffieldundef{swhid}%
+       {% SWHID not explicitly set - inherited, so equal
+        \entrydata*{\strfield{crossref}}{%
+          \iffieldundef{swhid}%
+            {\global\settoggle{bbx:swhidequal}{true}}%
+            {\global\settoggle{bbx:swhidequal}{false}}%
+        }%
+       }%
+       {% SWHID explicitly set - compare actual values using official biblatex commands
+        \savefield{swhid}{\bbx@childswhid}%
+        \entrydata*{\strfield{crossref}}{%
+          \iffieldundef{swhid}%
+            {\global\settoggle{bbx:swhidequal}{false}}%
+            {% Both have swhid - compare using \iffieldequals
+             \iffieldequals{swhid}{\bbx@childswhid}%
+               {\global\settoggle{bbx:swhidequal}{true}}%
+               {\global\settoggle{bbx:swhidequal}{false}}%
+            }%
+        }%
+       }%
+    }%
+}
+
+% Compare repository field with parent (vcs)
+% Uses official biblatex commands: \savefield and \iffieldequals
+\newbibmacro*{checkrepositoryequal}{%
+  \iffieldundef{crossref}%
+    {\settoggle{bbx:repositoryequal}{true}}%
+    {% Compare repository - actually compare field values
+     \iffieldundef{repository}%
+       {% Repository not explicitly set - inherited, so equal
+        \entrydata*{\strfield{crossref}}{%
+          \iffieldundef{repository}%
+            {\global\settoggle{bbx:repositoryequal}{true}}%
+            {\global\settoggle{bbx:repositoryequal}{false}}%
+        }%
+       }%
+       {% Repository explicitly set - compare actual values using official biblatex commands
+        \savefield{repository}{\bbx@childrepository}%
+        \entrydata*{\strfield{crossref}}{%
+          \iffieldundef{repository}%
+            {\global\settoggle{bbx:repositoryequal}{false}}%
+            {% Both have repository - compare using \iffieldequals
+             \iffieldequals{repository}{\bbx@childrepository}%
+               {\global\settoggle{bbx:repositoryequal}{true}}%
+               {\global\settoggle{bbx:repositoryequal}{false}}%
+            }%
+        }%
+       }%
+    }%
+}
+
+% Compare url field with parent entry
+% Compare actual field values (whether inherited or explicit) with parent
+% Uses official biblatex commands: \savefield and \iffieldequals
+\newbibmacro*{checkurlequal}{%
+  \iffieldundef{crossref}%
+    {\settoggle{bbx:urlequal}{false}}%
+    {% Compare url - actually compare field values
+     \iffieldundef{url}%
+       {% URL not explicitly set - inherited, so equal
+        \entrydata*{\strfield{crossref}}{%
+          \iffieldundef{url}%
+            {\global\settoggle{bbx:urlequal}{true}}%
+            {\global\settoggle{bbx:urlequal}{false}}%
+        }%
+       }%
+       {% URL explicitly set - compare actual values using official biblatex commands
+        \savefield{url}{\bbx@childurl}%
+        \entrydata*{\strfield{crossref}}{%
+          \iffieldundef{url}%
+            {\global\settoggle{bbx:urlequal}{false}}%
+            {% Both have url - compare using \iffieldequals
+             \iffieldequals{url}{\bbx@childurl}%
+               {\global\settoggle{bbx:urlequal}{true}}%
+               {\global\settoggle{bbx:urlequal}{false}}%
+            }%
+        }%
+       }%
+    }%
+}
+
+% Compare introducedin field with parent
+% Uses official biblatex commands: \savefield and \iffieldequals
+\newbibmacro*{checkintroducedinequal}{%
+  \iffieldundef{crossref}%
+    {\settoggle{bbx:introducedinequal}{true}}%
+    {% Compare introducedin - actually compare field values
+     \iffieldundef{introducedin}%
+       {% Introducedin not explicitly set - inherited, so equal
+        \entrydata*{\strfield{crossref}}{%
+          \iffieldundef{introducedin}%
+            {\global\settoggle{bbx:introducedinequal}{true}}%
+            {\global\settoggle{bbx:introducedinequal}{false}}%
+        }%
+       }%
+       {% Introducedin explicitly set - compare actual values using official biblatex commands
+        \savefield{introducedin}{\bbx@childintroducedin}%
+        \entrydata*{\strfield{crossref}}{%
+          \iffieldundef{introducedin}%
+            {\global\settoggle{bbx:introducedinequal}{false}}%
+            {% Both have introducedin - compare using \iffieldequals
+             \iffieldequals{introducedin}{\bbx@childintroducedin}%
+               {\global\settoggle{bbx:introducedinequal}{true}}%
+               {\global\settoggle{bbx:introducedinequal}{false}}%
+            }%
+        }%
+       }%
+    }%
+}
+
+% Compare hal_id field with parent entry
+% Compare actual field values (whether inherited or explicit) with parent
+% Uses official biblatex commands: \savefield and \iffieldequals
+\newbibmacro*{checkhalidequal}{%
+  \iffieldundef{crossref}%
+    {\settoggle{bbx:halidequal}{false}}%
+    {% Compare hal_id - actually compare field values
+     \iffieldundef{hal_id}%
+       {% HAL ID not explicitly set - inherited, so equal
+        \entrydata*{\strfield{crossref}}{%
+          \iffieldundef{hal_id}%
+            {\global\settoggle{bbx:halidequal}{true}}%
+            {\global\settoggle{bbx:halidequal}{false}}%
+        }%
+       }%
+       {% HAL ID explicitly set - compare actual values using official biblatex commands
+        \savefield{hal_id}{\bbx@childhalid}%
+        \entrydata*{\strfield{crossref}}{%
+          \iffieldundef{hal_id}%
+            {\global\settoggle{bbx:halidequal}{false}}%
+            {% Both have hal_id - compare using \iffieldequals
+             \iffieldequals{hal_id}{\bbx@childhalid}%
+               {\global\settoggle{bbx:halidequal}{true}}%
+               {\global\settoggle{bbx:halidequal}{false}}%
+            }%
+        }%
+       }%
+    }%
+}
+
+% Compare license field with parent entry
+% Compare actual field values (whether inherited or explicit) with parent
+% Uses official biblatex commands: \savelist and \iflistequals
+\newbibmacro*{checklicenseequal}{%
+  \iffieldundef{crossref}%
+    {\settoggle{bbx:licenseequal}{false}}%
+    {% Compare license - actually compare list values
+     \iflistundef{license}%
+       {% License not explicitly set - inherited, so equal
+        \entrydata*{\strfield{crossref}}{%
+          \iflistundef{license}%
+            {\global\settoggle{bbx:licenseequal}{true}}%
+            {\global\settoggle{bbx:licenseequal}{false}}%
+        }%
+       }%
+       {% License explicitly set - compare actual values using official biblatex commands
+        \savelist{license}{\bbx@childlicense}%
+        \entrydata*{\strfield{crossref}}{%
+          \iflistundef{license}%
+            {\global\settoggle{bbx:licenseequal}{false}}%
+            {% Both have license - compare using \iflistequals
+             \iflistequals{license}{\bbx@childlicense}%
+               {\global\settoggle{bbx:licenseequal}{true}}%
+               {\global\settoggle{bbx:licenseequal}{false}}%
+            }%
+        }%
+       }%
+    }%
+}
+
+% Run all field comparisons
+\newbibmacro*{checkallfields}{%
+  \usebibmacro{checktitleequal}%
+  \usebibmacro{checkversionequal}%
+  \usebibmacro{checkeditorequal}%
+  \usebibmacro{checkdateequal}%
+  \usebibmacro{checkauthorequal}%
+  \usebibmacro{checkinstitutionequal}%
+  \usebibmacro{checkswhidequal}%
+  \usebibmacro{checkrepositoryequal}%
+  \usebibmacro{checkintroducedinequal}%
+  \usebibmacro{checkurlequal}%
+  \usebibmacro{checkhalidequal}%
+  \usebibmacro{checklicenseequal}%
+}
+
+%
+% Print crossref citation (proper biblatex mechanism for bibliography context)
+%
+\newbibmacro*{printcrossrefcitation}{%
+  \iffieldundef{crossref}%
+    {}%
+    {\entrydata{\strfield{crossref}}{%
+       \printtext[bibhyperref]{\mkbibbrackets{\printfield{labelnumber}}}}%
+    }%
+}
+
+%
+% Check if parent entry is cited/present in bibliography
+% We use \ifciteseen to check if the parent entry has been cited
+%
+\newbibmacro*{checkparentcited}{%
+  \iffieldundef{crossref}%
+    {\settoggle{bbx:parentcited}{false}}%
+    {\ifciteseen{\strfield{crossref}}%
+      {\settoggle{bbx:parentcited}{true}}%
+      {\settoggle{bbx:parentcited}{false}}%
+    }%
+}
+
+%
+% Ultra-concise format macros for each entry type
+% Used when parent is cited and all key fields (author, title, institution) are equal
+%
+
+% Ultra-concise format for softwareversion entries
+% Shows: version (if differs), date (if differs), entry-specific fields, parent reference
+%
+\newbibmacro*{ultraconcise+softwareversion}{%
+  \usebibmacro{checkversionequal}%
+  \usebibmacro{checkdateequal}%
+  % Print version if it exists and differs from parent
+  \iffieldundef{version}{%
+    % No version - check date
+    \iftoggle{bbx:dateequal}{%
+      % No version, date same - just parent reference
+      \usebibmacro{printcrossrefcitation}%
+    }{%
+      % No version, date differs - show date + parent reference
+      \printdate\addspace%
+      \printtext{of}\addspace%
+      \usebibmacro{printcrossrefcitation}%
+    }%
+  }{%
+    % Version exists - check if it differs
+    \iftoggle{bbx:versionequal}{%
+      % Version same - check date
+      \iftoggle{bbx:dateequal}{%
+        % Version same, date same - just parent reference
+        \usebibmacro{printcrossrefcitation}%
+      }{%
+        % Version same, date differs - show date + parent reference
+        \printdate\addspace%
+        \printtext{of}\addspace%
+        \usebibmacro{printcrossrefcitation}%
+      }%
+    }{%
+      % Version differs - show version
+      \printtext{Version}\addspace%
+      \thefield{version}%
+      % Check if date also differs
+      \iftoggle{bbx:dateequal}{%
+        % Date same - just add "of"
+        \addspace\printtext{of}\addspace%
+        \usebibmacro{printcrossrefcitation}%
+      }{%
+        % Date differs - show date before "of"
+        \setunit{\addcomma\addspace}%
+        \printdate\addspace%
+        \printtext{of}\addspace%
+        \usebibmacro{printcrossrefcitation}%
+      }%
+    }%
+  }%
+  % Print entry-specific fields (swhid, repository, introducedin) if they differ
+  \usebibmacro{printentryspecificfields}%
+}
+
+% Ultra-concise format for softwaremodule entries
+% Shows: subtitle (always), date (if differs), entry-specific fields, parent reference
+% Note: subtitle is always different for modules, so we always show it
+%
+\newbibmacro*{ultraconcise+softwaremodule}{%
+  \usebibmacro{checkdateequal}%
+  % Always show subtitle for modules
+  \printfield{subtitle}%
+  % Check if date differs
+  \iftoggle{bbx:dateequal}{%
+    % Date same - just add "from"
+    \setunit{\addcomma\addspace}%
+    \bibstring{swpartof}\addspace%
+    \usebibmacro{printcrossrefcitation}%
+  }{%
+    % Date differs - show date before "from"
+    \setunit{\addcomma\addspace}%
+    \printdate\addspace%
+    \bibstring{swpartof}\addspace%
+    \usebibmacro{printcrossrefcitation}%
+  }%
+  % Print entry-specific fields (swhid, repository, introducedin) if they differ
+  \usebibmacro{printentryspecificfields}%
+}
+
+% Ultra-concise format for codefragment entries
+% Shows: subtitle (always), date (if differs), entry-specific fields, parent reference
+% Note: codefragment entries DO NOT have version, so we never show it
+%
+\newbibmacro*{ultraconcise+codefragment}{%
+  \usebibmacro{checkdateequal}%
+  % Always show subtitle for fragments
+  \printfield{subtitle}%
+  % Check if date differs
+  \iftoggle{bbx:dateequal}{%
+    % Date same - just add "from"
+    \setunit{\addcomma\addspace}%
+    \bibstring{swexc}\addspace%
+    \usebibmacro{printcrossrefcitation}%
+  }{%
+    % Date differs - show date before "from"
+    \setunit{\addcomma\addspace}%
+    \printdate\addspace%
+    \bibstring{swexc}\addspace%
+    \usebibmacro{printcrossrefcitation}%
+  }%
+  % Print entry-specific fields (swhid, repository, introducedin) if they differ
+  \usebibmacro{printentryspecificfields}%
+}
+
+% Backward compatibility: old macro name redirects to softwareversion
+% Note: \let doesn't work with + in macro names, so we define a wrapper instead
+\newbibmacro*{ultraconcise+version+date}{%
+  \usebibmacro{ultraconcise+softwareversion}%
+}
+
+%
+% Warn about duplicate entries (all fields equal to parent)
+%
+\newbibmacro*{warnduplicateentry}{%
+  \iffieldundef{crossref}%
+    {}%
+    {\blx@warning{%
+      Entry has identical fields as its crossref parent '\strfield{crossref}'%
+      \MessageBreak%
+      generating duplicated bibliography references, review and fix your citations%
+    }}%
+}
+
+%
+% Print entry-specific fields (swhid, repository/vcs, introducedin)
+% Only shows fields that differ from parent or are entry-specific
+%
+\newbibmacro*{printentryspecificfields}{%
+  \usebibmacro{checkswhidequal}%
+  \usebibmacro{checkrepositoryequal}%
+  \usebibmacro{checkintroducedinequal}%
+  % Reset printed flags at start
+  \global\settoggle{bbx:swhidprinted}{false}%
+  \global\settoggle{bbx:repositoryprinted}{false}%
+  % Print swhid if enabled and differs from parent
+  \iftoggle{bbx:swhid}{%
+    \iffieldundef{swhid}{}{%
+      \iftoggle{bbx:swhidequal}{}{%
+        \setunit{\addcomma\addspace}%
+        \printfield{swhid}%
+        \global\settoggle{bbx:swhidprinted}{true}%
+      }%
+    }%
+  }{}%
+  % Print repository/vcs if enabled and differs from parent
+  \iftoggle{bbx:vcs}{%
+    \iffieldundef{repository}{}{%
+      \iftoggle{bbx:repositoryequal}{}{%
+        \setunit{\addcomma\addspace}%
+        \printfield{repository}%
+        \global\settoggle{bbx:repositoryprinted}{true}%
+      }%
+    }%
+  }{}%
+  % Print introducedin if exists and differs from parent
+  \iffieldundef{introducedin}{}{%
+    \iftoggle{bbx:introducedinequal}{}{%
+      \setunit{\addcomma\addspace}%
+      \printfield{introducedin}%
+    }%
+  }%
+}
+
+%
+% Common macro for title, version, editor and date
+%
+
+\newbibmacro*{tit+ver+ed+date}{%
+  \iffieldundef{crossref}{%
+    % No crossref: print all fields as before
+    \printfield{title}\addspace%
+    \printfield{version}\addspace%
+    \ifnameundef{editor}%
+      {}
+      {\printtext[parens]{%
+          \bibstring{edited}\addspace%
+          \printnames{editor}}}%
+    \setunit*{\addcomma\addspace}%
+    \printdate%
+    \setunit{\addspace}%
+  }{%
+    % Crossref exists
+    \iftoggle{bbx:crossrefexpansion}{%
+      % Conditional expansion enabled
+      \usebibmacro{checkparentcited}%
+      \iftoggle{bbx:parentcited}{%
+        % Parent is cited - check fields and use minimal/ultra-concise format
+        \usebibmacro{checkallfields}%
+        % Check if all key fields are equal
+        \ifboolexpr{%
+          test {\iftoggle{bbx:titleequal}}%
+          and
+          test {\iftoggle{bbx:authorequal}}%
+          and
+          test {\iftoggle{bbx:institutionequal}}%
+          and
+          test {\iftoggle{bbx:editorequal}}%
+        }{%
+          % All key fields equal - use ultra-concise format (handled by driver)
+          % This macro will be called but output is minimal
+          \usebibmacro{ultraconcise+version+date}%
+        }{%
+          % Some fields differ - use minimal format
+          \iftoggle{bbx:versionequal}{%
+            % Version same, but other fields differ
+            \iftoggle{bbx:titleequal}{}{%
+              \printfield{title}\addspace%
+            }%
+            \ifnameundef{editor}{}{%
+              \iftoggle{bbx:editorequal}{}{%
+                \printtext[parens]{%
+                  \bibstring{edited}\addspace%
+                  \printnames{editor}}%
+                \setunit*{\addcomma\addspace}%
+              }%
+            }%
+            \iftoggle{bbx:dateequal}{}{%
+              \printdate%
+            }%
+            \setunit*{\addspace}%
+            \usebibmacro{printcrossrefcitation}%
+          }{%
+            % Version differs: format as "version X of [citation]"
+            \iftoggle{bbx:titleequal}{}{%
+              \printfield{title}\addspace%
+            }%
+            \printfield{version}\addspace%
+            \addspace of\addspace%
+            \usebibmacro{printcrossrefcitation}%
+            \ifnameundef{editor}{}{%
+              \iftoggle{bbx:editorequal}{}{%
+                \setunit*{\addcomma\addspace}%
+                \printtext[parens]{%
+                  \bibstring{edited}\addspace%
+                  \printnames{editor}}%
+              }%
+            }%
+            \iftoggle{bbx:dateequal}{}{%
+              \setunit*{\addcomma\addspace}%
+              \printdate}%
+          }%
+        }%
+      }{%
+        % Parent NOT cited - full expansion (print all fields, no parent reference)
+        \printfield{title}\addspace%
+        \printfield{version}\addspace%
+        \ifnameundef{editor}%
+          {}
+          {\printtext[parens]{%
+              \bibstring{edited}\addspace%
+              \printnames{editor}}}%
+        \setunit*{\addcomma\addspace}%
+        \printdate%
+      }%
+    }{%
+      % Conditional expansion disabled - use current verbose format logic
+      \usebibmacro{checkallfields}%
+      % Check if all key fields are equal
+      \ifboolexpr{%
+        test {\iftoggle{bbx:titleequal}}%
+        and
+        test {\iftoggle{bbx:versionequal}}%
+        and
+        test {\iftoggle{bbx:editorequal}}%
+        and
+        test {\iftoggle{bbx:dateequal}}%
+      }{%
+        % All fields equal: warn and print full entry
+        \usebibmacro{warnduplicateentry}%
+        \printfield{title}\addspace%
+        \printfield{version}\addspace%
+        \ifnameundef{editor}%
+          {}
+          {\printtext[parens]{%
+              \bibstring{edited}\addspace%
+              \printnames{editor}}}%
+        \setunit*{\addcomma\addspace}%
+        \printdate%
+      }{%
+        % Some fields differ: print them intelligently
+        \iftoggle{bbx:versionequal}{%
+          % Version same, but other fields differ
+          \iftoggle{bbx:titleequal}{}{%
+            \printfield{title}\addspace%
+          }%
+          \ifnameundef{editor}{}{%
+            \iftoggle{bbx:editorequal}{}{%
+              \printtext[parens]{%
+                \bibstring{edited}\addspace%
+                \printnames{editor}}%
+              \setunit*{\addcomma\addspace}%
+            }%
+          }%
+          \iftoggle{bbx:dateequal}{}{%
+            \printdate%
+          }%
+          \setunit*{\addspace}%
+          \usebibmacro{printcrossrefcitation}%
+        }{%
+          % Version differs: format as "version X of [citation]"
+          \iftoggle{bbx:titleequal}{}{%
+            \printfield{title}\addspace%
+          }%
+          \printfield{version}\addspace%
+          \addspace of\addspace%
+          \usebibmacro{printcrossrefcitation}%
+          \ifnameundef{editor}{}{%
+            \iftoggle{bbx:editorequal}{}{%
+              \setunit*{\addcomma\addspace}%
+              \printtext[parens]{%
+                \bibstring{edited}\addspace%
+                \printnames{editor}}%
+            }%
+          }%
+          \iftoggle{bbx:dateequal}{}{%
+            \setunit*{\addcomma\addspace}%
+            \printdate%
+          }%
+        }%
+      }%
+    }%
+  }%
+}
+
+\newbibmacro*{swtitleauthoreditoryear}{%
+  % Check if we should skip author (conditional expansion + parent cited + author equal)
+  \iffieldundef{crossref}{%
+    % No crossref - always print author
+    \printnames{author}\addcomma%
+    \setunit{\addspace}%
+    \usebibmacro*{tit+ver+ed+date}%
+  }{%
+    % Crossref exists
+    \iftoggle{bbx:crossrefexpansion}{%
+      % Conditional expansion enabled
+      \usebibmacro{checkparentcited}%
+      \iftoggle{bbx:parentcited}{%
+        % Parent is cited - check if author is equal
+        \usebibmacro{checkauthorequal}%
+        \iftoggle{bbx:authorequal}{%
+          % Author same - skip it
+          \usebibmacro*{tit+ver+ed+date}%
+        }{%
+          % Author differs - print it
+          \printnames{author}\addcomma%
+          \setunit{\addspace}%
+          \usebibmacro*{tit+ver+ed+date}%
+        }%
+      }{%
+        % Parent not cited - always print author
+        \printnames{author}\addcomma%
+        \setunit{\addspace}%
+        \usebibmacro*{tit+ver+ed+date}%
+      }%
+    }{%
+      % Conditional expansion disabled - always print author
+      \printnames{author}\addcomma%
+      \setunit{\addspace}%
+      \usebibmacro*{tit+ver+ed+date}%
+    }%
+  }%
+}
+
+%
+% Reusable macro for subtitle with crossref (used by modules and fragments)
+% #1 = relationship string (swpartof or swexc)
+%
+\newbibmacro*{printsubtitlewithcrossref}[1]{%
+  % #1 = relationship string (swpartof or swexc)
+  \iffieldundef{subtitle}%
+    {%
+      % No subtitle: let tit+ver+ed+date handle the relationship
+      \usebibmacro*{tit+ver+ed+date}%
+    }%
+    {%
+      % Subtitle exists: print it, then reference parent intelligently
+      \printfield{subtitle}\addcomma\addspace%
+      \iffieldundef{crossref}%
+        {%
+          % No crossref: print title/version/editor/date normally
+          \usebibmacro*{tit+ver+ed+date}%
+        }%
+        {%
+          % Crossref exists
+          \iftoggle{bbx:crossrefexpansion}{%
+            % Conditional expansion enabled
+            \usebibmacro{checkparentcited}%
+            \iftoggle{bbx:parentcited}{%
+              % Parent is cited - use minimal format
+              % Check entry type: codefragment entries should NOT show version
+              % Check if relationship string is swexc (used only for codefragment)
+              \ifstrequal{#1}{swexc}%
+              {%
+                % Codefragment entry - never show version, just cite parent
+                \bibstring{#1}\addspace%
+                \usebibmacro{printcrossrefcitation}%
+              }%
+              {%
+                % Softwaremodule entry (swpartof) - show version if it differs
+                \iffieldundef{version}%
+                  {%
+                    % No version field (inherited) - don't show version, just cite parent
+                    \bibstring{#1}\addspace%
+                    \usebibmacro{printcrossrefcitation}%
+                  }%
+                  {%
+                    % Version field exists - check if it differs from parent
+                    \usebibmacro{checkversionequal}%
+                    \iftoggle{bbx:versionequal}%
+                      {%
+                        % Version same as parent - don't show it, just cite parent
+                        \bibstring{#1}\addspace%
+                        \usebibmacro{printcrossrefcitation}%
+                      }%
+                      {%
+                        % Version differs from parent - show it
+                        \printfield{version}\addspace%
+                        \bibstring{#1}\addspace%
+                        \usebibmacro{printcrossrefcitation}%
+                      }%
+                  }%
+              }%
+            }{%
+              % Parent not cited - full expansion (print title/version/editor/date, no parent reference)
+              \usebibmacro*{tit+ver+ed+date}%
+            }%
+          }{%
+            % Conditional expansion disabled - use current verbose format
+            % Check entry type: codefragment entries should NOT show version
+            % Check if relationship string is swexc (used only for codefragment)
+            \ifstrequal{#1}{swexc}%
+            {%
+              % Codefragment entry - never show version, just cite parent
+              \bibstring{#1}\addspace%
+              \usebibmacro{printcrossrefcitation}%
+            }%
+            {%
+              % Softwaremodule entry (swpartof) - show version if it differs
+              \iffieldundef{version}%
+                {%
+                  % No version field (inherited) - don't show version, just cite parent
+                  \bibstring{#1}\addspace%
+                  \usebibmacro{printcrossrefcitation}%
+                }%
+                {%
+                  % Version field exists - check if it differs from parent
+                  \usebibmacro{checkversionequal}%
+                  \iftoggle{bbx:versionequal}%
+                    {%
+                      % Version same as parent - don't show it, just cite parent
+                      \bibstring{#1}\addspace%
+                      \usebibmacro{printcrossrefcitation}%
+                    }%
+                    {%
+                      % Version differs from parent - show it
+                      \printfield{version}\addspace%
+                      \bibstring{#1}\addspace%
+                      \usebibmacro{printcrossrefcitation}%
+                    }%
+                }%
+            }%
+          }%
+        }%
+    }%
+}
+
+%
+\newbibmacro*{swsubtitleauthoreditoryear}{%
+  % Check if we should skip author (conditional expansion + parent cited + author equal)
+  \iffieldundef{crossref}{%
+    % No crossref - always print author
+    \printnames{author}\addcomma%
+    \setunit{\addspace}%
+    \usebibmacro*{printsubtitlewithcrossref}{swpartof}%
+  }{%
+    % Crossref exists
+    \iftoggle{bbx:crossrefexpansion}{%
+      % Conditional expansion enabled
+      \usebibmacro{checkparentcited}%
+      \iftoggle{bbx:parentcited}{%
+        % Parent is cited - check if author is equal
+        \usebibmacro{checkauthorequal}%
+        \iftoggle{bbx:authorequal}{%
+          % Author same - skip it
+          \usebibmacro*{printsubtitlewithcrossref}{swpartof}%
+        }{%
+          % Author differs - print it
+          \printnames{author}\addcomma%
+          \setunit{\addspace}%
+          \usebibmacro*{printsubtitlewithcrossref}{swpartof}%
+        }%
+      }{%
+        % Parent not cited - always print author
+        \printnames{author}\addcomma%
+        \setunit{\addspace}%
+        \usebibmacro*{printsubtitlewithcrossref}{swpartof}%
+      }%
+    }{%
+      % Conditional expansion disabled - always print author
+      \printnames{author}\addcomma%
+      \setunit{\addspace}%
+      \usebibmacro*{printsubtitlewithcrossref}{swpartof}%
+    }%
+  }%
+}
+
+\newbibmacro*{codefragmenttitleauthoreditoryear}{%
+  % Check if we should skip author (conditional expansion + parent cited + author equal)
+  \iffieldundef{crossref}{%
+    % No crossref - always print author
+    \printnames{author}\addcomma%
+    \setunit{\addspace}%
+    \usebibmacro*{printsubtitlewithcrossref}{swexc}%
+  }{%
+    % Crossref exists
+    \iftoggle{bbx:crossrefexpansion}{%
+      % Conditional expansion enabled
+      \usebibmacro{checkparentcited}%
+      \iftoggle{bbx:parentcited}{%
+        % Parent is cited - check if author is equal
+        \usebibmacro{checkauthorequal}%
+        \iftoggle{bbx:authorequal}{%
+          % Author same - skip it
+          \usebibmacro*{printsubtitlewithcrossref}{swexc}%
+        }{%
+          % Author differs - print it
+          \printnames{author}\addcomma%
+          \setunit{\addspace}%
+          \usebibmacro*{printsubtitlewithcrossref}{swexc}%
+        }%
+      }{%
+        % Parent not cited - always print author
+        \printnames{author}\addcomma%
+        \setunit{\addspace}%
+        \usebibmacro*{printsubtitlewithcrossref}{swexc}%
+      }%
+    }{%
+      % Conditional expansion disabled - always print author
+      \printnames{author}\addcomma%
+      \setunit{\addspace}%
+      \usebibmacro*{printsubtitlewithcrossref}{swexc}%
+    }%
+  }%
+}
+
+\newbibmacro{licenses}{%
+  \iflistundef{license}
+               {}
+               {\iftoggle{bbx:license}%
+                 {% Check if license differs from parent (in crossref context)
+                  \iffieldundef{crossref}{}{%
+                    \usebibmacro{checklicenseequal}%
+                  }%
+                  \iftoggle{bbx:licenseequal}{}{%
+                    \newunitpunct
+                    \mkbibacro{Lic}\addcolon
+                    \printlist{license}
+                  }%
+                 }%
+                 {}%
+               }
+}
+  
+\newbibmacro*{swids}{%
+  % Check url and hal_id equality with parent if crossref exists
+  \iffieldundef{crossref}{}{%
+    \usebibmacro{checkurlequal}%
+    \usebibmacro{checkhalidequal}%
+  }%
+  \printfield{doi}%
+  \setunit*{\addcomma\addspace}%
+  % Only print hal_id if it differs from parent (in crossref context)
+  \iftoggle{bbx:halidequal}{}{%
+    \printfield{hal_id}%
+  }%
+  \setunit*{\addcomma\addspace}%
+  \iftoggle{bbx:eprint}
+    {\usebibmacro{eprint}}
+    {}%  
+  \setunit*{\addcomma\addspace}%
+  % Only print url if it differs from parent (in crossref context)
+  \iftoggle{bbx:urlequal}{}{%
+    \printfield{url}%
+  }%
+  \setunit*{\addcomma\addspace}%
+  % Only print repository if not already printed in ultra-concise format
+  \iftoggle{bbx:repositoryprinted}{}{%
+    % Only print repository if it differs from parent (in crossref context)
+    \iftoggle{bbx:repositoryequal}{}{%
+      \printfield{repository}%
+    }%
+  }%
+  \setunit*{\addcomma\addspace}%
+  % Only print swhid if not already printed in ultra-concise format
+  \iftoggle{bbx:swhidprinted}{}{%
+    \printfield{swhid}%
+  }%
+  %
+  % If only the url is present, output it regardless of bbx:url directive
+  % But still omit if it equals parent (in crossref context)
+  %
+  \ifboolexpr{%
+    not test {\iftoggle{bbx:url}}%
+    and
+    not test {\iffieldundef{url}}%
+    and 
+    test {\iffieldundef{doi}}%
+    and 
+    test {\iffieldundef{eprint}}%
+    and 
+    test {\iffieldundef{hal_id}}%
+    and
+    (test {\iftoggle{bbx:swhidprinted}} or test {\iffieldundef{swhid}})%
+    and
+    (test {\iftoggle{bbx:repositoryprinted}} or test {\iffieldundef{repository}})%
+    and
+    not test {\iftoggle{bbx:urlequal}}%
+  }%
+   {\usebibmacro{swurl+urldate}}%
+   {}%
+}               
+
+\newbibmacro*{swrelated}{%
+  \iffieldundef{related}%
+               {}%
+               {\iftoggle{bbx:related}
+	         {\usebibmacro{related:init}%
+	         \usebibmacro{related}
+		 }
+	         {}%
+	       }%
+}               
+
+%
+% Formatting the entries
+%
+
+\DeclareBibliographyDriver{software}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \iftoggle{bbx:swlabels}{\bibstring{software}{\addspace}}{}%
+  \usebibmacro{swtitleauthoreditoryear}%
+  \newunit\newblock%
+  \printlist{institution}
+  \newunit\newblock%
+  \printlist{organization}
+  \newunit\newblock%
+  \usebibmacro{licenses}%
+  \newunit\newblock%
+  \usebibmacro{swids}%
+  \newunit\newblock%
+  \usebibmacro{swrelated}%
+  \newunit\newblock%
+  \iftoggle{bbx:addendum}%
+    {\printfield{addendum}}%
+    {}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{softwareversion}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \iftoggle{bbx:swlabels}{\bibstring{swversion}\addspace}{}%
+  \iffieldundef{crossref}{%
+    % No crossref - print normally
+    \usebibmacro{swtitleauthoreditoryear}%
+    \newunit\newblock%
+    \printlist{institution}%
+  }{%
+    % Crossref exists
+    \iftoggle{bbx:crossrefexpansion}{%
+      % Conditional expansion enabled
+      \usebibmacro{checkparentcited}%
+      \iftoggle{bbx:parentcited}{%
+        % Parent is cited - check if we can use ultra-concise format
+        \usebibmacro{checkallfields}%
+        \ifboolexpr{%
+          test {\iftoggle{bbx:titleequal}}%
+          and
+          test {\iftoggle{bbx:authorequal}}%
+          and
+          test {\iftoggle{bbx:institutionequal}}%
+          and
+          test {\iftoggle{bbx:editorequal}}%
+        }{%
+          % All key fields equal - ultra-concise format
+          % Skip author, title, institution - only version/date/entry-specific fields
+          \usebibmacro{ultraconcise+softwareversion}%
+        }{%
+          % Some fields differ - show only differing fields
+          \usebibmacro{swtitleauthoreditoryear}%
+          \newunit\newblock%
+          \iftoggle{bbx:institutionequal}{%
+            % Institution same - skip it
+          }{%
+            \printlist{institution}%
+          }%
+        }%
+      }{%
+        % Parent not cited - full expansion
+        \usebibmacro{swtitleauthoreditoryear}%
+        \newunit\newblock%
+        \printlist{institution}%
+      }%
+    }{%
+      % Conditional expansion disabled - verbose format (current behavior)
+      \usebibmacro{swtitleauthoreditoryear}%
+      \newunit\newblock%
+      \printlist{institution}%
+    }%
+  }%
+  \newunit\newblock%
+  \printlist{organization}
+  \newunit\newblock%
+  \usebibmacro{licenses}%
+  \newunit\newblock%
+  \usebibmacro{swids}%
+  \newunit\newblock%
+  \usebibmacro{swrelated}%
+  \newunit\newblock%
+  \iftoggle{bbx:addendum}%
+    {\printfield{addendum}}%
+    {}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{softwaremodule}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \iftoggle{bbx:swlabels}{\bibstring{swmodule}\addspace}{}%
+  \iffieldundef{crossref}{%
+    % No crossref - print normally
+    \usebibmacro{swsubtitleauthoreditoryear}%
+    \newblock\newblock%
+    \printlist{institution}%
+  }{%
+    % Crossref exists
+    \iftoggle{bbx:crossrefexpansion}{%
+      % Conditional expansion enabled
+      \usebibmacro{checkparentcited}%
+      \iftoggle{bbx:parentcited}{%
+        % Parent is cited - check if we can use ultra-concise format
+        \usebibmacro{checkallfields}%
+        % For modules, subtitle is always different, so check author/institution/date
+        \ifboolexpr{%
+          test {\iftoggle{bbx:authorequal}}%
+          and
+          test {\iftoggle{bbx:institutionequal}}%
+          and
+          test {\iftoggle{bbx:titleequal}}%
+          and
+          test {\iftoggle{bbx:editorequal}}%
+        }{%
+          % All key fields equal (except subtitle which is always different) - ultra-concise format
+          \usebibmacro{ultraconcise+softwaremodule}%
+        }{%
+          % Some fields differ - show only differing fields
+          \usebibmacro{swsubtitleauthoreditoryear}%
+          \newblock\newblock%
+          \iftoggle{bbx:institutionequal}{%
+            % Institution same - skip it
+          }{%
+            \printlist{institution}%
+          }%
+        }%
+      }{%
+        % Parent not cited - full expansion
+        \usebibmacro{swsubtitleauthoreditoryear}%
+        \newblock\newblock%
+        \printlist{institution}%
+      }%
+    }{%
+      % Conditional expansion disabled - verbose format (current behavior)
+      \usebibmacro{swsubtitleauthoreditoryear}%
+      \newblock\newblock%
+      \printlist{institution}%
+    }%
+  }%
+  \newunit\newblock%
+  \printlist{organization}
+  \newunit\newblock%
+  \usebibmacro{licenses}%
+  \newunit\newblock%
+  \usebibmacro{swids}%
+  \newunit\newblock%
+  \usebibmacro{swrelated}%
+  \newunit\newblock%
+  \iftoggle{bbx:addendum}%
+    {\printfield{addendum}}%
+    {}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{codefragment}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \iftoggle{bbx:swlabels}{\bibstring{swexcerpt}\addspace}{}%
+  \iffieldundef{crossref}{%
+    % No crossref - print normally
+    \usebibmacro{codefragmenttitleauthoreditoryear}%
+    \newunit\newblock%
+    \printlist{institution}%
+  }{%
+    % Crossref exists
+    \iftoggle{bbx:crossrefexpansion}{%
+      % Conditional expansion enabled
+      \usebibmacro{checkparentcited}%
+      \iftoggle{bbx:parentcited}{%
+        % Parent is cited - check if we can use ultra-concise format
+        \usebibmacro{checkallfields}%
+        % For fragments, subtitle is always different, so check author/institution/date
+        % Note: fragments DO NOT have version, so we never show it
+        \ifboolexpr{%
+          test {\iftoggle{bbx:authorequal}}%
+          and
+          test {\iftoggle{bbx:institutionequal}}%
+          and
+          test {\iftoggle{bbx:titleequal}}%
+          and
+          test {\iftoggle{bbx:editorequal}}%
+        }{%
+          % All key fields equal (except subtitle which is always different) - ultra-concise format
+          \usebibmacro{ultraconcise+codefragment}%
+        }{%
+          % Some fields differ - show only differing fields
+          \usebibmacro{codefragmenttitleauthoreditoryear}%
+          \newunit\newblock%
+          \iftoggle{bbx:institutionequal}{%
+            % Institution same - skip it
+          }{%
+            \printlist{institution}%
+          }%
+        }%
+      }{%
+        % Parent not cited - full expansion
+        \usebibmacro{codefragmenttitleauthoreditoryear}%
+        \newunit\newblock%
+        \printlist{institution}%
+      }%
+    }{%
+      % Conditional expansion disabled - verbose format (current behavior)
+      \usebibmacro{codefragmenttitleauthoreditoryear}%
+      \newunit\newblock%
+      \printlist{institution}%
+    }%
+  }%
+  \newunit\newblock%
+  \printlist{organization}
+  \newunit\newblock%
+  \usebibmacro{licenses}%
+  \newunit\newblock%
+  \usebibmacro{swids}%
+  \newunit\newblock%
+  \usebibmacro{swrelated}%
+  \newunit\newblock%
+  \iftoggle{bbx:addendum}%
+    {\printfield{addendum}}%
+    {}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \usebibmacro{finentry}}

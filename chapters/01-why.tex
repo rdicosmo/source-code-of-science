@@ -62,7 +62,7 @@ deserves to be treated as one.
   \includegraphics[width=\linewidth]{figures/python3-matplotlib.pdf}
   \caption[The dependency web of a single library]{No software stands alone. The dependency
   graph of the \texttt{matplotlib} plotting library: blue marks its Python-level dependencies,
-  orange the real system libraries beneath, green the artefacts of packaging
+  orange the real system libraries beneath, green the artifacts of packaging
   granularity~\autocite{SWHecosystems2023}. The individual labels are not meant to be read; the
   point is the \emph{density} --- a single research tool already rests on a deep web of other
   software, none of which the data-deposit model knows how to keep.}
@@ -84,8 +84,9 @@ The second is \emph{preservation}, and here a single slogan does most of the wor
 are not archives}. GitHub, GitLab, and their kin are wonderful places to \emph{develop}
 software; they make no promise whatsoever to \emph{keep} it. That promise has been tested, and
 broken, more than once: Google Code and Gitorious shut down in 2015, putting roughly a million
-repositories at risk; Bitbucket deleted more than 250,000 Mercurial repositories in 2020. The
-half-life of a URL cited in the scholarly literature is about four years. Every one of those
+repositories at risk~\autocite{google-code-shutdown,gitorious-shutdown}; Bitbucket deleted more
+than 250,000 Mercurial repositories in 2020~\autocite{bitbucket-mercurial-sunset}. The
+half-life of a URL cited in the scholarly literature is about four years~\autocite{spinellis2003decay}. Every one of those
 losses is a hole in the web of knowledge --- a paper that points at code which is no longer
 there.
 
@@ -125,7 +126,7 @@ knowledge~\autocite{SwhCACM2018}. Closing that gap is the whole purpose of these
 \section{How to read these notes}
 
 The good news is that \textsc{ardc} is not aspirational: the practice exists, the tools are built,
-and you can adopt them today. It rests on two foundations --- the Software Heritage archive, which
+and you can adopt them today. It rests on two foundations --- the Software Heritage archive~\autocite{softwareheritage}, which
 preserves the world's source code with its full development history, and the \textsc{swhid}, an
 identifier computed \emph{from the code itself} (and now the international standard ISO/IEC~18670)
 that lets you point at exactly the code you mean. Chapter~\ref{ch:ardc} makes each of the four verbs
@@ -168,7 +169,7 @@ Full course / student          & \pathcore & \pathcore & \pathcore & \pathcore &
 {\footnotesize \pathcore~core \quad \pathskim~skim / optional \quad \pathskip~skip. \quad
 \textbf{1}~Why \enspace \textbf{2}~Beyond FAIR \enspace \textbf{3}~Foundations \enspace
 \textbf{4}~The \textsc{swhid} \enspace \textbf{5}~\textsc{ardc} \enspace
-\textbf{6}~Reproducibility \enspace \textbf{7}~Policy.}
+\textbf{6}~Reproducibility \enspace \textbf{7}~Policy. \quad App.: \textbf{A}~Cookbook \enspace \textbf{E}~Policy reference.}
 \end{callout}
 
 If you write or run code for your research --- whether a few lines of analysis or a library

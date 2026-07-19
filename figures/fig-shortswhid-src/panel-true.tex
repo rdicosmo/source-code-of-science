@@ -1,0 +1,14 @@
+\documentclass[11pt,border=2pt]{standalone}
+\usepackage{fontspec}
+\usepackage[colorlinks=true,urlcolor=blue,allbordercolors={1 1 1}]{hyperref}
+\usepackage[backend=biber,style=numeric,sorting=none,datamodel=software,maxbibnames=99]{biblatex}
+\usepackage{software-biblatex}
+\newcommand{\swhresolver}{https://archive.softwareheritage.org/}
+\ExecuteBibliographyOptions{halid=true,swhid=true,swlabels=true,vcs=true,license=true,shortswhid=true}
+\defbibenvironment{bibliography}{\list{}{\setlength{\leftmargin}{0pt}\setlength{\itemindent}{0pt}\setlength{\labelwidth}{0pt}\setlength{\labelsep}{0pt}}}{\endlist}{\item}
+\addbibresource{../../references.bib}
+\begin{document}
+\begin{minipage}{12cm}\footnotesize
+\nocite{parmap-1.1.1}\printbibliography[heading=none]
+\end{minipage}
+\end{document}

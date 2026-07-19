@@ -452,6 +452,56 @@
   doi         = {10.17487/RFC3650},
 }
 
+@techreport{rfc1738,
+  author      = {Berners-Lee, Tim and Masinter, Larry and McCahill, Mark},
+  title       = {Uniform Resource Locators ({URL})},
+  type        = {RFC},
+  number      = {1738},
+  institution = {RFC Editor},
+  year        = {1994},
+  month       = dec,
+  doi         = {10.17487/RFC1738},
+}
+
+@online{google-code-shutdown,
+  author = {{Google Open Source}},
+  title  = {Bidding Farewell to {Google} {Code}},
+  year   = {2015},
+  month  = mar,
+  url    = {https://opensource.googleblog.com/2015/03/farewell-to-google-code.html},
+}
+
+@online{gitorious-shutdown,
+  author = {{GitLab}},
+  title  = {{GitLab} Acquires {Gitorious} to Bolster Its On-Premises Code Collaboration Platform},
+  year   = {2015},
+  month  = mar,
+  url    = {https://about.gitlab.com/2015/03/03/gitlab-acquires-gitorious/},
+}
+
+@online{bitbucket-mercurial-sunset,
+  author = {{Atlassian}},
+  title  = {Sunsetting {Mercurial} Support in {Bitbucket}},
+  year   = {2019},
+  url    = {https://bitbucket.org/blog/sunsetting-mercurial-support-in-bitbucket},
+  note   = {Mercurial repositories set read-only on 1 July 2020 and disabled thereafter},
+}
+
+@online{github-license-usage,
+  author = {Balter, Ben},
+  title  = {Open Source License Usage on {GitHub.com}},
+  organization = {{GitHub}},
+  year   = {2015},
+  url    = {https://github.blog/open-source/open-source-license-usage-on-github-com/},
+}
+
+@online{anr-openscience,
+  author = {{Agence Nationale de la Recherche}},
+  title  = {Open Science},
+  year   = {2023},
+  url    = {https://anr.fr/en/anrs-role-in-research/commitments/open-science/},
+}
+
 @online{doifoundation_ra,
   author  = {{International DOI Foundation}},
   title   = {DOI Registration Agencies},
@@ -611,6 +661,32 @@
               anchor=swh:1:rel:373e2604d96de4ab1d505190b654c5c4045db773;
               path=/src/parmap.ml;
               lines=192-228},
+}
+
+@software{cgal,
+  title  = {The Computational Geometry Algorithms Library},
+  author = {{The CGAL Project}},
+  editor = {{CGAL Editorial Board}},
+  date   = {1996},
+  url    = {https://cgal.org/},
+}
+
+@softwareversion{cgal-5-0-2,
+  crossref = {cgal},
+  version  = {5.0.2},
+  date     = {2020},
+  url      = {https://docs.cgal.org/5.02},
+  swhid    = {swh:1:rel:636541bbf6c77863908eae744610a3d91fa58855;
+              origin=https://github.com/CGAL/cgal/},
+}
+
+@softwaremodule{cgal-voronoi,
+  crossref     = {cgal-5-0-2},
+  author       = {Karavelas, Menelaos},
+  subtitle     = {2D Voronoi Diagram Adaptor},
+  license      = {GPL},
+  introducedin = {CGAL 3.1},
+  url          = {https://doc.cgal.org/5.0.2/Manual/packages.html#PkgVoronoiDiagram2},
 }
 
 % =====================================================================

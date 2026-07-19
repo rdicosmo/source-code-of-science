@@ -9,9 +9,9 @@ in several languages, at several levels of ambition --- and they all compute, fo
 the same identifier. That is the standard doing its job.
 
 It helps, though, to keep one distinction sharp, because the ecosystem is easy to misread. To
-\emph{obtain or check} the \textsc{swhid} of a software artefact, you want one of the dedicated
+\emph{obtain or check} the \textsc{swhid} of a software artifact, you want one of the dedicated
 calculators: two command-line tools that \emph{compute and verify} a \textsc{swhid} from local files
---- the Rust reference implementation \texttt{swhid-rs}, released under the \textsc{mit} licence and
+--- the Rust reference implementation \texttt{swhid-rs}, released under the \textsc{mit} license and
 the one these notes reach for first, and the Python \texttt{swh.model} / \texttt{swh identify} CLI,
 the most complete in coverage (content, directory, revision, and snapshot) --- or, to do the same
 arithmetic \emph{inside your own programs}, one of a few language libraries. The rest are
@@ -19,7 +19,7 @@ arithmetic \emph{inside your own programs}, one of a few language libraries. The
 holds, the \emph{updateswh} extension and the \emph{Permalinks} tab \emph{fetch} a ready-made
 \textsc{swhid} from the archive, and the resolvers turn a \textsc{swhid} back into the code it names.
 Several of these do compute \textsc{swhid}s internally --- \texttt{swh scanner}, for one, hashes your
-files precisely so it can look them up --- but none is the blessed way to \emph{get} an artefact's
+files precisely so it can look them up --- but none is the blessed way to \emph{get} an artifact's
 \textsc{swhid}. Table~\ref{tab:swhid-tools} sorts the ecosystem along exactly that line.
 
 \begingroup
@@ -106,7 +106,7 @@ files precisely so it can look them up --- but none is the blessed way to \emph{
 \noindent A practical rule of thumb: reach for \texttt{swhid-rs} when you want the
 reference behaviour and a single fast binary; fall back to \texttt{swh identify} for snapshots and
 the deeper archive workflow. But keep the grouping in mind: the first two groups are the ones you
-reach for to \emph{obtain or verify} an artefact's \textsc{swhid}, while the companion tools are built
+reach for to \emph{obtain or verify} an artifact's \textsc{swhid}, while the companion tools are built
 for other jobs --- the browser route fetches one the archive already computed, the resolvers turn an
 identifier back into code, and \texttt{swh scanner} hashes your tree only to check what is already
 archived.

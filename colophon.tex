@@ -35,10 +35,10 @@ A plain \texttt{make} deliberately leaves the slot empty: the committed source n
 its own identifier, so the source's \textsc{swhid} stays well-defined and stable.
 
 \begin{handson}[Hands-on (capstone): verify this very note]
-\labmeta{$\sim$10 min \textperiodcentered{} needs git $+$ a SWHID tool \textperiodcentered{} in-class, offline}
+\labmeta{$\sim$10 min \textperiodcentered{} needs git $+$ a \textsc{swhid} tool \textperiodcentered{} in-class, offline}
 You can recompute the identifier above and confirm it yourself.
 \begin{enumerate}[nosep,leftmargin=*]
-  \item Export the \emph{committed} source (tracked files only, no build artefacts):\\
+  \item Export the \emph{committed} source (tracked files only, no build artifacts):\\
         \texttt{git archive HEAD | (mkdir -p /tmp/note \&\& tar -x -C /tmp/note)}
   \item Compute the directory \textsc{swhid} with the Rust reference tool (\texttt{cargo install
         swhid}; see Appendix~\ref{app:swhid-tools}): \texttt{swhid dir /tmp/note}.

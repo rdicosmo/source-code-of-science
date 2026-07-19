@@ -20,7 +20,7 @@ need almost perfectly. \textsc{ardc}, in other words, was the preparation; this 
 
 \section{The reproducibility crisis}
 
-The motivation is uncomfortable. When Collberg and Proebsting went looking for the code behind
+Begin with the finding nobody likes to quote. When Collberg and Proebsting went looking for the code behind
 several hundred papers from top computer-systems conferences, they found that, for a large majority,
 the code could not be obtained, or could not be built~\autocite{Collberg2016}. Not refuted ---
 simply \emph{unavailable}, or unbuildable, and so impossible to check at all. You cannot reproduce
@@ -151,7 +151,7 @@ badge really wants --- a durable archive and a unique, verifiable identifier ---
 
 This is not a departure from policy; it is the rigorous way to follow it. Software Heritage is
 already among the archives ACM accepts for the \emph{Available} badge, the \textsc{swhid} is now
-ISO/IEC 18670, and the software-engineering community has explicitly asked that it be used for
+ISO/IEC~18670, and the software-engineering community has explicitly asked that it be used for
 artifact evaluation~\autocite{sigsoftaecsoftware2022,isoiec18670}. The gain is sharpest for the
 \emph{reviewer}. A DOI gives a reviewer a link to follow and a record to trust; a \textsc{swhid}
 gives something a DOI never can --- the ability to \emph{recompute the identifier from the bytes
@@ -160,7 +160,7 @@ holds cryptographic proof that the artifact in hand is exactly the artifact the 
 does not, that too is a finding.
 
 \begin{handson}[Hands-on: verify an artifact as a reviewer]
-\labmeta{$\sim$10 min \textperiodcentered{} needs a SWHID tool $+$ the artifact files \textperiodcentered{} in-class, offline}
+\labmeta{$\sim$10 min \textperiodcentered{} needs a \textsc{swhid} tool $+$ the artifact files \textperiodcentered{} in-class, offline}
 You are handed an artifact and the \textsc{swhid} the authors published for it.
 \begin{enumerate}[nosep,leftmargin=*]
   \item Verify a file against its claimed content \textsc{swhid}: \texttt{swhid verify file.c
@@ -172,7 +172,7 @@ You are handed an artifact and the \textsc{swhid} the authors published for it.
 
 For the \emph{organiser}, the move is equally small: name Software Heritage in the call for
 artifacts, and ask authors to put the qualified \textsc{swhid} of the precise artifact in the paper.
-Each badge then maps cleanly onto a SWH-native check:
+Each badge then maps cleanly onto a Software Heritage--native check:
 
 \begin{table}[htbp]
   \centering\small
@@ -181,12 +181,12 @@ Each badge then maps cleanly onto a SWH-native check:
     \textbf{ACM badge} & \textbf{Software Heritage--native check} \\
     \midrule
     Artifacts Available     & archived in Software Heritage; a qualified \textsc{swhid} in the paper \\
-    Evaluated --- Functional & the reviewer fetches the \emph{exact} SWHID-pinned tree; no ``which zip?'' \\
-    Evaluated --- Reusable   & \texttt{codemeta.json} + \texttt{CITATION.cff} + an \textsc{spdx} licence, under that \textsc{swhid} \\
+    Evaluated --- Functional & the reviewer fetches the \emph{exact} \textsc{swhid}-pinned tree; no ``which zip?'' \\
+    Evaluated --- Reusable   & \texttt{codemeta.json} + \texttt{CITATION.cff} + an \textsc{spdx} license, under that \textsc{swhid} \\
     Results Reproduced      & reproduction starts from a verifiable, immutable identifier \\
     \bottomrule
   \end{tabularx}
-  \caption[Badges mapped to SWH checks]{Each ACM badge mapped onto its Software Heritage--native check.}
+  \caption[Badges mapped to Software Heritage checks]{Each ACM badge mapped onto its Software Heritage--native check.}
   \label{tab:badge-crosswalk}
 \end{table}
 
@@ -206,7 +206,7 @@ Heritage) may be supplied additionally for discoverability. For double-blind sub
 \texttt{archive.softwareheritage.org/<swhid>}; recompute it from the bytes (\texttt{swhid verify});
 confirm it pins the \emph{exact} code the claims rest on. A mismatch is itself a finding. \emph{When
 it doesn't fit:} for artifacts that cannot be public (licensed data, large binaries, special
-hardware), require the public part archived and the rest escrowed --- SWH solves \emph{identity and
+hardware), require the public part archived and the rest escrowed --- Software Heritage solves \emph{identity and
 availability}, not buildability, which \emph{Functional}/\emph{Reusable} still test by running.
 \end{callout}
 
@@ -257,7 +257,7 @@ character, in the final paper. One mechanical, fully reversible edit (Figure~\re
 never changes.}
 
 \begin{handson}[Hands-on: a double-blind artifact]
-\labmeta{$\sim$10 min \textperiodcentered{} needs a SWHID tool \textperiodcentered{} in-class, offline}
+\labmeta{$\sim$10 min \textperiodcentered{} needs a \textsc{swhid} tool \textperiodcentered{} in-class, offline}
 Compute the directory \textsc{swhid} of your artifact tree (\texttt{swhid dir ./}; see
 Appendix~\ref{app:swhid-tools}) and submit \emph{that}. It names your exact bytes and nothing else.
 After acceptance, archive the repository and add the \texttt{origin}/\texttt{anchor} qualifiers ---

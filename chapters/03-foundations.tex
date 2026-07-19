@@ -42,12 +42,12 @@ hosting; in July 2020 it deleted more than \emph{250,000} repositories, research
 them. In 2022, GitLab.com floated a plan to erase any project left inactive for a year. And lest
 this seem a disease of commercial platforms only, in 2021 Inria unplugged its own ageing forge
 and broke the build chain of the entire OCaml package ecosystem. Earlier still, the hosting
-service CodeSpaces ran happily from 2007 until 2014 --- and then, one bad day, was gone, its
+service Code Spaces (not today's GitHub Codespaces) ran happily from 2007 until 2014 --- and then, one bad day, was gone, its
 data unrecoverable. Seven years of ``everything is fine'' is not preservation.
 
 The deeper reason is that a URL is a promise nobody signed. As the very specification that
 defined them concedes, \enquote{there is no general guarantee that a URL\ldots continues to
-[point to the same object]}; Tim Berners-Lee's plea that \enquote{cool URIs don't change} carries
+[point to the same object]}~\autocite{rfc1738}; Tim Berners-Lee's plea that \enquote{cool URIs don't change} carries
 its own sad diagnosis --- URIs don't change, \emph{people change them}. Measured rather than
 asserted, the rot is fast: studying the URLs cited in \emph{Computer} and the
 \emph{Communications of the ACM}, Spinellis found the half-life of a referenced URL to be about
@@ -81,7 +81,7 @@ It fills itself automatically, by a division of labour worth understanding
 (the \emph{origins}) it holds; \emph{loaders} then ingest each origin --- its files, its
 directories, and, crucially, its full commit history --- whatever the version-control system (Git,
 Mercurial, Subversion) or package format (a Debian source package, a PyPI tarball, \ldots),
-\emph{canonicalising} them all into the one uniform data model described below. The harvesting runs
+\emph{canonicalizing} them all into the one uniform data model described below. The harvesting runs
 across more than 5{,}000 distinct code-hosting and distribution platforms --- the big public forges,
 per-institution GitLab and Gitea servers, Linux-distribution archives, and language package
 registries. New listers and
@@ -95,8 +95,8 @@ source code ever gathered in one place.
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\linewidth]{figures/swh-dataflow.pdf}
-  \caption[How Software Heritage harvests and canonicalises code]{How the archive fills itself, and
-  \emph{canonicalises} as it goes. \emph{Listers} enumerate the repositories (\emph{origins}) held by
+  \caption[How Software Heritage harvests and canonicalizes code]{How the archive fills itself, and
+  \emph{canonicalizes} as it goes. \emph{Listers} enumerate the repositories (\emph{origins}) held by
   a hosting platform --- forges (GitHub, GitLab, Bitbucket, Gitea), Linux distributions (Debian,
   Ubuntu, Fedora), and language package registries (PyPI, npm, CPAN, \ldots), across more than
   5{,}000 such platforms. \emph{Loaders} then ingest each origin, whatever its version-control system (Git,
@@ -108,7 +108,7 @@ source code ever gathered in one place.
 \end{figure}
 
 The interesting question is not how big the archive is, but how it is \emph{organised} --- because
-the organisation is what makes it more than a very large backup.
+the organization is what makes it more than a very large backup.
 
 \section{The Merkle DAG data model}
 
@@ -138,13 +138,13 @@ unless every byte below it is unchanged.
   ($L_1$--$L_4$) is hashed; each internal node holds the hash of its children's hashes; and the
   single \emph{Top Hash} fingerprints the entire structure. Change any block and every hash on the
   path up to the root changes with it. Software Heritage applies the same idea to files and
-  directories --- and, by storing identical subtrees once, turns the tree into a \textsc{dag}.}
+  directories --- and, by storing identical subtrees once, turns the tree into a DAG.}
   \label{fig:merkle-tree}
 \end{figure}
 
 Software adds one twist a plain tree does not capture: the same file, and the same directory,
-recur \emph{everywhere} --- the identical licence text sitting in a thousand projects, the
-identical sub-library vendored into hundreds. Because a node's identifier is computed purely from its
+recur \emph{everywhere} --- the identical license text sitting in a thousand projects, the
+identical sub-library \emph{vendored} --- copied wholesale --- into hundreds. Because a node's identifier is computed purely from its
 content, two identical subtrees receive the \emph{same} identifier, so they can be stored once and
 pointed at from every place they occur. A tree with this sharing is no longer a tree but a
 \emph{directed acyclic graph}: a Merkle DAG. (It stays acyclic for a simple reason --- a node's
@@ -201,7 +201,7 @@ snapshots at the top (Figure~\ref{fig:merkle-layers}):
 
 The five layers are easiest to believe when you watch them being built, bottom to top, on a real
 repository. The figures that follow do exactly that, and they share one running thread: the
-\textsc{gpl}\,v3 licence file, whose Git-style hash \texttt{94a9ed02\ldots} you can follow as it
+\textsc{gpl}\,v3 license file, whose Git-style hash \texttt{94a9ed02\ldots} you can follow as it
 is carried upward from layer to layer.
 
 Start with a \textbf{content} (Figure~\ref{fig:merkle-cnt}). Feed a file --- here the text of the
@@ -213,7 +213,7 @@ hash \emph{is} the identifier of this file's content, anywhere it ever appears.
   \centering
   \includegraphics[width=.72\linewidth]{figures/merkle-1-contents.pdf}
   \caption[A content node]{A \texttt{content} node: the raw bytes of a file (the \textsc{gpl}\,v3
-  licence) hashed to an identifier. Software Heritage uses the Git-style \texttt{sha1\_git}
+  license) hashed to an identifier. Software Heritage uses the Git-style \texttt{sha1\_git}
   (\texttt{94a9ed02\ldots}, red) --- so this content's \textsc{swhid} will be
   \swhid{swh:1:cnt:94a9ed02\ldots}, exactly the example met in the next chapter.}
   \label{fig:merkle-cnt}
@@ -233,7 +233,7 @@ each contains.
   \caption[A directory node]{A \texttt{directory} node: a list of entries, each naming a
   \texttt{content} (file) or a \texttt{tree} (subdirectory). The \texttt{LICENSE} entry points at
   the very content of Figure~\ref{fig:merkle-cnt} (\texttt{94a9ed02\ldots}); hashing the whole
-  list yields the directory identifier \texttt{515f00d4\ldots}}
+  list yields the directory identifier \texttt{515f00d4\ldots}.}
   \label{fig:merkle-dir}
 \end{figure}
 
@@ -248,7 +248,7 @@ message, or the parent, and the commit is a different commit, with a different i
   \includegraphics[width=.86\linewidth]{figures/merkle-3-revisions.pdf}
   \caption[A revision node]{A \texttt{revision} (commit) node: a \texttt{tree} (the directory of
   Figure~\ref{fig:merkle-dir}, \texttt{515f00d4\ldots}), a parent link, author/committer, and a
-  message --- hashed to the revision identifier \texttt{963634dc\ldots}}
+  message --- hashed to the revision identifier \texttt{963634dc\ldots}.}
   \label{fig:merkle-rev}
 \end{figure}
 
@@ -264,7 +264,7 @@ a complete archived repository can be recovered.
   \includegraphics[width=.82\linewidth]{figures/merkle-4-releases.pdf}
   \caption[A release node]{A \texttt{release} node: an annotated, signed tag (\texttt{v0.0.51})
   pointing at one revision, with its own tagger, date, and message --- hashed to the release identifier
-  \texttt{85083a5c\ldots}}
+  \texttt{85083a5c\ldots}.}
   \label{fig:merkle-rel}
 \end{figure}
 
@@ -273,7 +273,7 @@ a complete archived repository can be recovered.
   \includegraphics[width=.85\linewidth]{figures/merkle-5-snapshots.pdf}
   \caption[A snapshot node]{A \texttt{snapshot} node: the full set of a repository's branches and
   tags and what each pointed to at archival time (the output of \texttt{git show-ref}) --- hashed
-  to the snapshot identifier \texttt{b464cad1\ldots}}
+  to the snapshot identifier \texttt{b464cad1\ldots}.}
   \label{fig:merkle-snp}
 \end{figure}
 
