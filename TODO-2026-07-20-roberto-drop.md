@@ -4,6 +4,37 @@ Filed by the CoS from a verbal drop. Audited against the current tree before
 writing: two of the five asks turned out to be already covered, so they are
 recorded here as *do-not-duplicate* rather than as work.
 
+## STATUS — worked 2026-07-21
+
+- **A1, A2, A3 — DONE.** Written as one arc: new §4.4 *"Who must be trusted, and
+  for what"* in `chapters/04-identifiers.tex`, inserted between §4.3 and *The
+  SWHID* so it cashes out §4.3's closing line. Contains the four acts of faith
+  (minting / resolution / integrity / availability), Table 4.1 of mechanisms
+  offered by Handle/DOI/ARK/PURL — with *verification* empty across the board —
+  sourced from `swhipres2018`; then the redaction case (A2) and the lost-key
+  thought experiment closing on the directory hash + manifest (A3).
+  §4.1 and §4.3 untouched, as instructed.
+- **B — DONE, reconciled.** PLAN.md:174's acmart lab was **already implemented**
+  at `05-ardc.tex` (hands-on step 3), so it was never pending. Division settled:
+  the Ch.5 hands-on stays **the exercise**, the new **Appendix F** (`appendix/
+  F-venue-classes.tex`) carries **the reference recipes**; the lab now
+  cross-references the appendix, so the acmart material is described once.
+  - acmart recipe distilled from the package's own verified WIP sample
+    (`bibtex-sw-entry/biblatex/journal_styles/acmart-wip/sh-acmart/
+    sample-sigconf-biblatex-software.tex`), and flagged *provisional* in a
+    callout per B1.
+  - IEEEtran had **no source anywhere** in the repo, so it was constructed and
+    **test-built and verified** (all four entry types render with SWHIDs, crossref
+    children print `from [1]`) rather than written from guesswork.
+- **B1 — still open, upstream.** Not a notes edit; belongs to the
+  `bibtex-sw-entry` / d8 thread.
+- **C — still open, needs Roberto.** The DOI-structure figure question is
+  untouched: it is a framing decision against commit `a1f1226`, not a gap.
+- **D — respected.** Nothing added on location-vs-identification or
+  intrinsic-vs-extrinsic.
+
+Build after the work: clean (`exit 0`, no undefined refs), 71 → 75 pp.
+
 ## A. Real gaps — write these
 
 ### A1. Trust model  ← the significant gap

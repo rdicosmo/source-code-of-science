@@ -1,0 +1,95 @@
+\chapter{Typesetting software citations in venue classes}
+\label{app:venue-classes}
+
+These notes are set in the plain \texttt{report} class, where loading
+\texttt{biblatex-software} takes two lines. Submitting to a conference or a journal is less
+forgiving: the major venue classes ship their own bibliography machinery, and some of them do not
+expect \texttt{biblatex} at all. The Hands-on box in Chapter~\ref{ch:ardc} asks you to drop your
+software entries into a real venue template; this appendix is the part you would otherwise have to
+reverse-engineer.
+
+Whatever the class, three things never change. You must load \texttt{biblatex} with
+\texttt{datamodel=software} (this is what adds the four software entry types), you must load
+\texttt{software-biblatex} afterwards, and you must build with \texttt{biber} --- never with
+\texttt{bibtex}. Everything else below is the class-specific coaxing needed to get there.
+
+\section{ACM: \texttt{acmart}}
+
+The awkwardness with \texttt{acmart} is that the class preloads \texttt{natbib}, which collides with
+\texttt{biblatex}. Two things resolve it: passing \texttt{natbib=false} \emph{as a class option}, and
+freeing the one macro the collision leaves behind. The ACM reference style is then selected as an
+ordinary \texttt{biblatex} style.
+
+\begin{quote}\footnotesize
+\begin{verbatim}
+\documentclass[sigconf,natbib=false]{acmart}
+
+\let\citename\relax          % release the macro acmart's natbib left behind
+
+\RequirePackage[
+  datamodel=software,        % <- adds the four software entry types
+  backend=biber,
+  natbib=false,
+  style=ACM-Reference-Format,
+  maxbibnames=9, url=true, doi=true, isbn=true,
+  urldate=comp, dateabbrev=true, abbreviate=true,
+  language=american]{biblatex}
+
+\usepackage{software-biblatex}
+
+\ExecuteBibliographyOptions{
+  halid=true, swhid=true, swlabels=true, vcs=true, license=false}
+
+\addbibresource{yourbib.bib}
+\end{verbatim}
+\end{quote}
+
+\noindent Note \texttt{\textbackslash RequirePackage} rather than \texttt{\textbackslash usepackage}:
+\texttt{biblatex} has to be loaded early enough to win the argument with the class. The
+\texttt{biblatex-software} style has shipped alongside \texttt{acmart} since 2022, so the
+\textsc{swhid} renders natively in an ACM paper once the above is in place.
+
+\begin{callout}{A caveat worth knowing}
+\small This recipe works, but treat it as \emph{provisional}: the ACM-side documentation of the
+\texttt{acmart} + \texttt{biblatex-software} combination is still being clarified upstream, and the
+incantation above is distilled from the package's own work-in-progress example rather than from a
+settled specification. Before submitting, check the current examples shipped with the
+\texttt{biblatex-software} distribution --- and be prepared for the class options to have been
+simplified by the time you read this.
+\end{callout}
+
+\section{IEEE: \texttt{IEEEtran}}
+
+\texttt{IEEEtran} is the easy case. It does not preload a competing citation package, so
+\texttt{biblatex} loads in the ordinary way and the IEEE numeric style is simply
+\texttt{style=ieee}.
+
+\begin{quote}\footnotesize
+\begin{verbatim}
+\documentclass[conference]{IEEEtran}
+
+\usepackage[backend=biber, style=ieee, datamodel=software]{biblatex}
+\usepackage{software-biblatex}
+
+\ExecuteBibliographyOptions{
+  swhid=true, swlabels=true, vcs=true, license=true}
+
+\addbibresource{yourbib.bib}
+\end{verbatim}
+\end{quote}
+
+\noindent That is the whole of it. All four entry types render inside the IEEE numbered reference
+list, each carrying its \textsc{swhid}, and the \texttt{crossref} chains behave as they do everywhere
+else --- a code fragment prints as \enquote{\ldots{} \emph{from} [1]} under its parent release rather
+than repeating the project's authors, repository, and license. A software release comes out labelled
+\texttt{[SW Rel.]}, a module \texttt{[SW Mod.]}, a fragment \texttt{[SW exc.]}, exactly as in the
+bibliography of these notes.
+
+\section{Other classes}
+
+For any class not covered here, work from the same three constants and diagnose from there. If the
+class already loads \texttt{natbib} (as \texttt{acmart} does), expect a collision and look for a
+\texttt{natbib=false} class option first. If the venue insists on \texttt{bibtex} and will not accept
+\texttt{biber}, the software entry types are not available at all --- in that case, fall back to
+\texttt{@misc} and put the \textsc{swhid} in the \texttt{howpublished} field, which is lossy but at
+least keeps the identifier in the record.

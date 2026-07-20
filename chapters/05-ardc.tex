@@ -434,8 +434,9 @@ gone.}
         field; add a \texttt{@codefragment} child via \texttt{crossref} for a specific routine.
   \item Produce the variants --- a project-level \texttt{@software}, a \texttt{@softwaremodule} ---
         and compare how each renders.
-  \item Drop the entries into an \texttt{acmart} article and confirm the \textsc{swhid} renders in
-        the ACM template.
+  \item Drop the entries into a real venue template --- \texttt{acmart} or \texttt{IEEEtran} --- and
+        confirm the \textsc{swhid} renders there too; Appendix~\ref{app:venue-classes} gives the
+        exact preamble for each.
   \item Flip the option both ways --- \texttt{\textbackslash ExecuteBibliographyOptions\{shortswhid=true\}}
         vs \texttt{false} --- and rebuild: watch the printed identifier shrink to its core while the
         link stays whole (Figure~\ref{fig:biblatex-swh}).

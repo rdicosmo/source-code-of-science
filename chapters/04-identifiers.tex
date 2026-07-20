@@ -129,6 +129,128 @@ and a name anyone can check.
 \takeaway{An intrinsic identifier is computed from the content; an extrinsic one is assigned by a
 registry.}
 
+\section{Who must be trusted, and for what}
+
+That last sentence deserves more than rhetoric, because \enquote{trust} does a great deal of quiet
+work in every argument about identifiers and is almost never unpacked. Let us unpack it. Naming a
+digital object and later getting it back involves four separable acts of faith:
+
+\begin{description}[leftmargin=!,labelwidth=2.5cm,font=\bfseries\sffamily]
+  \item[Minting] someone must issue the name --- and never issue the same one twice.
+  \item[Resolution] someone must keep running the machinery that turns that name into a location.
+  \item[Integrity] someone must ensure the bytes you are handed are the bytes that were named.
+  \item[Availability] someone must still be holding those bytes when you come looking.
+\end{description}
+
+\noindent Every identifier system is, in the end, a claim about which of these four you may stop
+worrying about. The useful question to ask of one is therefore not \enquote{is it persistent?} but
+\emph{whom am I trusting, and for which of the four?}
+
+The identifier literature asks this in terms of the \emph{mechanisms} a system offers. Three are
+common to any system worth the name: \emph{generation} of a label, \emph{assignment} of that label to
+an object, and \emph{retrieval} of the object from the label. Three more are optional:
+\emph{verification} --- checking that a label and an object actually correspond --- \emph{reverse
+lookup}, recovering the label from an object in hand, and \emph{description}, fetching the object's
+metadata~\autocite{swhipres2018}. Survey the familiar systems against that list, and one row is
+conspicuously empty (Table~\ref{tab:mechanisms}).
+
+\begin{table}[htbp]
+  \centering\small
+  \begin{tabular}{@{}lcccc@{}}
+    \toprule
+    \textbf{Mechanism} & \textbf{Handle} & \textbf{DOI} & \textbf{ARK} & \textbf{PURL} \\
+    \midrule
+    Generation             & yes & yes & yes & yes \\
+    Assignment             & yes & yes & yes & yes \\
+    Retrieval              & yes & yes & yes & yes \\
+    \addlinespace
+    \emph{Verification}    & --- & --- & --- & --- \\
+    \emph{Reverse lookup}  & --- & --- & --- & --- \\
+    Description            & yes & yes & yes & --- \\
+    \bottomrule
+  \end{tabular}
+  \caption[Mechanisms offered by classical identifier systems]{What the familiar
+  persistent-identifier systems actually offer. Generation, assignment, and retrieval are universal;
+  \emph{verification} --- checking that a label and an object correspond --- is offered by none of
+  them. A dash marks a mechanism the system does not provide. \emph{Source:} the survey
+  in~\textcite{swhipres2018}.}
+  \label{tab:mechanisms}
+\end{table}
+
+Read that table slowly, because it is this chapter in miniature. \emph{No} classical
+persistent-identifier system provides verification. Not one of them lets you ask, from the identifier
+alone, the only question a scientific claim really needs answered: \emph{are these the bytes that
+were named?} The three mechanisms they do provide sit entirely on the minting-and-resolution side of
+our list. Integrity was never in scope --- and, to be fair to them, was never promised. So of the
+four acts of faith, an extrinsic identifier asks you to make all four, and hands you the means to
+check none.
+
+\takeaway{Classical \textsc{pid} systems offer generation, assignment, and retrieval --- but no
+\emph{verification}. Integrity was never in scope.}
+
+This is not an oversight; it follows from what those systems were built for. A DOI must be able to
+name a journal article, a museum specimen, a person --- things whose \enquote{bytes} may not exist at
+all, and for which an organization really is the only possible guarantor of uniqueness and
+persistence. That generality is bought at a price, and the price is precisely the property research
+software needs most. Set the requirements out plainly --- identifiers must be \emph{gratis}, because
+there are billions of objects to name; they must guarantee \emph{integrity}, because reproducibility
+rests on it; and they must need \emph{no middle man}, because the practice has to outlive any one
+institution --- and the survey behind Table~\ref{tab:mechanisms} could find no existing system
+offering the last two together~\autocite{swhipres2018}. The Merkle construction of
+Chapter~\ref{ch:foundations} is what finally does, and it does so by striking two of the four acts of
+faith off the list outright: minting needs no issuer, because the name is computed rather than
+granted; and integrity needs no guarantor, because the name \emph{is} the check. What remains ---
+resolution and availability --- is an archive's job, and, being a job about \emph{keeping} rather
+than \emph{meaning}, it is one you can hedge: mirror it, replicate it, audit it from the outside.
+
+Abstractions are easy to nod along to, so make that empty row concrete. A dataset is deposited in a
+repository, given a DOI, and cited in a dozen papers. Some time later --- for good reasons or bad; a
+privacy takedown, a corrected outlier, an inconvenient record quietly dropped --- rows are removed
+and the deposit is updated in place. The DOI still resolves. The landing page still looks right. The
+title, the authors, the citation count: all unchanged. Every one of those dozen papers still points
+at \enquote{the data}, and not one of them now points at the data its results were computed from.
+
+Notice that nothing has been violated. No rule was broken and no system failed; the registry is
+behaving exactly as designed, because the identifier layer never promised otherwise. That is the
+whole point: \emph{with only a DOI, there is no way to detect the change at all.} You cannot tell,
+from the identifier, whether the object behind it is still the one the paper meant --- and neither
+can the reviewer, the reader, or the author herself five years later. The redaction is not so much
+hidden as \emph{unknowable}.
+
+Now give the same dataset a content-derived identifier, and the edit stops being a matter of trust
+altogether: the redacted dataset simply has a different hash, and anyone who recomputes it sees the
+mismatch at once --- offline, with no registry to consult and no one's permission to ask. The change
+may of course be entirely legitimate. What changes is that it becomes \emph{visible}, and so can be
+discussed. An intrinsic identifier does not prevent redaction; it makes redaction detectable, which
+is all a scientific record can reasonably ask of one.
+
+\takeaway{A DOI cannot tell you the data were altered. A content hash cannot help but tell you.}
+
+Run the experiment once more, in the other direction, on something of your own. Pick the single
+dataset or program your group would least like to lose --- the one a decade of results quietly rests
+on. Suppose that five years from now it is gone; or, worse, still sitting exactly where it always
+sat, but subtly not what it was. What would you need, \emph{today}, to be able to tell the difference
+\emph{then}?
+
+Not a URL, which will have rotted. Not a folder of files, which cannot testify about itself. What you
+need is a single name that pins every file in the thing at once --- and that is exactly what a
+\emph{directory} identifier gives you. As Chapter~\ref{ch:foundations} showed, the hash of a
+directory node is computed from the hashes of its entries, which are computed from theirs, all the
+way down to the bytes of every file; one short string therefore stands for an entire tree, and
+nothing can be added, removed, renamed, or altered anywhere beneath it without changing that string.
+Archive the thing, write down that one identifier, and \enquote{is this still what it was?} becomes a
+computation instead of an argument.
+
+You can go one further step for almost nothing. Keep a \emph{manifest}: a short plain-text file
+listing, for the handful of artifacts your group genuinely depends on, what each one is and the
+identifier that pins it. Commit it beside your code, publish it with your data-management plan,
+attach it to the thesis. It is a few lines of housekeeping, and it converts \enquote{we are fairly
+sure this is the right version} into something a reader, a reviewer, or a successor can check for
+themselves years from now --- without having to reach you, and without having to trust you.
+
+\takeaway{One directory identifier pins a whole tree; a short manifest of them pins everything your
+group cannot afford to lose.}
+
 \section{The SWHID}
 
 The intrinsic identifier for source code is the \textsc{swhid} --- the \emph{Software Hash
