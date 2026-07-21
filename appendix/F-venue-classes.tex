@@ -3,66 +3,72 @@
 
 These notes are set in the plain \texttt{report} class, where loading
 \texttt{biblatex-software} takes two lines. Submitting to a conference or a journal is less
-forgiving: the major venue classes ship their own bibliography machinery, and some of them do not
-expect \texttt{biblatex} at all. The Hands-on box in Chapter~\ref{ch:ardc} asks you to drop your
-software entries into a real venue template; this appendix is the part you would otherwise have to
-reverse-engineer.
+forgiving: the major venue classes ship their own bibliography machinery. The Hands-on box in
+Chapter~\ref{ch:ardc} asks you to drop your software entries into a real venue template; this
+appendix is the part you would otherwise have to reverse-engineer.
 
-Whatever the class, three things never change. You must load \texttt{biblatex} with
-\texttt{datamodel=software} (this is what adds the four software entry types), you must load
-\texttt{software-biblatex} afterwards, and you must build with \texttt{biber} --- never with
-\texttt{bibtex}. Everything else below is the class-specific coaxing needed to get there.
+One rule holds everywhere: build with \texttt{biber}, never with \texttt{bibtex}. Beyond that there
+are two situations, and telling them apart saves a great deal of confusion. Either the class knows
+nothing about software entries --- in which case you load \texttt{biblatex} with
+\texttt{datamodel=software} and then \texttt{software-biblatex} yourself, as for \texttt{IEEEtran}
+below --- or the class \emph{already integrates} \texttt{biblatex-software}, in which case you must
+\emph{not} load it again. \texttt{acmart} is now the second kind, which is why it needs less
+configuration than folklore suggests, not more.
 
 \section{ACM: \texttt{acmart}}
 
-The awkwardness with \texttt{acmart} is that the class preloads \texttt{natbib}, which collides with
-\texttt{biblatex}. Two things resolve it: passing \texttt{natbib=false} \emph{as a class option}, and
-freeing the one macro the collision leaves behind. The ACM reference style is then selected as an
-ordinary \texttt{biblatex} style.
+This used to be the awkward case, and much advice still found online says so: \texttt{acmart}
+preloads \texttt{natbib}, which collides with \texttt{biblatex}, and for years the remedy was a
+hand-rolled incantation with macros to unbind. That is no longer necessary. Since version~1.84 the
+class ships a rewritten \texttt{biblatex} layer and two bibliography styles of its own ---
+\texttt{acmnumeric} and \texttt{acmauthoryear} --- which reproduce the behaviour of the traditional
+\texttt{ACM-Reference-Format.bst}. Better still for our purposes, those styles \emph{already
+integrate} \texttt{biblatex-software}: \texttt{acmdatamodel.dbx} pulls in the software data model,
+and \texttt{acmnumeric.bbx} pulls in the software bibliography driver and switches \texttt{swhid} on
+for you.
+
+The consequence is that you do \emph{less} here than in a plain document, not more. You do not pass
+\texttt{datamodel=software}, and you do not load \texttt{software-biblatex} yourself --- the class
+does both. What you must do is turn \texttt{natbib} off and pick an ACM style:
 
 \begin{quote}\footnotesize
 \begin{verbatim}
 \documentclass[sigconf,natbib=false]{acmart}
 
-\let\citename\relax          % release the macro acmart's natbib left behind
-
 \RequirePackage[
-  datamodel=software,        % <- adds the four software entry types
-  backend=biber,
-  natbib=false,
-  style=ACM-Reference-Format,
-  maxbibnames=9, url=true, doi=true, isbn=true,
-  urldate=comp, dateabbrev=true, abbreviate=true,
-  language=american]{biblatex}
-
-\usepackage{software-biblatex}
-
-\ExecuteBibliographyOptions{
-  halid=true, swhid=true, swlabels=true, vcs=true, license=false}
+  datamodel=acmdatamodel,   % pulls in the biblatex-software data model
+  style=acmnumeric,         % or acmauthoryear, if the venue requires it
+  ]{biblatex}
 
 \addbibresource{yourbib.bib}
 \end{verbatim}
 \end{quote}
 
-\noindent Note \texttt{\textbackslash RequirePackage} rather than \texttt{\textbackslash usepackage}:
-\texttt{biblatex} has to be loaded early enough to win the argument with the class. The
-\texttt{biblatex-software} style has shipped alongside \texttt{acmart} since 2022, so the
-\textsc{swhid} renders natively in an ACM paper once the above is in place.
+\noindent Then put \texttt{\textbackslash printbibliography} where the references belong. If you are
+converting an existing ACM paper, delete any \texttt{\textbackslash citestyle\{acmauthoryear\}} line
+as well: it belongs to the \texttt{natbib} world you have just left.
 
-\begin{callout}{A caveat worth knowing}
-\small This recipe works, but treat it as \emph{provisional}: the ACM-side documentation of the
-\texttt{acmart} + \texttt{biblatex-software} combination is still being clarified upstream, and the
-incantation above is distilled from the package's own work-in-progress example rather than from a
-settled specification. Before submitting, check the current examples shipped with the
-\texttt{biblatex-software} distribution --- and be prepared for the class options to have been
-simplified by the time you read this.
+\texttt{biblatex-software} must still be installed --- the class \emph{uses} it rather than
+\emph{replacing} it --- but you no longer name it anywhere. All four entry types then render inside
+the ACM reference list, each carrying its \textsc{swhid}: a project as \texttt{[SW]}, a release as
+\texttt{[SW Rel.]}, a module as \texttt{[SW Mod.]}, and a code fragment as \texttt{[SW exc.]}, with
+the \texttt{crossref} relations printed as \enquote{\emph{from}} and \enquote{\emph{part of}} just as
+they are in these notes.
+
+\begin{callout}{One caveat, from ACM itself}
+\small The class documentation is blunt about the status of this path: the \texttt{biblatex} styles
+are \enquote{highly experimental} and are \emph{not} supported by \textsc{taps}, the ACM production
+system that builds the final camera-ready version. Read that as: excellent for preprints, for arXiv,
+and for your own archival copy; but check with the venue before relying on it for camera-ready, and
+be ready to fall back to \texttt{ACM-Reference-Format.bst} --- losing the software entry types in the
+process --- if production insists.
 \end{callout}
 
 \section{IEEE: \texttt{IEEEtran}}
 
-\texttt{IEEEtran} is the easy case. It does not preload a competing citation package, so
-\texttt{biblatex} loads in the ordinary way and the IEEE numeric style is simply
-\texttt{style=ieee}.
+\texttt{IEEEtran} is the first kind of class: it knows nothing about software entries, but it also
+does not preload a competing citation package, so \texttt{biblatex} loads in the ordinary way and you
+supply the software support yourself.
 
 \begin{quote}\footnotesize
 \begin{verbatim}
@@ -81,15 +87,15 @@ simplified by the time you read this.
 \noindent That is the whole of it. All four entry types render inside the IEEE numbered reference
 list, each carrying its \textsc{swhid}, and the \texttt{crossref} chains behave as they do everywhere
 else --- a code fragment prints as \enquote{\ldots{} \emph{from} [1]} under its parent release rather
-than repeating the project's authors, repository, and license. A software release comes out labelled
-\texttt{[SW Rel.]}, a module \texttt{[SW Mod.]}, a fragment \texttt{[SW exc.]}, exactly as in the
-bibliography of these notes.
+than repeating the project's authors, repository, and license.
 
 \section{Other classes}
 
-For any class not covered here, work from the same three constants and diagnose from there. If the
-class already loads \texttt{natbib} (as \texttt{acmart} does), expect a collision and look for a
-\texttt{natbib=false} class option first. If the venue insists on \texttt{bibtex} and will not accept
-\texttt{biber}, the software entry types are not available at all --- in that case, fall back to
-\texttt{@misc} and put the \textsc{swhid} in the \texttt{howpublished} field, which is lossy but at
-least keeps the identifier in the record.
+For any class not covered here, first ask which of the two kinds it is. If it already loads
+\texttt{natbib}, expect a collision and look for a \texttt{natbib=false} class option before reaching
+for macro surgery. If it ships its own \texttt{biblatex} styles, check whether they already input
+\texttt{software.dbx} and \texttt{software.bbx} --- if they do, load neither the software data model
+nor the style yourself. And if the venue insists on \texttt{bibtex} and will not accept
+\texttt{biber}, the software entry types are simply not available: fall back to \texttt{@misc} and
+put the \textsc{swhid} in the \texttt{howpublished} field, which is lossy, but at least keeps a
+verifiable identifier in the record.

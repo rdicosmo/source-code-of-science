@@ -19,15 +19,30 @@ recorded here as *do-not-duplicate* rather than as work.
   the Ch.5 hands-on stays **the exercise**, the new **Appendix F** (`appendix/
   F-venue-classes.tex`) carries **the reference recipes**; the lab now
   cross-references the appendix, so the acmart material is described once.
-  - acmart recipe distilled from the package's own verified WIP sample
-    (`bibtex-sw-entry/biblatex/journal_styles/acmart-wip/sh-acmart/
-    sample-sigconf-biblatex-software.tex`), and flagged *provisional* in a
-    callout per B1.
   - IEEEtran had **no source anywhere** in the repo, so it was constructed and
     **test-built and verified** (all four entry types render with SWHIDs, crossref
     children print `from [1]`) rather than written from guesswork.
-- **B1 — still open, upstream.** Not a notes edit; belongs to the
-  `bibtex-sw-entry` / d8 thread.
+  - acmart: first drafted from the repo's WIP sample, then **rewritten
+    2026-07-21** — see B1.
+- **B1 — RESOLVED, no upstream chase needed (2026-07-21).** acmart is
+  operational and documents this itself; the WIP sample in the repo is
+  **acmart v1.54 (2018)**, six years stale. Current state:
+  - acmart **rewrote its biblatex support at v1.84** (README credits Roberto Di
+    Cosmo and Kartik Singhal) and now ships its own `acmnumeric` /
+    `acmauthoryear` styles, which **already integrate biblatex-software**:
+    `acmdatamodel.dbx` inputs `software.dbx`, `acmnumeric.bbx` inputs
+    `software.bbx` and sets `swhid=true`.
+  - So the old hacks are dead: **no** `\let\citename\relax`, **no**
+    `datamodel=software`, **no** `\usepackage{software-biblatex}`,
+    **no** `style=ACM-Reference-Format`. Just `natbib=false` +
+    `\RequirePackage[datamodel=acmdatamodel,style=acmnumeric]{biblatex}`.
+  - **Verified by building**, against the *installed* acmart v2.12 and the
+    system biblatex-software: all four entry types render
+    (`[SW]`/`[SW Rel.]`/`[SW Mod.]`/`[SW exc.]`) with SWHIDs and crossref
+    relations. Wiring is identical in the latest CTAN v2.19.
+  - Remaining real caveat is ACM's own, now quoted in App. F: the biblatex
+    path is "highly experimental" and **not supported by TAPS** (camera-ready
+    production). Preprint/arXiv/archival: fine.
 - **C — still open, needs Roberto.** The DOI-structure figure question is
   untouched: it is a framing decision against commit `a1f1226`, not a gap.
 - **D — respected.** Nothing added on location-vs-identification or
