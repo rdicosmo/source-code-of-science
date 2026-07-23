@@ -27,28 +27,33 @@
 \usepackage{enumitem}
 \usepackage{etoolbox}
 
-% --- Classier headings (titlesec) -----------------------------------------
-\usepackage{titlesec}
-% Chapter opener: large accent numeral, dark title, a hairline accent rule under.
-\titleformat{\chapter}[display]
-  {\normalfont\sffamily}
-  {\fontsize{52}{52}\selectfont\bfseries\color{swhaccent}\thechapter}
-  {6pt}
-  {\Huge\bfseries\color{swhdark}}
-  [\vspace{4pt}{\color{swhaccent!85}\titlerule[1.1pt]}]
-% Numbered chapters start a touch higher (also reclaims wasted top space).
-\titlespacing*{\chapter}{0pt}{6pt}{22pt}
-% Unnumbered chapters (About / Colophon): title + the same accent rule, no numeral.
-\titleformat{name=\chapter,numberless}[display]
-  {\normalfont\sffamily}{}{0pt}
-  {\Huge\bfseries\color{swhdark}}
-  [\vspace{4pt}{\color{swhaccent!85}\titlerule[1.1pt]}]
-\titleformat{\section}
-  {\normalfont\sffamily\Large\bfseries\color{swhdark}}
-  {\color{swhaccent}\thesection}{0.7em}{}
-\titleformat{\subsection}
-  {\normalfont\sffamily\large\bfseries\color{swhdark}}
-  {\color{swhaccent}\thesubsection}{0.6em}{}
+% --- Classier headings (memoir native chapter/section styling) ------------
+% Custom chapter style: large accent numeral on its own line, dark sans title,
+% a hairline accent rule under. Works for numbered and unnumbered (\chapter*).
+% A large accent numeral floats to the right (toward the wide outer margin),
+% balancing the left-aligned dark sans title; a hairline accent rule spans both.
+% Unnumbered chapters (About / Colophon) drop the numeral cleanly.
+\makechapterstyle{swh}{%
+  \setlength{\beforechapskip}{22pt}%
+  \setlength{\afterchapskip}{26pt}%
+  \renewcommand*{\chapnumfont}{\normalfont\sffamily\bfseries\fontsize{64}{64}\selectfont\color{swhaccent!90}}%
+  \renewcommand*{\chaptitlefont}{\normalfont\sffamily\bfseries\Huge\color{swhdark}}%
+  \renewcommand*{\printchaptername}{}%          hide the word "Chapter"
+  \renewcommand*{\chapternamenum}{}%
+  \renewcommand*{\printchapternum}{%
+    \noindent\makebox[\linewidth][r]{\chapnumfont\thechapter\hspace*{-0.35em}%
+      \rlap{\hspace{\marginparsep}}}\par}%
+  \renewcommand*{\afterchapternum}{\vskip-6pt}%
+  \renewcommand*{\printchapternonum}{}%          unnumbered: no numeral, no gap
+  \renewcommand*{\printchaptertitle}[1]{%
+    \noindent{\chaptitlefont ##1}\par\nobreak\vskip6pt{\color{swhaccent!85}\hrule height 1.1pt}}%
+}
+\chapterstyle{swh}
+% Section heads: dark sans-bold title, accent-coloured number.
+\setsecheadstyle{\normalfont\sffamily\Large\bfseries\color{swhdark}}
+\setsubsecheadstyle{\normalfont\sffamily\large\bfseries\color{swhdark}}
+\setsubsubsecheadstyle{\normalfont\sffamily\normalsize\bfseries\color{swhdark}}
+\setsecnumformat{{\color{swhaccent}\csname the#1\endcsname}\quad}
 
 % --- Running heads + provenance footer (fancyhdr) -------------------------
 \usepackage{fancyhdr}
@@ -154,6 +159,12 @@
 \ifdef{\STAMPSWHID}{\InputIfFileExists{swhid.tex}{}{}}{}
 
 % --- Title-page command ---------------------------------------------------
+% memoir has no plain `titlepage` environment (it uses `titlingpage`); provide it.
+\providecommand{\swhmakeatletter}{}%
+\makeatletter
+\@ifundefined{titlepage}{%
+  \newenvironment{titlepage}{\clearpage\thispagestyle{empty}}{\clearpage}}{}
+\makeatother
 \newcommand{\swhtitlepage}{%
   \begin{titlepage}
   \centering
