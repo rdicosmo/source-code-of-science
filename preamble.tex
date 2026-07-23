@@ -70,9 +70,13 @@
 % Build-time git state (written by .latexmkrc); fallback if built by hand.
 \InputIfFileExists{gitinfo.tex}{}{}
 \providecommand{\gitinfo}{unknown}
-% One reusable provenance line: author, title, licence, build date, git state.
+% Release version (a human tag: 1.1, 1.2, ...). Set in main.tex to match the
+% GitHub release tag; bump both together. Fallback here so the note always builds.
+\providecommand{\noteversion}{dev}
+% One reusable provenance line: author, title, version, licence, build date, git state.
 \newcommand{\provenancefoot}{\footnotesize\sffamily\color{swhdark!60}%
   Roberto Di Cosmo\,\textperiodcentered\,\textit{The Source Code of Science}%
+  \,\textperiodcentered\,v\noteversion%
   \,\textperiodcentered\,CC\nobreakdash-BY\nobreakdash-4.0%
   \,\textperiodcentered\,\today\,\textperiodcentered\,\texttt{g:\gitinfo}}
 \newcommand{\chapmarkfmt}[1]{\thechapter\;\textperiodcentered\;#1}
@@ -140,6 +144,22 @@
 % Key-takeaway margin note.
 \newcommand{\takeaway}[1]{\marginnote{\footnotesize\sffamily\itshape\color{swhaccent}#1}}
 
+% Display pull-quote: larger text, indented, with big accent quotation marks
+% (opening mark hangs into the left indent, closing mark trails the last line).
+\newcommand{\pullquote}[1]{%
+  \par\bigskip
+  \begingroup
+  \color{swhdark}\sffamily\large\linespread{1.18}\selectfont
+  \setlength{\leftskip}{2.4em}\setlength{\rightskip}{2.4em}\setlength{\parindent}{0pt}
+  \noindent
+  \smash{\llap{\raisebox{-0.45\baselineskip}{\fontsize{48}{48}\selectfont
+        \color{swhaccent!85}\textquotedblleft}\hspace{0.30em}}}%
+  #1\,{\fontsize{28}{28}\selectfont\color{swhaccent!85}%
+       \raisebox{-0.35\baselineskip}{\textquotedblright}}%
+  \par
+  \endgroup
+  \bigskip}
+
 % Reading-path marks for the audience guide (core / skim / skip).
 \newcommand{\pathcore}{\tikz[baseline=-0.5ex]\fill[swhaccent](0,0)circle(1.8pt);}
 \newcommand{\pathskim}{\tikz[baseline=-0.5ex]{\draw[swhaccent,line width=0.4pt](0,0)circle(1.8pt);%
@@ -183,7 +203,8 @@
   {\Large Archiving, Referencing and Reproducing Research Software\par}\vspace{0.3cm}
   {\large\itshape a doctoral course --- beyond FAIR data\par}\vspace{2.4cm}
   {\large Roberto Di Cosmo\par}\vspace{0.2cm}
-  {\large Software Heritage\par}\vfill
+  {\large Software Heritage\par}\vspace{0.9cm}
+  {\large\itshape Version \noteversion\par}\vfill
   {\small This work is licensed under a Creative Commons
    Attribution~4.0 International License (CC-BY-4.0).\par}
   {\small \today\par}

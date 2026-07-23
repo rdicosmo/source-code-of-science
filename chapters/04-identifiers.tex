@@ -122,13 +122,15 @@ not only \emph{location} but \emph{identification} itself: without the register,
     % 1: send the DOI to the resolver
     \draw[->, thick] (b.south east) to[bend left=8]
         node[num, pos=0.5, above right=-1pt and -3pt] {1} (r.north);
-    % 2: resolver returns a location, browser forwards it to the publisher (dashed)
+    % 2: resolver returns a location to the browser (dashed)
     \draw[->, thick, dashed] (r.north west) to[bend left=12]
         node[num, pos=0.5, below left=-1pt and -2pt] {2} (b.south east);
-    \draw[->, thick, dashed] (b.south west) to[bend left=12] (p.north east);
-    % 3: the object comes back
+    % 3: the browser forwards it to the publisher (dashed)
+    \draw[->, thick, dashed] (b.south west) to[bend left=12]
+        node[num, pos=0.5, below right=-1pt and -2pt] {3} (p.north east);
+    % 4: the object comes back
     \draw[->, thick] (p.north) to[bend left=8]
-        node[num, pos=0.5, above left=-1pt and -3pt] {3} (b.south west);
+        node[num, pos=0.5, above left=-1pt and -3pt] {4} (b.south west);
     % the two mutable registers, consulted by a bidirectional lookup
     \draw[<->, thick] (r.south) -- (map.north);
     \draw[<->, thick] (p.south) -- (obj.north);
@@ -137,14 +139,15 @@ not only \emph{location} but \emph{identification} itself: without the register,
   \end{tikzpicture}
 
   \smallskip
-  {\footnotesize\sffamily\textbf{1}~send the \textsc{doi}\quad\textbf{2}~get a location \&
-   forward it\quad\textbf{3}~receive the object}
+  {\footnotesize\sffamily\textbf{1}~send the \textsc{doi}\quad\textbf{2}~get a location\quad%
+   \textbf{3}~forward it to the publisher\quad\textbf{4}~receive the object}
 
-  \caption[How a DOI resolves]{How a \textsc{doi} actually resolves. \textbf{(1)}~the browser sends
-  the identifier to a resolver --- the Handle System, the \emph{same} for every \textsc{doi},
-  whichever agency minted it; \textbf{(2)}~the resolver looks the \textsc{doi} up in its
-  \textsc{doi}\,$\mapsto$\,location register and hands back a location, which the browser forwards to
-  the publisher; \textbf{(3)}~the publisher returns the object from its own store. The two
+  \caption[How a DOI resolves]{How a \textsc{doi} actually resolves, in four steps. \textbf{(1)}~the
+  browser sends the identifier to a resolver --- the Handle System, the \emph{same} for every
+  \textsc{doi}, whichever agency minted it; \textbf{(2)}~the resolver looks the \textsc{doi} up in its
+  \textsc{doi}\,$\mapsto$\,location register and hands a location back to the browser;
+  \textbf{(3)}~the browser forwards that to the publisher; \textbf{(4)}~the publisher returns the
+  object from its own store. The two
   double-headed links are the lookups that make it work --- and they are exactly the two mutable
   joints, invisible from the identifier itself: the register can be \emph{repointed}, and the object
   at the far end can \emph{change}. What holds them steady is not the technology but the goodwill of
