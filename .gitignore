@@ -30,3 +30,7 @@ figures/samplebib/samplebib-short.pdf
 
 # fig-shortswhid panel build (keep .tex + README; final crops live in figures/)
 figures/fig-shortswhid-src/panel-*.pdf
+
+# Internal working docs — kept local, not published
+REVIEW-*.md
+TODO-*.md
