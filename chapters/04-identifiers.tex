@@ -101,9 +101,40 @@ An \emph{extrinsic} identifier --- a DOI, a Handle, an ARK --- is a digital iden
 something, assigned by an organization and recorded in a register. It says nothing about the bytes
 it names; it is a pointer whose meaning is maintained, on goodwill, by several parties at once. The
 resolution can be repointed; the content at the far end can change; and there is \emph{no intrinsic
-way to notice}~\autocite{swhipres2018}. Anyone who has clicked a DOI and met \enquote{not found}
-has felt the consequence. Such an identifier delegates to an organization not only \emph{location}
-but \emph{identification} itself: without the register, it means nothing.
+way to notice}~\autocite{swhipres2018} (Figure~\ref{fig:doi-resolve}). Anyone who has clicked a DOI
+and met \enquote{not found} has felt the consequence. Such an identifier delegates to an organization
+not only \emph{location} but \emph{identification} itself: without the register, it means nothing.
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}[font=\sffamily\small, >=Stealth,
+    box/.style={draw=swhdark, thick, rounded corners=2pt, align=center,
+                minimum height=0.9cm, minimum width=2.5cm, inner sep=4pt},
+    flow/.style={font=\footnotesize, text=swhdark, align=center, inner sep=2pt},
+    tag/.style={font=\scriptsize\itshape, text=swhaccent, align=center}]
+    \node[box, fill=swhbg] (u) {Your browser};
+    \node[box, fill=white, below right=1.8cm and 1.0cm of u] (d)
+      {Resolver\\[-1pt]{\scriptsize(Handle system)}};
+    \node[box, fill=white, below left=1.8cm and 1.0cm of u] (p) {Publisher};
+    \draw[->, thick] (u) to[bend left=12]
+      node[flow, above right, pos=0.55] {\textbf{1.}~the \textsc{doi}} (d);
+    \draw[->, thick, dashed] (d) to
+      node[flow, above] {\textbf{2.}~a location} (p);
+    \draw[->, thick] (p) to[bend left=12]
+      node[flow, above left, pos=0.45] {\textbf{3.}~the object} (u);
+    \node[tag, below=4pt of d, text width=3.4cm]
+      {the \textsc{doi}\,$\mapsto$\,location mapping can be repointed};
+    \node[tag, below=4pt of p, text width=2.7cm]
+      {the object here can change};
+  \end{tikzpicture}
+  \caption[How a DOI resolves]{How a \textsc{doi} actually resolves: the browser sends the identifier
+  to a resolver --- the Handle System, the \emph{same} for every \textsc{doi}, whichever agency
+  minted it --- which returns a location leading to the publisher, which returns the object. Two
+  joints are mutable, and neither is visible from the identifier itself: the resolver's mapping can be
+  repointed, and the object at the far end can change. What holds them steady is not the technology
+  but the goodwill of whoever runs each box --- the trust surface the next section takes apart.}
+  \label{fig:doi-resolve}
+\end{figure}
 
 There is a subtler cost still, and it lands on the very word that sells these identifiers:
 \emph{persistent}. Persistence is not a property the technology confers. The Handle System is the

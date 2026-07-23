@@ -43,8 +43,19 @@ recorded here as *do-not-duplicate* rather than as work.
   - Remaining real caveat is ACM's own, now quoted in App. F: the biblatex
     path is "highly experimental" and **not supported by TAPS** (camera-ready
     production). Preprint/arXiv/archival: fine.
-- **C — still open, needs Roberto.** The DOI-structure figure question is
-  untouched: it is a framing decision against commit `a1f1226`, not a gap.
+- **C — DONE (2026-07-23).** Roberto said add it. Resolved the framing
+  conflict by *placement*: the source figure (`common/images/DOI.png`,
+  "Architecture of the DOI infrastructure") is the *resolution* diagram and
+  carries the *extrinsic/trust* argument ("resolution can change · content can
+  change · goodwill of multiple parties"), NOT the §4.2 "a DOI is a DOI"
+  argument. So it went into **§4.3** as `fig:doi-resolve`, anchored to the
+  "resolution can be repointed / content can change" sentence and handing off
+  to §4.4. It does not undo `a1f1226`: the caption reinforces the uniform-layer
+  point ("the Handle System, the *same* for every DOI, whichever agency minted
+  it") rather than re-introducing a prefix/suffix anatomy.
+  - **Redrawn as clean TikZ**, not the 512×232 pixelated PNG — better quality,
+    matches `fig:five-concerns`, and sidesteps the PLAN's third-party
+    reuse-rights caveat (own work).
 - **D — respected.** Nothing added on location-vs-identification or
   intrinsic-vs-extrinsic.
 
