@@ -5,17 +5,34 @@ on Software Heritage and the SWHID intrinsic identifier (ISO/IEC 18670:2025). It
 FAIR principles and then goes *beyond* them. See `PLAN.md` for the full design and the
 chapter-by-chapter sourcing map.
 
-**Status:** scaffold — chapter skeletons with inline sourcing notes; prose to be drafted.
+**Status:** complete — a ~74-page course note, typeset with the **memoir** class (the
+*memoir edition*, v1.2). Published, archived in Software Heritage, and self-citing.
+
+## Releases
+
+Tagged releases carry a stamped PDF whose colophon holds the qualified SWHID of that
+release's own archived source (see *Citing this note by its own SWHID* below):
+
+| Tag | Edition |
+|-----|---------|
+| [v1.2](https://github.com/rdicosmo/source-code-of-science/releases/tag/v1.2) | **memoir edition** — book design, versioned title/footer, 4-step DOI figure |
+| [v1.1](https://github.com/rdicosmo/source-code-of-science/releases/tag/v1.1) | restyled (running heads + provenance footer) |
+| [v1.0](https://github.com/rdicosmo/source-code-of-science/releases/tag/v1.0) | first public release |
+
+Latest stamped PDF: **[source-code-of-science-swhid.pdf](https://github.com/rdicosmo/source-code-of-science/releases/download/v1.2/source-code-of-science-swhid.pdf)**.
+The human version is set by `\noteversion` in `main.tex` and shown on the title page and in
+the footer; bump it to match the tag when cutting a release.
 
 ## Structure
 
 ```
-main.tex            % report class, xelatex, biblatex + software-biblatex
-preamble.tex        % fonts, SWH branding, hands-on/takeaway environments, title page
-chapters/01..06     % 1 Why · 2 Beyond FAIR · 3 Foundations · 4 ARDC · 5 Reproducibility/AEC · 6 Outlook
-appendix/A..C       % cookbook · SWHID syntax · glossary
+main.tex            % memoir class, xelatex, biblatex + software-biblatex; \noteversion
+preamble.tex        % fonts, SWH branding, memoir chapter/section style, footer, boxes, title page
+chapters/01..07     % 1 Why · 2 Beyond FAIR · 3 Foundations · 4 Identifiers · 5 ARDC · 6 Reproducibility/AEC · 7 Outlook
+appendix/A..F       % A cookbook · B SWHID syntax · C glossary · D SWHID tools · E policy matrix · F venue classes
 references.bib      % canonical citekeys + biblatex-software entries (shared with the AEC guide)
-figures/ logos/     % reused SWH assets
+style/              % vendored biblatex-software (crossref-capable release; see Build)
+figures/ logos/     % SWH assets
 ```
 
 ## Build
