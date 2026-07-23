@@ -48,4 +48,6 @@ make swhid SWHID='swh:1:dir:...;origin=...;visit=swh:1:snp:...'
 
 ## License
 
-Text: **CC-BY-4.0** (see `LICENSE`). Code snippets: permissive (CC0/MIT), reuse freely.
+The text, figures, and other non-code content are licensed **CC-BY-4.0** — the full legal
+code is in [`LICENSE`](LICENSE). Code snippets included in the notes are additionally released
+under a permissive license (CC0-1.0 / MIT), so they may be reused without attribution friction.
