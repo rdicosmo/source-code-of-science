@@ -109,30 +109,46 @@ not only \emph{location} but \emph{identification} itself: without the register,
   \centering
   \begin{tikzpicture}[font=\sffamily\small, >=Stealth,
     box/.style={draw=swhdark, thick, rounded corners=2pt, align=center,
-                minimum height=0.9cm, minimum width=2.5cm, inner sep=4pt},
-    flow/.style={font=\footnotesize, text=swhdark, align=center, inner sep=2pt},
-    tag/.style={font=\scriptsize\itshape, text=swhaccent, align=center}]
-    \node[box, fill=swhbg] (u) {Your browser};
-    \node[box, fill=white, below right=1.8cm and 1.0cm of u] (d)
-      {Resolver\\[-1pt]{\scriptsize(Handle system)}};
-    \node[box, fill=white, below left=1.8cm and 1.0cm of u] (p) {Publisher};
-    \draw[->, thick] (u) to[bend left=12]
-      node[flow, above right, pos=0.55] {\textbf{1.}~the \textsc{doi}} (d);
-    \draw[->, thick, dashed] (d) to
-      node[flow, above] {\textbf{2.}~a location} (p);
-    \draw[->, thick] (p) to[bend left=12]
-      node[flow, above left, pos=0.45] {\textbf{3.}~the object} (u);
-    \node[tag, below=4pt of d, text width=3.4cm]
-      {the \textsc{doi}\,$\mapsto$\,location mapping can be repointed};
-    \node[tag, below=4pt of p, text width=2.7cm]
-      {the object here can change};
+                minimum height=0.9cm, minimum width=2.6cm, inner sep=4pt, fill=white},
+    store/.style={draw=swhdark, thick, align=center, minimum height=0.8cm,
+                  minimum width=2.9cm, inner sep=3pt, fill=swhbg},
+    num/.style={font=\footnotesize\bfseries, text=swhdark},
+    warn/.style={font=\scriptsize\itshape, text=swhaccent, align=center}]
+    \node[box, fill=swhbg] (b) {Your browser};
+    \node[box, below right=2.1cm and 1.2cm of b] (r) {Resolver\\[-1pt]{\scriptsize(Handle system)}};
+    \node[box, below left=2.1cm and 1.2cm of b] (p) {Publisher};
+    \node[store, below=0.7cm of r] (map) {\textsc{doi}\,$\mapsto$\,location};
+    \node[store, below=0.7cm of p] (obj) {the object};
+    % 1: send the DOI to the resolver
+    \draw[->, thick] (b.south east) to[bend left=8]
+        node[num, pos=0.5, above right=-1pt and -3pt] {1} (r.north);
+    % 2: resolver returns a location, browser forwards it to the publisher (dashed)
+    \draw[->, thick, dashed] (r.north west) to[bend left=12]
+        node[num, pos=0.5, below left=-1pt and -2pt] {2} (b.south east);
+    \draw[->, thick, dashed] (b.south west) to[bend left=12] (p.north east);
+    % 3: the object comes back
+    \draw[->, thick] (p.north) to[bend left=8]
+        node[num, pos=0.5, above left=-1pt and -3pt] {3} (b.south west);
+    % the two mutable registers, consulted by a bidirectional lookup
+    \draw[<->, thick] (r.south) -- (map.north);
+    \draw[<->, thick] (p.south) -- (obj.north);
+    \node[warn, right=2mm of map] {can be\\repointed};
+    \node[warn, left=2mm of obj] {can\\change};
   \end{tikzpicture}
-  \caption[How a DOI resolves]{How a \textsc{doi} actually resolves: the browser sends the identifier
-  to a resolver --- the Handle System, the \emph{same} for every \textsc{doi}, whichever agency
-  minted it --- which returns a location leading to the publisher, which returns the object. Two
-  joints are mutable, and neither is visible from the identifier itself: the resolver's mapping can be
-  repointed, and the object at the far end can change. What holds them steady is not the technology
-  but the goodwill of whoever runs each box --- the trust surface the next section takes apart.}
+
+  \smallskip
+  {\footnotesize\sffamily\textbf{1}~send the \textsc{doi}\quad\textbf{2}~get a location \&
+   forward it\quad\textbf{3}~receive the object}
+
+  \caption[How a DOI resolves]{How a \textsc{doi} actually resolves. \textbf{(1)}~the browser sends
+  the identifier to a resolver --- the Handle System, the \emph{same} for every \textsc{doi},
+  whichever agency minted it; \textbf{(2)}~the resolver looks the \textsc{doi} up in its
+  \textsc{doi}\,$\mapsto$\,location register and hands back a location, which the browser forwards to
+  the publisher; \textbf{(3)}~the publisher returns the object from its own store. The two
+  double-headed links are the lookups that make it work --- and they are exactly the two mutable
+  joints, invisible from the identifier itself: the register can be \emph{repointed}, and the object
+  at the far end can \emph{change}. What holds them steady is not the technology but the goodwill of
+  whoever runs each box --- the trust surface the next section takes apart.}
   \label{fig:doi-resolve}
 \end{figure}
 

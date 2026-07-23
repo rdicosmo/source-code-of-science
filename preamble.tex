@@ -10,7 +10,7 @@
 
 % --- Page geometry: wide outer margin for key-takeaway margin notes -------
 \usepackage[a4paper,top=2.6cm,bottom=2.6cm,inner=2.4cm,outer=4.2cm,
-            marginparwidth=3cm,marginparsep=0.6cm]{geometry}
+            marginparwidth=3cm,marginparsep=0.6cm,headheight=15pt,includehead]{geometry}
 
 % --- Colours, graphics, boxes ---------------------------------------------
 \usepackage{graphicx}
@@ -26,6 +26,67 @@
 \usepackage{marginnote}
 \usepackage{enumitem}
 \usepackage{etoolbox}
+
+% --- Classier headings (titlesec) -----------------------------------------
+\usepackage{titlesec}
+% Chapter opener: large accent numeral, dark title, a hairline accent rule under.
+\titleformat{\chapter}[display]
+  {\normalfont\sffamily}
+  {\fontsize{52}{52}\selectfont\bfseries\color{swhaccent}\thechapter}
+  {6pt}
+  {\Huge\bfseries\color{swhdark}}
+  [\vspace{4pt}{\color{swhaccent!85}\titlerule[1.1pt]}]
+% Numbered chapters start a touch higher (also reclaims wasted top space).
+\titlespacing*{\chapter}{0pt}{6pt}{22pt}
+% Unnumbered chapters (About / Colophon): title + the same accent rule, no numeral.
+\titleformat{name=\chapter,numberless}[display]
+  {\normalfont\sffamily}{}{0pt}
+  {\Huge\bfseries\color{swhdark}}
+  [\vspace{4pt}{\color{swhaccent!85}\titlerule[1.1pt]}]
+\titleformat{\section}
+  {\normalfont\sffamily\Large\bfseries\color{swhdark}}
+  {\color{swhaccent}\thesection}{0.7em}{}
+\titleformat{\subsection}
+  {\normalfont\sffamily\large\bfseries\color{swhdark}}
+  {\color{swhaccent}\thesubsection}{0.6em}{}
+
+% --- Running heads + provenance footer (fancyhdr) -------------------------
+\usepackage{fancyhdr}
+% Build-time git state (written by .latexmkrc); fallback if built by hand.
+\InputIfFileExists{gitinfo.tex}{}{}
+\providecommand{\gitinfo}{unknown}
+% One reusable provenance line: author, title, licence, build date, git state.
+\newcommand{\provenancefoot}{\footnotesize\sffamily\color{swhdark!60}%
+  Roberto Di Cosmo\,\textperiodcentered\,\textit{The Source Code of Science}%
+  \,\textperiodcentered\,CC\nobreakdash-BY\nobreakdash-4.0%
+  \,\textperiodcentered\,\today\,\textperiodcentered\,\texttt{g:\gitinfo}}
+\newcommand{\chapmarkfmt}[1]{\thechapter\;\textperiodcentered\;#1}
+\renewcommand{\chaptermark}[1]{\markboth{\chapmarkfmt{#1}}{}}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancyhead[L]{\small\sffamily\itshape\color{swhdark!75}\nouppercase{\leftmark}}
+\fancyhead[R]{\small\sffamily\color{swhdark!75}\thepage}
+\fancyfoot[C]{\provenancefoot}
+% Chapter-opening pages use 'plain': no header, but keep the footer + page number.
+\fancypagestyle{plain}{%
+  \fancyhf{}\renewcommand{\headrulewidth}{0pt}%
+  \fancyfoot[C]{\provenancefoot}\fancyfoot[R]{\small\sffamily\color{swhdark!75}\thepage}}
+
+% --- Page fill: pack floats, honest ragged bottoms (fewer short pages) -----
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.8}
+\renewcommand{\textfraction}{0.08}
+\renewcommand{\floatpagefraction}{0.75}
+\setcounter{topnumber}{3}
+\setcounter{bottomnumber}{2}
+\setcounter{totalnumber}{5}
+\raggedbottom
+% Discourage widows/orphans; soak up the few tight lines instead of overflowing.
+\widowpenalty=10000
+\clubpenalty=10000
+\setlength{\emergencystretch}{2em}
 
 % --- Links (load before biblatex) -----------------------------------------
 \usepackage{hyperref}
