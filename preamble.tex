@@ -8,9 +8,19 @@
 \setmonofont{Latin Modern Mono}[Scale=0.92]
 \usepackage{microtype}
 
-% --- Page geometry: wide outer margin for key-takeaway margin notes -------
-\usepackage[a4paper,top=2.6cm,bottom=2.6cm,inner=2.4cm,outer=4.2cm,
-            marginparwidth=3cm,marginparsep=0.6cm,headheight=15pt,includehead]{geometry}
+% --- Page layout: memoir-native (wide outer margin for key-takeaway notes) -
+% Use memoir's own layout engine rather than the geometry package: geometry
+% does not coordinate memoir's head/foot spacing, which shifts the whole text
+% block down and pushes the footer off the page.  \checkandfixthelayout makes
+% the head, body, foot and margin block mutually consistent.
+\setstocksize{297mm}{210mm}
+\settrimmedsize{297mm}{210mm}{*}
+\setlrmarginsandblock{2.4cm}{4.2cm}{*}     % inner (spine), outer (edge)
+\setulmarginsandblock{2.6cm}{2.6cm}{*}     % upper, lower
+\setheadfoot{15pt}{28pt}                    % headheight, footskip
+\setheaderspaces{*}{12pt}{*}                % headsep between header and text
+\setmarginnotes{0.6cm}{3cm}{\onelineskip}  % separation, width, push
+\checkandfixthelayout
 
 % --- Colours, graphics, boxes ---------------------------------------------
 \usepackage{graphicx}
