@@ -34,6 +34,25 @@ non-committed PDF:
 A plain \texttt{make} deliberately leaves the slot empty: the committed source never contains
 its own identifier, so the source's \textsc{swhid} stays well-defined and stable.
 
+\paragraph{If you obtained this PDF from HAL (or any cover-page repository).}
+Repositories such as HAL prepend an institutional cover page to every deposited file, and may
+re-render or re-compress it. That copy is therefore a \emph{different digital object}: its bytes
+--- and any content hash taken over them, such as a \swhid{swh:1:cnt:} --- will not match this
+rendering. The identifier above is unaffected, because it names the archived \emph{source
+directory}, not the PDF: a source tree has a canonical form, so the capstone below verifies from
+any copy. But the pristine, canonical rendering of this note lives at
+\begin{center}\url{https://dicosmo.org/Articles/2026-source-code-of-science.pdf}\end{center}
+and that is the copy to hash, diff, or byte-archive if you need bytes that match.
+
+\paragraph{Why source code gets a perfect identifier and a PDF does not.}
+This caveat is the whole note in miniature. An intrinsic identifier pins \emph{source code}
+exactly \emph{because source has a canonical form}: the same tree always hashes to the same
+\textsc{swhid}. A rendered document has no single canonical byte-form --- a prepended cover page,
+a newer \TeX{} Live, re-embedded fonts, or a re-compression each produce a perfectly valid PDF
+with a \emph{different} hash. So identify the \emph{source} by its \texttt{dir} \textsc{swhid},
+which is stable and reproducible, and treat any PDF --- this one included --- as one rendering of
+it rather than as the thing itself.
+
 \begin{handson}[Hands-on (capstone): verify this very note]
 \labmeta{$\sim$10 min \textperiodcentered{} needs git $+$ a \textsc{swhid} tool \textperiodcentered{} in-class, offline}
 You can recompute the identifier above and confirm it yourself.
