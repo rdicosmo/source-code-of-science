@@ -15,12 +15,13 @@ release's own archived source (see *Citing this note by its own SWHID* below):
 
 | Tag | Edition |
 |-----|---------|
-| [v1.2.1](https://github.com/rdicosmo/source-code-of-science/releases/tag/v1.2.1) | **HAL edition** — colophon caveat on cover-page repositories + pristine-copy pointer (this is the copy deposited in HAL) |
+| [v1.2.2](https://github.com/rdicosmo/source-code-of-science/releases/tag/v1.2.2) | **HAL edition** — sharpened colophon (byte-exactness suits code, not reader-invariant documents; cover page = a different *document*) + capstone corrected to verify the *source*, not the PDF in hand (this is the copy deposited in HAL) |
+| [v1.2.1](https://github.com/rdicosmo/source-code-of-science/releases/tag/v1.2.1) | colophon caveat on cover-page repositories + pristine-copy pointer (superseded by v1.2.2) |
 | [v1.2](https://github.com/rdicosmo/source-code-of-science/releases/tag/v1.2) | **memoir edition** — book design, versioned title/footer, 4-step DOI figure |
 | [v1.1](https://github.com/rdicosmo/source-code-of-science/releases/tag/v1.1) | restyled (running heads + provenance footer) |
 | [v1.0](https://github.com/rdicosmo/source-code-of-science/releases/tag/v1.0) | first public release |
 
-Latest stamped PDF: **[source-code-of-science-swhid.pdf](https://github.com/rdicosmo/source-code-of-science/releases/download/v1.2.1/source-code-of-science-swhid.pdf)**.
+Latest stamped PDF: **[source-code-of-science-swhid.pdf](https://github.com/rdicosmo/source-code-of-science/releases/download/v1.2.2/source-code-of-science-swhid.pdf)**.
 A pristine, byte-stable rendering also lives at
 **<https://dicosmo.org/Articles/2026-source-code-of-science.pdf>** — use that copy (not the
 HAL one, which carries a prepended cover page) when you need bytes that match a content hash.

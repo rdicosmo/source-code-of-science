@@ -185,6 +185,9 @@
 % A document cannot contain its own SWHID; `make swhid` injects it, at build
 % time, into a throwaway swhid.tex consumed only by the stamped (non-committed)
 % PDF. A plain `make` leaves \thisswhid empty -> the Colophon shows a placeholder.
+% Consequence: the ARCHIVED source builds the unstamped PDF; the stamped PDF is a
+% sibling byte-object whose printed SWHID names the source of the unstamped one.
+% The Colophon and capstone say this out loud -- keep them in sync with this file.
 \providecommand{\thisswhid}{}
 \ifdef{\STAMPSWHID}{\InputIfFileExists{swhid.tex}{}{}}{}
 

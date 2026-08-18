@@ -23,6 +23,11 @@ makes the identifier
 trustworthy: the name is forced to follow the bytes, so it cannot be faked. The source is
 therefore archived first, and the resulting identifier is stamped only into \emph{this
 rendered PDF}, which is not part of the hashed source tree.
+Draw the consequence before the capstone does: the archived source therefore builds a PDF
+\emph{without} this stamp, so the identifier printed here names the source of an unstamped
+sibling of the very PDF you are reading --- the same document to any reader, one line of this
+Colophon apart. That gap is not sloppiness; it is the self-reference argument above made
+visible, and the capstone states exactly what can be verified across it.
 
 \paragraph{How this identifier is produced.}
 After the source is committed and archived (via Save Code Now), the qualified directory
@@ -36,34 +41,54 @@ its own identifier, so the source's \textsc{swhid} stays well-defined and stable
 
 \paragraph{If you obtained this PDF from HAL (or any cover-page repository).}
 Repositories such as HAL prepend an institutional cover page to every deposited file, and may
-re-render or re-compress it. That copy is therefore a \emph{different digital object}: its bytes
---- and any content hash taken over them, such as a \swhid{swh:1:cnt:} --- will not match this
-rendering. The identifier above is unaffected, because it names the archived \emph{source
-directory}, not the PDF: a source tree has a canonical form, so the capstone below verifies from
-any copy. But the pristine, canonical rendering of this note lives at
+re-render or re-compress it. Distinguish the two effects. Re-rendering and re-compression
+change bytes the reader never sees: the same document, under a different content hash --- so a
+\swhid{swh:1:cnt:} taken over the deposited file matches nothing here, and proves nothing by
+failing to. The cover page does more: it makes the copy a \emph{different document for the
+reader} --- different first page, different page count --- not merely a different byte-stream.
+The identifier above is immune to both, because it names the archived \emph{source directory},
+not any PDF, and its printed form survives every re-rendering that keeps the text legible: the
+capstone below therefore works from any copy of this note, cover page or not. The pristine
+rendering --- the copy to hash, diff, or byte-archive if you need matching bytes --- lives at
 \begin{center}\url{https://dicosmo.org/Articles/2026-source-code-of-science.pdf}\end{center}
-and that is the copy to hash, diff, or byte-archive if you need bytes that match.
 
 \paragraph{Why source code gets a perfect identifier and a PDF does not.}
-This caveat is the whole note in miniature. An intrinsic identifier pins \emph{source code}
-exactly \emph{because source has a canonical form}: the same tree always hashes to the same
-\textsc{swhid}. A rendered document has no single canonical byte-form --- a prepended cover page,
-a newer \TeX{} Live, re-embedded fonts, or a re-compression each produce a perfectly valid PDF
-with a \emph{different} hash. So identify the \emph{source} by its \texttt{dir} \textsc{swhid},
-which is stable and reproducible, and treat any PDF --- this one included --- as one rendering of
-it rather than as the thing itself.
+This caveat is the whole note in miniature. An intrinsic identifier is byte-exact, and for
+\emph{source code} byte-exactness is exactly the right granularity: a one-character change ---
+an inverted comparison, an off-by-one bound --- can change what a program \emph{does}, so an
+identifier that forgave ``small'' byte differences would forgive semantic ones. For a
+\emph{document}, the content is what can be displayed and read: a PDF, its \textsc{pdf/a}
+conversion, a PostScript export, a rebuild under a newer \TeX{} Live or with re-embedded fonts
+are byte-different objects that are the \emph{same document to every reader}. A byte-exact
+identifier therefore discriminates far more finely than any reader ever will, manufacturing
+many names for one document --- which is why hashing a rendered PDF answers a question nobody
+is asking. The instructive exception is the cover page: prepending one is \emph{not} a
+reader-invariant byte change --- it hands the reader a genuinely different document, and no
+identifier scheme should paper over that. So identify the \emph{source} by its \texttt{dir}
+\textsc{swhid}, where byte-sensitivity is a feature, and treat any PDF --- this one included ---
+as one rendering among several of the thing the identifier actually names.
 
 \begin{handson}[Hands-on (capstone): verify this very note]
 \labmeta{$\sim$10 min \textperiodcentered{} needs git $+$ a \textsc{swhid} tool \textperiodcentered{} in-class, offline}
 You can recompute the identifier above and confirm it yourself.
 \begin{enumerate}[nosep,leftmargin=*]
+  \item Clone the source from the \texttt{origin} named in the qualified identifier above:\\
+        \texttt{git clone https://github.com/rdicosmo/source-code-of-science \&\& cd
+        source-code-of-science}
   \item Export the \emph{committed} source (tracked files only, no build artifacts):\\
         \texttt{git archive HEAD | (mkdir -p /tmp/note \&\& tar -x -C /tmp/note)}
   \item Compute the directory \textsc{swhid} with the Rust reference tool (\texttt{cargo install
         swhid}; see Appendix~\ref{app:swhid-tools}): \texttt{swhid dir /tmp/note}.
-  \item Compare its core \swhid{swh:1:dir:<hash>} with the one printed above (ignore the
-        \texttt{origin}/\texttt{visit} qualifiers). A match means you have verified the
-        integrity of the document you are reading.
+  \item Compare its core \swhid{swh:1:dir:<hash>} with the one printed above, ignoring
+        everything after the first semicolon (the \texttt{origin}, \texttt{visit} and
+        \texttt{anchor} qualifiers). Be precise about what a match proves: you have verified,
+        bit for bit, the \emph{archived source} of these notes, and confirmed that the
+        identifier printed here really names it. You have \emph{not} verified the PDF in your
+        hands --- nor could you: the archived tree builds the \emph{unstamped} rendering (a
+        plain \texttt{make} leaves the identifier slot empty), so this stamped PDF is, by
+        construction, a document its own printed identifier does not describe. Verifying the
+        source is the strongest claim an intrinsic identifier can make here --- and, as this
+        Colophon argues, the right one to want.
   \item \emph{Bonus (git-compatibility):} the notes' \emph{revision} identifier is just
         \swhid{swh:1:rev:} prepended to \texttt{git rev-parse HEAD} --- a Software Heritage
         revision \textsc{swhid} \emph{is} the git commit hash.
