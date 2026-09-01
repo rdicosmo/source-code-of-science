@@ -1,3 +1,23 @@
+% ====================================================================
+% PARKED — not \input by main.tex, not part of the built course notes.
+%
+% Pulled 2026-09-01. The self-referential SWHID colophon was judged too
+% complex / error-prone to include for now:
+%   - A document cannot carry its own SWHID, so the printed identifier
+%     names the *source directory*, which builds an UNSTAMPED sibling of
+%     the PDF in hand — a gap that took several paragraphs to excuse.
+%   - The capstone told the reader to `git archive HEAD`, but HEAD drifts
+%     past the release the identifier names: a reader on any later commit
+%     gets a mismatch with no way to tell whether the note or their
+%     checkout is wrong. To verify the printed SWHID one must check out
+%     the anchor revision (the release tag), not HEAD.
+%
+% The teaching points worth salvaging if this is ever revived: intrinsic
+% IDs are byte-exact (right for code, wrong for rendered documents);
+% identify the SOURCE, not the artefact; the HAL cover-page counterexample.
+% The stamping machinery (\thisswhid / \STAMPSWHID in preamble.tex, the
+% `make swhid` target) is left in place, inert, for a future revival.
+% ====================================================================
 \clearpage
 \chapter*{Colophon: archiving these notes}
 \addcontentsline{toc}{chapter}{Colophon: archiving these notes}

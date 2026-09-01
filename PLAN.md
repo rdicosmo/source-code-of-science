@@ -31,8 +31,9 @@ then moves *beyond* it (per the CODE-beyond-FAIR roadmap).
   + `biber`, compiled with `xelatex` (TeX Gyre Pagella, SWH-branded title), standalone git repo
   like the AEC guide. (KOMA `scrreprt` was the first choice but `koma-script` is not installed.)
 - **License:** CC-BY-4.0 for the text; code snippets permissive (CC0/MIT). *(settled)*
-- **Hands-on labs:** included — lab boxes in the practical chapters, plus a self-verification
-  capstone in the Colophon. *(settled)*
+- **Hands-on labs:** included — lab boxes in the practical chapters. A self-verification
+  capstone in the Colophon was tried and **removed in v1.2.3** (parked in `annex-colophon.tex`,
+  not built): see the dogfooding note below. *(settled)*
 
 ## Drafting conventions
 
@@ -175,11 +176,14 @@ GARR-2026 material (`talks-private/2026-05-19-Garr/`: Guix proof-of-concept, six
      - set up a webhook for your repository on GitHub, GitLab instances, Gitea, Birbucket, SourceForge
   + create a codemeta.json, insert it into your repo, check how the citation sidebar appears in the Archive, and use it to get the citations that you want
 - *Key-takeaway* margin notes per chapter.
-- *Dogfooding (implemented):* the note archives and verifies **itself**. Because a SWHID is a
-  hash of the content, a document cannot contain its own SWHID; so `make swhid SWHID=...` stamps
-  the archived-source SWHID into a *non-committed* release PDF, and the **Colophon** turns the
-  paradox into a lesson on hashing plus a capstone lab that recomputes and verifies the note's
-  own identifier (`git archive HEAD | swh identify --type directory`).
+- *Dogfooding (tried, then parked in v1.2.3):* the note used to archive and verify **itself** via
+  a **Colophon** — since a SWHID hashes content, a document cannot contain its own SWHID, so
+  `make swhid SWHID=...` stamped the archived-source SWHID into a *non-committed* release PDF and
+  a capstone lab recomputed it. Removed 2026-09-01: the printed identifier named the *source*, not
+  the PDF in hand, and the capstone's `git archive HEAD` did not pin the archived release (HEAD
+  drifts past the tagged version), so the exercise read as fiddly and self-undermining rather than
+  as the intended payoff. Parked in `annex-colophon.tex`; the `make swhid` / `\thisswhid`
+  machinery is left inert for a possible revival. The subject is now taught in the body only.
 
 ## Sourcing / reuse map (summary)
 
@@ -212,7 +216,7 @@ GARR-2026 material (`talks-private/2026-05-19-Garr/`: Guix proof-of-concept, six
   preamble.tex             % fonts (TeX Gyre Pagella), SWH title, hands-on/takeaway envs, swhid stamp
   chapters/01-why.tex … 07-outlook.tex   % 7 chapters (Identifiers added as Ch. 4 file)
   appendix/{A-cookbook,B-swhid-syntax,C-glossary}.tex
-  colophon.tex             % self-archival SWHID + hashing lesson + capstone lab
+  annex-colophon.tex       % PARKED (not built) — self-archival SWHID + capstone; removed v1.2.3
   references.bib           % copied from ../2026-06-AEC-guide/
   figures/  logos/SWH-logo.pdf
   Makefile                 % `make` -> main.pdf ; `make swhid SWHID=...` -> stamped (non-committed) PDF
@@ -231,7 +235,7 @@ Build: `latexmk -xelatex main.tex` (biber auto-run). Bibliography options:
 4. **Ch. 5** (reproducibility & AEC) — port the AEC guide to LaTeX; integrate Spinellis.
 5. **Ch. 6 + appendices + glossary** — policy/outlook; cookbook; cheat-sheet.
 6. **Polish pass:** figures, key-takeaways, cross-references, index; full build; proofread;
-   archive the note in SWH and add its self-citation.
+   archive the note in SWH. *(The self-citation colophon was later parked — see v1.2.3.)*
 7. *(Optional, later)* tagged 3-hour cut for live delivery; Italian edition for GARR.
 
 ## Open questions to confirm before/while drafting

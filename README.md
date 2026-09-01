@@ -6,25 +6,20 @@ FAIR principles and then goes *beyond* them. See `PLAN.md` for the full design a
 chapter-by-chapter sourcing map.
 
 **Status:** complete — a ~74-page course note, typeset with the **memoir** class (the
-*memoir edition*, v1.2). Published, archived in Software Heritage, and self-citing.
+*memoir edition*, v1.2). Published and archived in Software Heritage.
 
 ## Releases
 
-Tagged releases carry a stamped PDF whose colophon holds the qualified SWHID of that
-release's own archived source (see *Citing this note by its own SWHID* below):
-
 | Tag | Edition |
 |-----|---------|
-| [v1.2.2](https://github.com/rdicosmo/source-code-of-science/releases/tag/v1.2.2) | **HAL edition** — sharpened colophon (byte-exactness suits code, not reader-invariant documents; cover page = a different *document*) + capstone corrected to verify the *source*, not the PDF in hand (this is the copy deposited in HAL) |
+| [v1.2.3](https://github.com/rdicosmo/source-code-of-science/releases/tag/v1.2.3) | **HAL edition** — the self-referential SWHID colophon was removed (parked in `annex-colophon.tex`, not built): a document cannot carry its own SWHID, and the capstone's `git archive HEAD` did not pin the archived release, making it error-prone. This is the copy deposited in HAL |
+| [v1.2.2](https://github.com/rdicosmo/source-code-of-science/releases/tag/v1.2.2) | sharpened colophon (byte-exactness suits code, not reader-invariant documents; cover page = a different *document*) — colophon since removed in v1.2.3 |
 | [v1.2.1](https://github.com/rdicosmo/source-code-of-science/releases/tag/v1.2.1) | colophon caveat on cover-page repositories + pristine-copy pointer (superseded by v1.2.2) |
 | [v1.2](https://github.com/rdicosmo/source-code-of-science/releases/tag/v1.2) | **memoir edition** — book design, versioned title/footer, 4-step DOI figure |
 | [v1.1](https://github.com/rdicosmo/source-code-of-science/releases/tag/v1.1) | restyled (running heads + provenance footer) |
 | [v1.0](https://github.com/rdicosmo/source-code-of-science/releases/tag/v1.0) | first public release |
 
-Latest stamped PDF: **[source-code-of-science-swhid.pdf](https://github.com/rdicosmo/source-code-of-science/releases/download/v1.2.2/source-code-of-science-swhid.pdf)**.
-A pristine, byte-stable rendering also lives at
-**<https://dicosmo.org/Articles/2026-source-code-of-science.pdf>** — use that copy (not the
-HAL one, which carries a prepended cover page) when you need bytes that match a content hash.
+Latest PDF: **[source-code-of-science.pdf](https://github.com/rdicosmo/source-code-of-science/releases/download/v1.2.3/source-code-of-science.pdf)**.
 The human version is set by `\noteversion` in `main.tex` and shown on the title page and in
 the footer; bump it to match the tag when cutting a release.
 
@@ -57,16 +52,17 @@ make            # -> main.pdf
 make clean
 ```
 
-## Citing this note by its own SWHID
+## Self-referential SWHID colophon (parked)
 
-A document cannot contain its own SWHID (computing the hash would change the bytes). Instead,
-build a **non-committed** stamped PDF *after* archiving the committed source:
-
-```sh
-# after committing/pushing and archiving the repo in Software Heritage:
-make swhid SWHID='swh:1:dir:...;origin=...;visit=swh:1:snp:...'
-# -> source-code-of-science-swhid.pdf  (git-ignored)
-```
+Earlier releases (through v1.2.2) closed with a Colophon that printed the note's own archived
+SWHID and had the reader recompute it. It was removed in v1.2.3 and parked in
+`annex-colophon.tex` (not built): a document cannot carry its own SWHID, so the printed
+identifier named the *source* rather than the PDF in hand, and the verify-it-yourself capstone
+used `git archive HEAD`, which does not pin the archived release — both making it more confusing
+than instructive. The `make swhid` stamping target and the `\thisswhid` machinery in
+`preamble.tex` are left inert in place should the idea be revived. The note's own subject —
+archive the source, cite it with a SWHID — is taught in the body (Chapters 4–5), not enacted on
+the note itself.
 
 ## License
 
