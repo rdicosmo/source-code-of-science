@@ -97,6 +97,11 @@
   \renewcommand*{\chapvig@ht}{#1}\renewcommand*{\chapvig@file}{#2}}
 \makeatother
 
+% Chapter summary: unboxed lead prose between the plate and the objectives
+% box.  Deliberately NOT a tinted box -- plate + two boxes before the first
+% section head is what crowds a chapter opening.
+\newcommand{\chapsummary}[1]{\noindent #1\par\medskip}
+
 % Section heads: dark sans-bold title, accent-coloured number.
 \setsecheadstyle{\normalfont\sffamily\Large\bfseries\color{swhdark}}
 \setsubsecheadstyle{\normalfont\sffamily\large\bfseries\color{swhdark}}
