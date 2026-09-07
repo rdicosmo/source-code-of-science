@@ -1,0 +1,157 @@
+\chapter{A model artifact-evaluation section}
+\label{app:aec-model}
+
+Chapter~\ref{ch:repro} argues that artifact evaluation is where an intrinsic identifier earns
+its keep: a reviewer can check an artifact offline, in under a minute, without asking anyone's
+permission. This appendix is the operational form of that argument --- text a programme chair
+can lift into a call for artifacts, and two short procedures, one for authors and one for
+reviewers.
+
+It is written to be \emph{additive}. Every venue that runs artifact evaluation already has a
+deposit rule, a badge vocabulary, and a reviewing workload it is trying not to increase. Nothing
+below removes a DOI, displaces Zenodo, or asks a committee to retrain its reviewers. It fills a
+slot that most guidelines already contain and few can currently fill.
+
+\section{The slot that is already there}
+
+The ACM Artifact Review and Badging policy asks, for the \emph{Artifacts Available} badge, that
+authors provide \enquote{a DOI or link to this repository along with a unique identifier for the
+object}. Two slots. The first is routinely filled with a DOI; the second is usually left as a bare
+repository URL --- which is a location, not an identifier of an object. Many venues inherit this
+sentence verbatim, and a good number have quietly dropped its second half.
+
+\takeaway{Most guidelines already ask for an identifier of the object. Few can name one.}
+
+Filling that second slot with a \textsc{swhid} costs an author one local command and gives a
+reviewer something they have never had: a claim about the artifact that can be checked rather
+than trusted. Everything else in this appendix follows from that one substitution.
+
+\section{Model text for a call for artifacts}
+
+\begin{callout}{Artifact identification and archival --- text to adapt}
+\small
+\textbf{Identifying the artifact.} At every submission or revision, authors must include the
+\textsc{swhid} (\emph{SoftWare Hash IDentifier}, ISO/IEC~18670) of the artifact tree exactly as
+submitted, computed locally:
+
+\begin{center}\texttt{swh identify -{}-type directory path/to/artifact/}\end{center}
+
+This identifier is \emph{intrinsic}: it is derived from the content of the files, so it requires
+no account, no deposit and no network access to produce, and it changes whenever the artifact
+changes. If you revise the artifact during evaluation, report the new \textsc{swhid} with the
+revision; earlier identifiers remain valid names for the earlier states.
+
+\smallskip
+\textbf{Archiving the artifact.} In addition to any deposit this venue already requires (for
+example Zenodo, with its DOI), authors must ensure the source code is archived in Software
+Heritage. If the code lives on a public forge, request archival of the repository --- history
+included --- through Save Code Now (\url{https://save.softwareheritage.org}); this needs no
+account and normally completes within hours. Then take the \emph{qualified} \textsc{swhid} of the
+exact version from the archive's \emph{Permalinks} tab and put it in the camera-ready paper
+alongside the DOI of any deposit.
+
+\smallskip
+\textbf{What reviewers check.} Reviewers verify availability by \emph{recomputation}, not only by
+resolution: they download the artifact and recompute the identifier, which must equal the one on
+record. The check is offline and takes under a minute. A mismatch is a finding to be reported,
+exactly like a build failure.
+
+\smallskip
+\textbf{Evaluated version $=$ archived version.} At the close of evaluation the committee records
+the \texttt{dir} \textsc{swhid} of the accepted artifact tree, and the version referenced in the
+camera-ready paper must present the same identifier. If authors improve the artifact afterwards,
+list both, labelled \enquote{as evaluated} and \enquote{as published}.
+
+\smallskip
+\textbf{Double-blind submissions.} A core directory \textsc{swhid} is computed from content alone
+--- no author, no origin, no commit metadata --- so it may appear in an anonymized submission as
+is. Do not add \texttt{origin} or \texttt{anchor} qualifiers before acceptance; restore them at
+camera-ready around the identical core hash.
+
+\smallskip
+\textbf{Scope.} This covers \textbf{source code}, including build recipes --- Dockerfiles,
+lockfiles, provisioning and experiment scripts, pinned under the same identifier as the artifact
+tree. Datasets, container \emph{images} and large binaries follow this venue's existing
+instructions; Software Heritage is a source-code archive, not a data archive.
+\end{callout}
+
+\section{For authors}
+
+\begin{enumerate}[nosep,leftmargin=*]
+  \item Develop wherever you already develop. Nothing changes about your forge, your CI or your
+        packaging.
+  \item Install either tool; they compute identical identifiers:\\
+        \texttt{pip install 'swh.model[cli]'} \quad or \quad \texttt{cargo install swhid}
+  \item At submission, compute the identifier of the tree you are submitting and put it in the
+        artifact appendix beside your submission URL.
+  \item At each revision during evaluation, recompute and report it in one line:
+        \enquote{revised tree: \texttt{swh:1:dir:\dots}}.
+  \item After acceptance, archive the repository through Save Code Now.
+  \item Take the qualified \textsc{swhid} of the exact release from the \emph{Permalinks} tab.
+  \item Deposit as your venue requires --- unchanged.
+  \item In the camera-ready paper cite both, and check that the identifier matches the one
+        recorded at the close of evaluation, or label the difference.
+\end{enumerate}
+
+One caveat worth passing to authors verbatim: a directory \textsc{swhid} depends on file
+\emph{permissions} as well as content, so a fresh checkout and a git tree can differ even when
+the bytes are identical. If a directory check fails where the content plainly matches, suspect
+permission bits before suspecting the archive; the tools expose
+\texttt{-{}-permissions-source} to control this (Appendix~\ref{app:cookbook}).
+
+\section{For reviewers}
+
+\begin{enumerate}[nosep,leftmargin=*]
+  \item Download the artifact from the submitted URL, exactly as you do today.
+  \item Recompute the identifier over the unpacked tree.
+  \item Compare it with the one the authors recorded. Equal or not equal --- there is no
+        judgement to exercise and no service to consult.
+  \item If it differs, report it as you would a build failure: state the identifier you obtained.
+  \item For the \emph{Available} badge after acceptance, resolve the qualified identifier in the
+        archive and confirm it presents the same core hash.
+  \item Nothing here requires an account, a login, or network access beyond the initial download.
+\end{enumerate}
+
+\takeaway{Verification becomes arithmetic: recompute, compare. No authority is consulted.}
+
+\section{How it maps onto existing badges}
+
+\begin{center}\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{3.2cm}>{\raggedright\arraybackslash}p{9.6cm}@{}}
+\toprule
+\textbf{Badge} & \textbf{What changes} \\
+\midrule
+Artifacts Available & The identifier slot is filled with a verifiable identifier. The DOI keeps
+its role: citation metadata, discovery, a landing page. \\
+\addlinespace
+Artifacts Evaluated & The committee can state \emph{which} artifact it evaluated, and the
+published version can be shown to be that one. \\
+\addlinespace
+Results Reproduced & Unaffected in substance, but the reproduction now names the exact tree it
+reproduced from. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{The questions a chair will ask}
+
+\paragraph{We already require a DOI. Why a second identifier?}
+They answer different questions. A DOI names a deposit and certifies a landing page; the deposit
+behind it can be replaced without the DOI changing, and nothing in the identifier tells you it
+did. A \textsc{swhid} \emph{is} the content. That is why both belong in the paper, not one
+instead of the other.
+
+\paragraph{Is Software Heritage durable enough to rely on?}
+The identifier does not depend on the archive's survival: it can be recomputed from any copy of
+the content, by anyone, indefinitely. This is the practical difference between an intrinsic
+identifier and a registry entry --- the registry can fail; arithmetic cannot.
+
+\paragraph{Does this cover datasets, containers and models?}
+No. It identifies source code, and build recipes pinned with it. Datasets and images keep the
+arrangements your venue already has. A proposal that claimed otherwise would be easy to refute
+and would deserve to be.
+
+\paragraph{What does it cost the committee?}
+One sentence in the call for artifacts, and one line in the reviewing form. No new
+infrastructure, no accounts, no service dependency, and a verification step that is faster than
+the one it supplements.
