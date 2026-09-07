@@ -44,7 +44,8 @@ pip install swh.scanner              # swh scanner
 # --- Compute SWHIDs locally (auto-detects type, or force with --type) ---
 swh identify file.c                  # -> swh:1:cnt:...
 swh identify --type directory src/   # -> swh:1:dir:...
-swh identify .                       # a git checkout -> swh:1:rev:...
+swh identify --type directory ./export/    # a CLEAN export -> swh:1:dir:...
+#   (never a live checkout: see the caveat below)
 swh identify --type snapshot repo.git/     # -> swh:1:snp:...  (snapshot)
 
 # --- Verify bytes against a claimed SWHID (exit 0 iff they match) --------
@@ -60,10 +61,11 @@ swh scanner scan ./repo                    # what is already archived?
 # Resolve any SWHID:      https://archive.softwareheritage.org/<swhid>
 \end{verbatim}
 
-\noindent\textbf{One caveat for \texttt{dir} hashes.} A directory \textsc{swhid} depends on file
-\emph{permissions} as well as content, so a tree's hash can differ between a fresh filesystem
-checkout and the git index. \texttt{swhid dir}/\texttt{verify} expose
-\texttt{-{}-permissions-source} (\texttt{auto}, \texttt{fs}, \texttt{git-index}, \texttt{git-tree},
-\dots); to match what the archive stored from a git repository, compute from the git tree (e.g.\
-over a clean \texttt{git archive} export). If a directory check
-mismatches where a content check would pass, suspect permission bits, not the bytes.
+\noindent\textbf{One caveat for \texttt{dir} hashes.} A directory \textsc{swhid} is computed over
+everything below the directory you point the tool at --- including a \texttt{.git/} directory,
+build output and editor droppings --- and it depends on file \emph{permissions} as well as
+content. To match what the archive stored from a git repository, never hash a live checkout:
+compute over a clean export (\texttt{git archive} unpacked into an empty directory), whose hash
+equals \verb|git rev-parse <commit>^{tree}| by construction. If a directory check mismatches
+where a content check would pass, suspect a polluted working copy first, and permission bits
+second.
