@@ -59,7 +59,8 @@
   % Reserve the numeral's column so a two-line title cannot run into it.
   \renewcommand*{\printchaptertitle}[1]{%
     \noindent\parbox[b]{\dimexpr\linewidth-1.6cm\relax}{\raggedright\chaptitlefont ##1}%
-    \par\nobreak\vskip6pt{\color{swhaccent!85}\hrule height 1.1pt}}%
+    \par\nobreak\vskip6pt{\color{swhaccent!85}\hrule height 1.1pt}%
+    \chapvigprint}%
 }
 \chapterstyle{swh}
 
@@ -69,8 +70,22 @@
 % immediately BEFORE \chapter:   \setchapvignette{ch1-paper-kept-code-lost}
 % The token is one-shot: it is cleared as soon as it is used, so chapters (and
 % \chapter*) without a declaration are completely unaffected.
+% \chapvigprint is called by \printchaptertitle, so the plate lands BELOW the
+% title and its rule: title -> illustration -> chapter summary.
+\makeatletter
+\newcommand*{\chapvigprint}{%
+  \ifx\chapvig@file\@empty\else
+    \par\vskip14pt
+    \begingroup\centering\noindent
+      \includegraphics[width=\textwidth,height=\chapvig@ht,keepaspectratio]{\chapvig@file}%
+    \par\endgroup
+    \vskip4pt
+    \global\let\chapvig@file\@empty
+    \global\let\chapvig@ht\chapvigheight
+  \fi}
+\makeatother
 \newlength{\chapvigheight}
-\setlength{\chapvigheight}{5.2cm}   % uniform visual weight across the set
+\setlength{\chapvigheight}{10cm}   % uniform visual weight across the set
 % Sizing rule: EQUAL VISUAL AREA, not equal height, so a portrait vignette does
 % not read as lighter than a landscape one.  Landscape 3:2 at 4.1cm high covers
 % ~25cm^2; a 3:4 portrait needs ~5.8cm of height for the same area.  Pass the
@@ -80,18 +95,6 @@
 \newcommand*{\chapvig@ht}{\chapvigheight}
 \newcommand*{\setchapvignette}[2][\chapvigheight]{%
   \renewcommand*{\chapvig@ht}{#1}\renewcommand*{\chapvig@file}{#2}}
-\renewcommand*{\chapterheadstart}{%
-  \vspace*{\beforechapskip}%
-  \ifx\chapvig@file\@empty\else
-    \begingroup
-      \centering\noindent
-      \includegraphics[height=\chapvig@ht,width=\textwidth,keepaspectratio]%
-        {\chapvig@file}%
-      \par\vspace{12pt}%
-    \endgroup
-    \global\let\chapvig@file\@empty
-    \global\let\chapvig@ht\chapvigheight
-  \fi}
 \makeatother
 
 % Section heads: dark sans-bold title, accent-coloured number.
