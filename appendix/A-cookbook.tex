@@ -1,3 +1,4 @@
+\setchapvignette[3.6cm]{appendix-cookbook}
 \chapter{Command cookbook}
 \label{app:cookbook}
 
@@ -21,7 +22,7 @@ cargo install swhid --features git   # ...with VCS (revision) support
 
 # --- Compute core SWHIDs locally ----------------------------------------
 swhid content --file file.c          # -> swh:1:cnt:...
-swhid dir src/                       # -> swh:1:dir:...  (Merkle hash of tree)
+swhid dir src/                 # -> swh:1:dir:...  (Merkle hash of tree)
 swhid parse "swh:1:cnt:<hex>"        # validate / pretty-print a SWHID
 
 # A revision SWHID is just the git commit hash:

@@ -24,6 +24,7 @@
 
 % --- Colours, graphics, boxes ---------------------------------------------
 \usepackage{graphicx}
+\graphicspath{{./}{figures/}{figures/illustrations/}}
 \usepackage{array}
 \usepackage{booktabs}
 \usepackage{tabularx}
@@ -59,6 +60,38 @@
     \noindent{\chaptitlefont ##1}\par\nobreak\vskip6pt{\color{swhaccent!85}\hrule height 1.1pt}}%
 }
 \chapterstyle{swh}
+
+% --- Chapter-head vignettes (Archie, the elephant archivist) ---------------
+% A chapter may open with a pen-and-ink vignette printed ABOVE the numeral and
+% title, so illustration + numeral + title + rule read as one unit.  Declare it
+% immediately BEFORE \chapter:   \setchapvignette{ch1-paper-kept-code-lost}
+% The token is one-shot: it is cleared as soon as it is used, so chapters (and
+% \chapter*) without a declaration are completely unaffected.
+\newlength{\chapvigheight}
+\setlength{\chapvigheight}{5.2cm}   % uniform visual weight across the set
+% Sizing rule: EQUAL VISUAL AREA, not equal height, so a portrait vignette does
+% not read as lighter than a landscape one.  Landscape 3:2 at 4.1cm high covers
+% ~25cm^2; a 3:4 portrait needs ~5.8cm of height for the same area.  Pass the
+% height as the optional argument when the image is not landscape.
+\makeatletter
+\newcommand*{\chapvig@file}{}
+\newcommand*{\chapvig@ht}{\chapvigheight}
+\newcommand*{\setchapvignette}[2][\chapvigheight]{%
+  \renewcommand*{\chapvig@ht}{#1}\renewcommand*{\chapvig@file}{#2}}
+\renewcommand*{\chapterheadstart}{%
+  \vspace*{\beforechapskip}%
+  \ifx\chapvig@file\@empty\else
+    \begingroup
+      \centering\noindent
+      \includegraphics[height=\chapvig@ht,width=\textwidth,keepaspectratio]%
+        {\chapvig@file}%
+      \par\vspace{12pt}%
+    \endgroup
+    \global\let\chapvig@file\@empty
+    \global\let\chapvig@ht\chapvigheight
+  \fi}
+\makeatother
+
 % Section heads: dark sans-bold title, accent-coloured number.
 \setsecheadstyle{\normalfont\sffamily\Large\bfseries\color{swhdark}}
 \setsubsecheadstyle{\normalfont\sffamily\large\bfseries\color{swhdark}}
@@ -111,6 +144,14 @@
 \usepackage{hyperref}
 \hypersetup{colorlinks=true,linkcolor=swhdark,citecolor=swhaccent,
             urlcolor=swhaccent,breaklinks=true}
+% Long URLs in narrow table cells and in the bibliography are the main source of
+% lines spilling into the margin.  Let \url break after the usual separators and
+% give the inter-character glue a little stretch, rather than loading xurl
+% (which broke other tables when tried).
+\Urlmuskip=0mu plus 3mu\relax
+\makeatletter
+\g@addto@macro\UrlBreaks{\do\-\do\.\do\_\do\=\do\?\do\&\do\+}
+\makeatother
 
 % --- Bibliography: the software-aware style -------------------------------
 \usepackage{csquotes}
@@ -118,6 +159,13 @@
 \usepackage{software-biblatex}
 \ExecuteBibliographyOptions{halid=true,swhid=true,swlabels=true,vcs=true,license=true,crossrefexpansion=conditional}
 \addbibresource{references.bib}
+% Bibliography heading: \chapter* sets no running mark, so without this the
+% References pages keep showing the LAST APPENDIX in the header.  Also set a
+% tighter inter-entry skip: the default left a single entry stranded on a page
+% of its own.
+\defbibheading{refschapter}[References]{%
+  \chapter*{#1}\addcontentsline{toc}{chapter}{#1}\markboth{#1}{}}
+\setlength{\bibitemsep}{0.45\baselineskip plus 0.15\baselineskip minus 0.1\baselineskip}
 
 % --- Pedagogical devices --------------------------------------------------
 % Hands-on lab box.
