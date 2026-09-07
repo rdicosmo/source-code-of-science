@@ -154,7 +154,7 @@
 
 % --- Links (load before biblatex) -----------------------------------------
 \usepackage{hyperref}
-\hypersetup{colorlinks=true,linkcolor=swhdark,citecolor=swhaccent,
+\hypersetup{colorlinks=true,linkcolor=swhdark,citecolor=swhdark,
             urlcolor=swhaccent,breaklinks=true}
 % Long URLs in narrow table cells and in the bibliography are the main source of
 % lines spilling into the margin.  Let \url break after the usual separators and
@@ -188,13 +188,13 @@
 
 % Learning-objectives box (chapter openers).
 \newtcolorbox{objectives}{%
-  breakable, enhanced, colback=swhbg!45, colframe=swhdark,
+  breakable, enhanced, colback=swhbg!45, colframe=swhdark!55,
   fonttitle=\bfseries\sffamily, title={Learning objectives}, sharp corners=downhill,
   boxrule=0.4pt, left=2.2mm, right=2.2mm, top=1mm, bottom=1mm}
 
 % Generic titled callout (boilerplate, executive summary, governance, do-one-thing).
 \newtcolorbox{callout}[1]{%
-  breakable, enhanced, colback=swhbg!25, colframe=swhdark,
+  breakable, enhanced, colback=swhbg!25, colframe=swhdark!55,
   fonttitle=\bfseries\sffamily, title={#1}, sharp corners=downhill,
   boxrule=0.4pt, left=2.2mm, right=2.2mm, top=1mm, bottom=1mm}
 
@@ -218,7 +218,7 @@
     \noindent
     \begin{minipage}{\takeawaywidth}%
       \color{swhaccent!12}\rule{\takeawaywidth}{0.9pt}\par\vspace{2pt}%
-      \raggedright\footnotesize\sffamily\itshape\color{swhaccent}%
+      \raggedright\footnotesize\sffamily\itshape\color{swhdark!85}%
       \setlength{\parindent}{0pt}#1\par\vspace{2pt}%
       \color{swhaccent!35}\rule{\takeawaywidth}{0.5pt}%
     \end{minipage}%
@@ -286,7 +286,7 @@
   % Frontispiece: the science grows out of its source --- a tree rooted in an
   % open book, its leaves made of files, with Archie steadying a branch.
   \includegraphics[width=7.0cm]{titlepage-rooted-tree}\par\vspace{1.0cm}
-  {\Huge\bfseries The Source Code of Science\par}\vspace{0.6cm}
+  {\sffamily\Huge\bfseries The Source Code of Science\par}\vspace{0.6cm}
   {\Large Archiving, Referencing and Reproducing Research Software\par}\vspace{0.3cm}
   {\large\itshape a doctoral course --- beyond FAIR data\par}
   \vfill
