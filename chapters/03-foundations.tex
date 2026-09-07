@@ -75,9 +75,23 @@ whole~\autocite{SwhCACM2018,SWHecosystems2023}.
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=\linewidth]{figures/archive-growth-2026-09-08.png}
+  % The counters are typeset rather than shipped as pixels: in the source chart
+  % their axis labels fall to about 3pt on the page.  Values transcribed from
+  % archive-growth-2026-09-08.png (kept in figures/ as the evidence).
+  {\sffamily\small
+  \begin{tabular}{@{}p{0.31\linewidth}p{0.31\linewidth}p{0.31\linewidth}@{}}
+    \color{swhaccent}\bfseries Source files & \color{swhaccent}\bfseries Commits &
+      \color{swhaccent}\bfseries Projects \\[1pt]
+    {\large 29{,}523{,}977{,}803} & {\large 6{,}112{,}189{,}339} & {\large 441{,}196{,}029} \\[6pt]
+    \color{swhaccent}\bfseries Directories & \color{swhaccent}\bfseries Authors &
+      \color{swhaccent}\bfseries Releases \\[1pt]
+    {\large 23{,}007{,}987{,}747} & {\large 107{,}736{,}452} & {\large 184{,}798{,}617} \\
+  \end{tabular}}
+  \par\vspace{8pt}
+  \includegraphics[width=\linewidth]{figures/archive-growth-2026-09-08-sourcefiles.png}
   \caption[Growth of the Software Heritage archive]{The growth of the Software Heritage archive
-  over time: by September 2026 it holds the development history of hundreds of millions of
+  over time, at the 2026-09-08 baseline. The curve traces source files; the other five counters
+  grow alongside it. It holds the development history of hundreds of millions of
   projects --- the largest corpus of source code ever assembled.}
   \label{fig:archive-growth}
 \end{figure}
