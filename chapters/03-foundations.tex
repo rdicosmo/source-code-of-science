@@ -17,13 +17,12 @@ every file, directory, commit, release, and snapshot an identifier computed from
 \end{itemize}
 \end{objectives}
 
+\takeaway{A forge is where code is developed; an archive is where it is kept.}
 Before we can identify a piece of code, we need somewhere that reliably keeps it. This chapter
 builds that ground in three steps: why the places where we \emph{develop} software are not the
 places that \emph{preserve} it; what a universal archive of source code is, and how it works;
 and the simple, powerful data structure --- the Merkle DAG --- that turns ``keeping the code''
 into ``being able to identify it exactly,'' which is the subject of the next chapter.
-
-\takeaway{A forge is where code is developed; an archive is where it is kept.}
 
 \section{Forges are not archives}
 
@@ -161,6 +160,7 @@ pointed at from every place they occur. A tree with this sharing is no longer a 
 \emph{directed acyclic graph}: a Merkle DAG. (It stays acyclic for a simple reason --- a node's
 identifier depends on its children's identifiers, so no node can ever contain itself.)
 
+\takeaway{Gratis, integrity, no middle-man --- a Merkle DAG delivers all three at once.}
 This single idea buys three properties we could not otherwise have together. Such identifiers are
 \emph{gratis} --- you can mint billions of them at no cost; they guarantee \emph{integrity} ---
 change one byte and the identifier changes, so an object cannot be altered without its identifier
@@ -168,8 +168,6 @@ changing; and they need \emph{no middle-man} --- no central authority has to exi
 to mean something. Integrity \emph{and} no middle-man, at once, is exactly the combination a registry
 cannot give you --- which is why the same construction underpins Git, Nix, IPFS, and the
 blockchains.
-
-\takeaway{Gratis, integrity, no middle-man --- a Merkle DAG delivers all three at once.}
 
 \subsection{The five kinds of node}
 

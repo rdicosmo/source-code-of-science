@@ -15,7 +15,7 @@
 % the head, body, foot and margin block mutually consistent.
 \setstocksize{297mm}{210mm}
 \settrimmedsize{297mm}{210mm}{*}
-\setlrmarginsandblock{2.4cm}{4.2cm}{*}     % inner (spine), outer (edge)
+\setlrmarginsandblock{2.4cm}{3.4cm}{*}     % inner (spine), outer (edge)
 \setulmarginsandblock{2.6cm}{2.6cm}{*}     % upper, lower
 \setheadfoot{15pt}{28pt}                    % headheight, footskip
 \setheaderspaces{*}{12pt}{*}                % headsep between header and text
@@ -35,6 +35,8 @@
 \definecolor{swhbg}{HTML}{F7E9EC}
 \usepackage[most]{tcolorbox}
 \usepackage{marginnote}
+\usepackage{wrapfig}
+\setlength{\columnsep}{4mm}
 \usepackage{enumitem}
 \usepackage{etoolbox}
 
@@ -200,7 +202,28 @@
 \newcommand{\labmeta}[1]{{\footnotesize\sffamily\itshape\color{swhdark!75}#1}\par\smallskip}
 
 % Key-takeaway margin note.
-\newcommand{\takeaway}[1]{\marginnote{\footnotesize\sffamily\itshape\color{swhaccent}#1}}
+% Key-takeaway note, cut into a "dent" in the text block rather than sitting
+% wholly in the margin.  Geometry (text block right edge = R):
+%   box width  W = 43mm  -> the box spans [R-15mm, R+28mm]
+%   overhang   O = 28mm  -> 28mm of the 34mm outer margin used, 6mm to the trim
+%   \columnsep = 4mm     -> text indents by W + columnsep - O = 19mm, leaving a
+%                           4mm gutter.  The note bites 15mm into the measure.
+% wrapfig announces placement failures in the log as "wrapfig Warning", which is
+% why it is used here in preference to \parshape: the latter fails silently.
+\newlength{\takeawaywidth}\setlength{\takeawaywidth}{43mm}
+\newlength{\takeawayhang} \setlength{\takeawayhang}{28mm}
+\newcommand{\takeaway}[1]{%
+  \begin{wrapfigure}{r}[\takeawayhang]{\takeawaywidth}%
+    \vspace{-\intextsep}%
+    \noindent
+    \begin{minipage}{\takeawaywidth}%
+      \color{swhaccent!12}\rule{\takeawaywidth}{0.9pt}\par\vspace{2pt}%
+      \raggedright\footnotesize\sffamily\itshape\color{swhaccent}%
+      \setlength{\parindent}{0pt}#1\par\vspace{2pt}%
+      \color{swhaccent!35}\rule{\takeawaywidth}{0.5pt}%
+    \end{minipage}%
+    \vspace{-\intextsep}%
+  \end{wrapfigure}}
 
 % Display pull-quote: larger text, indented, with big accent quotation marks
 % (opening mark hangs into the left indent, closing mark trails the last line).
