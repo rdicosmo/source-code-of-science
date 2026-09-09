@@ -265,10 +265,17 @@ never changes.}
 
 \begin{handson}[Hands-on: a double-blind artifact]
 \labmeta{$\sim$10 min \textperiodcentered{} needs a \textsc{swhid} tool \textperiodcentered{} in-class, offline}
-Compute the directory \textsc{swhid} of your artifact tree (\texttt{swhid dir ./}; see
-Appendix~\ref{app:swhid-tools}) and submit \emph{that}. It names your exact bytes and nothing else.
-After acceptance, archive the repository and add the \texttt{origin}/\texttt{anchor} qualifiers ---
-the same identifier, now pointing home.
+Export your artifact tree cleanly into an empty directory with \texttt{git archive} --- never hash
+the checkout itself, which carries \texttt{.git/} and your build output --- compute the directory
+\textsc{swhid} of the export (Appendix~\ref{app:swhid-tools}), and check it against
+\texttt{git rev-parse HEAD\^{}\{tree\}}: the two must print the same hash. Submit \emph{that}. It
+names your exact bytes and nothing else. After acceptance, archive the repository and add the
+\texttt{origin}/\texttt{anchor} qualifiers --- the same identifier, now pointing home.
+
+\smallskip
+If the artifact is already a public repository, the shorter path is to archive it first and read
+the identifier off the archive; Appendix~\ref{app:aec-model} sets out the whole workflow as a
+programme chair would state it.
 \end{handson}
 
 \section{Built into the record of science}

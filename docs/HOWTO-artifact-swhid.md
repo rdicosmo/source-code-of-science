@@ -5,6 +5,12 @@ This is the maintained companion to Appendix G (*A model artifact-evaluation sec
 survive tool churn. **This file carries everything that is version-, tool- and
 platform-dependent**, so that the book does not rot.
 
+**Just want to archive and reference your code?** Then you want Software Heritage's own page,
+<https://www.softwareheritage.org/how-to-archive-reference-code/>, not this one. It is the
+canonical checklist and it is maintained upstream. Come back here for what artifact *evaluation*
+adds: the clean-tree invariant, the working-copy hazard, the self-checks, double-blind handling,
+and what to do when two parties compute different numbers.
+
 If you have five minutes, read §1 and §2 and stop. If your identifier does not match, go
 straight to §11.
 
@@ -14,11 +20,11 @@ straight to §11.
 
 | | |
 |---|---|
-| **Last verified** | 2026-09-08 |
+| **Last verified** | 2026-09-09 |
 | **`swh.model`** | 6.15.0 (`swh.core` 3.4.0), Python 3.11, installed as a `uv` tool |
 | **git** | 2.47.3 |
 | **Platform** | Linux (Debian 13, kernel 6.18) |
-| **Archive checked against** | `archive.softwareheritage.org`, live, 2026-09-08 |
+| **Archive checked against** | `archive.softwareheritage.org`, live, 2026-09-09 |
 
 Every command below was executed on that configuration before this file was committed. Where a
 claim could **not** be verified here, it is labelled **UNTESTED** or **UNVERIFIED HERE** inline,
@@ -32,7 +38,10 @@ Authoritative references, in order of precedence:
 
 1. The SWHID specification — ISO/IEC 18670, and <https://www.swhid.org>
 2. `swh identify --help` on *your* installed version — always beat this file
-3. Software Heritage developer docs — <https://docs.softwareheritage.org/devel/swh-model/persistent-identifiers.html>
+3. Software Heritage's how-to for archiving and referencing code —
+   <https://www.softwareheritage.org/how-to-archive-reference-code/> — authoritative for
+   everything about archival itself
+4. Software Heritage developer docs — <https://docs.softwareheritage.org/devel/swh-model/persistent-identifiers.html>
 
 ---
 
@@ -76,19 +85,96 @@ For contrast, hashing the working copy of that same repository at that same comm
 
 ## 2. The canonical procedure
 
-There are two phases with two different primary sources. The right source differs before and
-after archival, and it matters that you use the right one.
+### 2.0 Which route are you on?
+
+Most of the time you compute nothing. Pick the route before reading further.
+
+| Situation | Route |
+|---|---|
+| The artifact is a public repository on a public forge — **the common case** | **Archive it, then take the identifier from the archive.** Phase B below, and §6. No local tooling at all. |
+| Same, but review is **double-blind** | Archive it the same way, and share only the **core** identifier — everything before the first `;`. §2.1. |
+| No public repository, or archival is not possible yet | **Compute it from a clean export.** Phase A below. |
+
+**Archival itself is documented by Software Heritage, not here.** The canonical, maintained
+checklist — what a public repository should contain (README, AUTHORS, LICENSE, optionally
+`codemeta.json`), every archival route, and how to pull an identifier off the *Permalinks* tab —
+is <https://www.softwareheritage.org/how-to-archive-reference-code/>. Prefer it to anything
+restated below; this file exists for what that page does not cover, which is what an artifact
+*evaluation* needs.
+
+In brief, and consistent with that page: archiving is one click, not a procedure. The least
+error-prone way is the **UpdateSWH** browser extension (Firefox, Chrome, Edge —
+<https://www.softwareheritage.org/browser-extensions/>, source at
+<https://github.com/rdicosmo/updateswh>): on a repository page of a supported forge it shows a
+coloured tab — green if the archive is already up to date, yellow if it has fallen behind — and a
+click either opens the archived version or requests archival of the page you are on. Because you
+never type a URL, you cannot archive the wrong one, and you can see whether a save is needed at
+all before asking for one. The manual equivalent is Save Code Now
+(<https://save.softwareheritage.org>, no account; git, hg, svn, cvs, bzr and tarball origins).
+The automatic one is a forge webhook — endpoints exist for Bitbucket, Gitea, GitHub, GitLab and
+SourceForge, and SWH recommends firing them on branch, tag or release creation rather than on
+every push.
+
+Once the version is in the archive, **the archive is the authoritative source of the
+identifier** and the local computation is a cross-check, not the procedure.
 
 **Fallback ordering, in one sentence:** use the archive's value when the artifact is archived;
 use the clean-export value when it is not; when both exist they must coincide, and that
 coincidence is itself the end-to-end check.
 
-### Phase A — before archival: compute from a clean export
+### 2.1 Double-blind review does not force you to skip archival
 
-Use this at submission, at every revision, and for **all** double-blind work. In this phase it is
-not merely the primary method, it is the *only* one: the artifact is not in the archive yet, and
-for a double-blind venue it must not be — running Save Code Now on your own repository publishes
-the origin URL and deanonymises you.
+A *qualified* SWHID names the origin, so it cannot go into an anonymous submission as it stands.
+The *core* identifier can:
+
+```
+swh:1:dir:2dc0f462d191524530f5612d2935851505af41dd          <- core: for the anonymous submission
+swh:1:dir:2dc0f462…;origin=…;visit=…;anchor=…               <- qualified: for the camera-ready
+```
+
+The hash is the same in both. It is computed from the content of the tree and from nothing else:
+not from an author, a date, a repository name or a commit. Resolving a core `dir` identifier in
+the archive displays the contents of that directory and nothing whatever besides — no origin, no
+author, no date, no commit message.
+
+The ordinary interfaces offer no route back either, though be precise about why. The directory
+endpoint returns the tree's entries and nothing else. The graph traversal API, which *could*
+answer "which origins contain this tree?", is not anonymously available.
+
+*Verified 2026-09-09.* `GET /api/1/directory/2dc0f462d191524530f5612d2935851505af41dd/` returns
+entries only — `name`, `perms`, `type`, `target`, `length`, `checksums`, `dir_id`, `status` —
+with no origin backlink. A backward traversal request,
+`GET /api/1/graph/visit/nodes/swh:1:dir:2dc0f462…/?direction=backward&edges=dir:rev,rev:snp,snp:ori`,
+returns **HTTP 401, "Authentication credentials were not provided."**
+
+So this is a practical obstacle, not a cryptographic guarantee: graph access is obtainable, and —
+exactly as with a submitted tarball — a reviewer who already suspects a particular repository can
+fetch it and compare regardless. What the identifier *itself* discloses is nothing, which is the
+property the venue is relying on.
+
+And the two browse views differ exactly as described: the core SWHID
+redirects to `/browse/directory/<hash>/`, a bare listing; the qualified one redirects to
+`/browse/revision/<rev>/?origin_url=…`, which shows the origin, the visit date, the revision,
+its author and its message. Both captures are reproduced as Figure G.1 of *The Source Code of
+Science*.
+
+So: archive as usual, take the qualified identifier, give the reviewers only the part before the
+first `;`, and restore the suffix at camera-ready. The number the committee checked and the
+number in the published paper are then the same string.
+
+**One residual disclosure, because it is not zero.** A Save Code Now request adds a row —
+repository URL, date, status — to the archive's publicly browsable list of save requests
+(<https://archive.softwareheritage.org/save/list/>, tab *Browse save requests*, which is
+searchable). That row says a repository was archived on a date. It says nothing about a paper, a
+venue or a submission, and a repository already public on a forge gives away no more by being
+archived than by existing. Where a venue's threat model is stricter than that, invert the order:
+use Phase A during review and archive at acceptance.
+
+### Phase A — compute from a clean export
+
+Use this when the artifact is *not* archived: no public repository to point at, or a venue that
+wants a number before archival. It is also the offline cross-check that anyone can run on any
+copy of the content, which is why it is worth knowing even when you are on the common route.
 
 **For a git-managed artifact — three commands:**
 
@@ -130,14 +216,16 @@ it is a working copy by another name.
 The identifier you record is then, by construction, the number a reviewer's unpack will
 reproduce and the number the archive will later hold.
 
-### Phase B — camera-ready: take the identifier from the archive
+### Phase B — take the identifier from the archive
 
-After acceptance, archive the repository through Save Code Now
-(<https://save.softwareheritage.org>), then take the **qualified** SWHID from the archive's
-**Permalinks** tab (§6).
+This is the primary route whenever the artifact is on a public forge, and the camera-ready step
+in every case. Archive the repository — UpdateSWH, Save Code Now or a webhook, §2.0 — then take
+the **qualified** SWHID from the archive's **Permalinks** tab (§6). Under double-blind review,
+share only its core part until acceptance (§2.1).
 
-Its core `dir` hash **must equal the Phase-A identifier recorded at the close of evaluation**.
-Verify that equality before you submit the camera-ready. If it differs, then either
+Where a Phase-A identifier was recorded at the close of evaluation, the core `dir` hash here
+**must equal it**. Verify that equality before you submit the camera-ready. If it differs, then
+either
 
 - the archived version is genuinely not the evaluated version — label both, "as evaluated" and
   "as published"; or
@@ -425,7 +513,8 @@ it.** Run `git status` before you export; that is what the dirty-tree warning is
 
 ## 6. Getting the identifier from the archive (Phase B)
 
-1. Archive the repository at <https://save.softwareheritage.org>. No account needed; normally
+1. Archive the repository. One click on the UpdateSWH tab while you are on the repository page
+   (§2.0), or paste the URL at <https://save.softwareheritage.org>. No account needed; normally
    completes within hours. Archive the **repository**, history included — not a tarball.
 2. Browse to the exact version in the archive, navigate to the artifact's directory, and open the
    **Permalinks** tab.
@@ -552,9 +641,27 @@ the real content and identify that per §4.5, stating what you did.
 
 ---
 
-## 9. What a reviewer with only a tarball can and cannot do
+## 9. Reviewers
 
-### 9.1 What you CAN verify — offline, trustlessly, in under a minute
+### 9.0 In the normal case a reviewer computes nothing
+
+Read this before the rest of §9, which is about a fallback and is easy to mistake for the routine.
+
+**A reviewer given a SWHID resolves it, downloads the artifact from the archive, and evaluates
+it. There is no hash for them to check.** The archive retrieves the object *by* its hash: given
+`swh:1:dir:<x>` it returns that tree or nothing, and it has no way to return a different tree
+under that name. Asking a reviewer to download an artifact and then confirm that it hashes to the
+identifier they used to fetch it tests their `tar` invocation, not the artifact (§9.3, third
+bullet). Do not put that step in a reviewing form.
+
+Two cases *do* involve a computation, and neither is routine:
+
+| Case | Who | What |
+|---|---|---|
+| The authors sent a bundle, not an identifier | reviewer | Hash the bundle so that what was evaluated acquires a name — §9.1. Also the offline path for a reviewer who prefers not to consult any service. |
+| Camera-ready | **chair**, not reviewer | Check that the core hash in the paper equals the identifier recorded at the close of evaluation — §9.3. One line per paper. |
+
+### 9.1 What you CAN verify from a bundle — offline, trustlessly, in under a minute
 
 That the tree you unpacked **is** the object the authors named.
 
@@ -590,13 +697,16 @@ authors changed the artifact" is not — you cannot know that.
 
 Be clear-eyed about the limits; the check is strong precisely because its scope is narrow.
 
-- **Before acceptance you cannot verify anything about the archive.** The artifact is not there,
-  and for a double-blind venue it must not be. The check is purely local. Any procedure telling a
-  reviewer to "resolve the identifier in the archive" at review time is wrong for double-blind
-  submissions.
-- **You cannot verify that the submitted tree corresponds to any commit in the authors'
-  repository.** That repository is hidden from you. The link between the evaluated tree and a
-  named origin is established only at camera-ready, when qualifiers are added.
+- **From a core identifier alone you cannot verify anything about provenance.** That is the point
+  of withholding the qualifiers, and under double-blind review it is the intended state: a core
+  `dir` SWHID resolves to the tree and to nothing else (§2.1). If the artifact happens not to be
+  archived at all, the check is purely local, and a procedure telling a reviewer to "resolve the
+  identifier in the archive" will simply fail — which is a bad review procedure, not evidence
+  about the artifact.
+- **You cannot verify that the tree corresponds to any commit in the authors' repository** while
+  the review is blind. That repository is not named. The link between the evaluated tree and a
+  named origin is established at camera-ready, when the qualifiers are restored around the same
+  hash.
 - **You cannot verify a `dir` identifier by resolving it.** Resolution is *by* hash: the archive
   looks up the object whose hash you gave it. It cannot hand back a different hash, so
   "resolve the identifier and confirm it presents the same core hash" is a tautology that tests
@@ -749,6 +859,16 @@ Recorded so that these do not creep back in. All three were verified false on `s
 | `swh identify` exposes `--permissions-source` (`auto`/`fs`/`git-index`/`git-tree`) | **False.** `Error: No such option`; string absent from the installed source. → §5.1 |
 | `swh identify --type directory path/to/artifact/`, pointed at a checkout, identifies "the artifact tree as submitted" | **Wrong procedure.** It hashes `.git/` too. → §3 |
 | `swh identify .` on a git checkout returns `swh:1:rev:…` | **False.** Returns `swh:1:dir:…` of the polluted working copy. Build revision SWHIDs with `echo "swh:1:rev:$(git rev-parse HEAD)"`. → §6 |
+
+**Superseded recommendations (not errors of fact).** Distinct from the table above: these were
+not false, and they produced correct identifiers. They simply took a clumsier route, and v1.4 of
+the notes replaces them. Recorded here so that a reader holding an earlier PDF can tell which is
+which.
+
+| Recommendation, up to v1.3.1 of the notes | Superseded by |
+|---|---|
+| "Under double-blind review, do not request archival before acceptance: the archive records the repository's origin, which would reveal the authors." | Archive at submission like anyone else, and share only the **core** SWHID — it carries no origin, author, date or commit, and resolves to the tree alone. → §2.1 |
+| "Reviewers verify the identification by recomputation." | Reviewers resolve, download, evaluate. The archive retrieves the object *by* its hash, so re-deriving the identifier used to fetch it tests nothing. → §9.0 |
 
 One further install caveat, verified: `swh identify --type snapshot repo.git/` fails with
 `Cannot compute snapshot identifier; the Dulwich package is not installed` unless the `[cli]`

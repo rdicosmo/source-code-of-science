@@ -4,21 +4,27 @@
 Chapter~\ref{ch:repro} argues that artifact evaluation is where an intrinsic identifier earns
 its keep: a reviewer can check an artifact offline, in under a minute, without asking anyone's
 permission. This appendix is the operational form of that argument --- text a programme chair
-can lift into a call for artifacts, and two short procedures, one for authors and one for
-reviewers.
+can lift into a call for artifacts, and the short procedures behind it.
 
 It is written to be \emph{additive}. Every venue that runs artifact evaluation already has a
 deposit rule, a badge vocabulary, and a reviewing workload it is trying not to increase. Nothing
 below removes a DOI, displaces Zenodo, or asks a committee to retrain its reviewers. It fills a
 slot that most guidelines already contain and few can currently fill.
 
-It states \emph{what} must be provided and \emph{what} is checked --- not the incantations.
-Tools drift faster than principles, so the commands, the special cases and the troubleshooting
-live in a companion \textsc{howto}, maintained and versioned alongside these notes
-(\texttt{docs/HOWTO-artifact-swhid.md} in their repository,
-\url{https://github.com/rdicosmo/source-code-of-science/blob/main/docs/HOWTO-artifact-swhid.md}).
-The \textsc{howto} is deliberately referenced by path rather than pinned to one revision: it is
-expected to move as tooling does, which is the entire point of keeping it out of this appendix.
+It states \emph{what} must be provided and \emph{what} is checked --- not the incantations. Tools
+drift faster than principles, so the operational detail lives in two maintained pages outside this
+book. Software Heritage keeps the general checklist for archiving and referencing code --- what a
+public repository should contain, every archival route, and how to pull an identifier off the
+\emph{Permalinks} tab --- at
+\url{https://www.softwareheritage.org/how-to-archive-reference-code/}; that is the address to put
+in a call for artifacts. What it does not cover, because it is specific to evaluation, is carried
+by a companion \textsc{howto} versioned alongside these notes
+(\texttt{docs/HOWTO-artifact-swhid.md},
+\url{https://github.com/rdicosmo/source-code-of-science/blob/main/docs/HOWTO-artifact-swhid.md}):
+the clean-tree invariant, the working-copy hazard, the self-checks, submodules and \textsc{lfs},
+and what to do when two parties arrive at different numbers. Both are referenced by address rather
+than pinned to a revision --- they are expected to move as tooling does, which is the entire point
+of keeping them out of this appendix.
 
 \section{The slot that is already there}
 
@@ -30,21 +36,123 @@ sentence verbatim, and a good number have quietly dropped its second half.
 
 \takeaway{Most guidelines already ask for an identifier of the object. Few can name one.}
 
-Filling that second slot with a \textsc{swhid} costs an author two local commands and gives a
-reviewer something they have never had: a claim about the artifact that can be checked rather
-than trusted. Everything else in this appendix follows from that one substitution.
+Filling that second slot with a \textsc{swhid} gives the record something it has never had: a
+claim about the artifact that anyone can check rather than trust --- and, as
+Section~\ref{sec:aec-reviewers} argues, that nobody at review time then needs to. Everything else
+in this appendix follows from that one substitution.
 
-\section{What the identifier names}
-\label{sec:aec-invariant}
+\section{The common case: archive, then name the version}
+\label{sec:aec-common}
 
-One invariant carries the whole workflow. The identifier always names a \emph{clean tree}: for a
-git-managed artifact, the committed tree of a precise commit; for anything else, the content of
-the exact bundle submitted, unpacked into an empty directory. Nobody --- author, reviewer or
-committee --- ever hashes a live working copy: a checkout contains \texttt{.git/}, build output
-and editor droppings, so its hash matches neither the archive nor the reviewer's tarball, and is
-not even stable over time on an unchanged commit. For a git artifact the clean tree's
-\texttt{dir} \textsc{swhid} is, bit for bit, the hash that \verb|git rev-parse <commit>^{tree}|
-already prints --- which is also exactly what Software Heritage stores.
+Most venues run artifact evaluation \emph{after} the paper has been accepted. The authors are
+known to the committee, and the artifact lives in a public repository on a public forge. In that
+setting --- which is the common one, and the one to describe first --- the entire author-side
+procedure is three steps, and involves no local tooling at all.
+
+\begin{enumerate}[nosep,leftmargin=*]
+  \item \textbf{Make sure the version is archived.} The least error-prone route is the
+        \textsc{updateswh} browser extension (Firefox, Chrome, Edge;
+        \url{https://www.softwareheritage.org/browser-extensions/}). On any repository page of a
+        supported forge it shows a coloured tab --- green if the archive is already up to date,
+        yellow if it has fallen behind --- and one click either opens the archived version or
+        requests archival of the page you are looking at. Nothing is typed, so nothing can be
+        mistyped, and you can see whether a save is needed at all. Failing that, paste the
+        repository URL by hand at \url{https://save.softwareheritage.org} (no account needed), or
+        wire a forge webhook to the archive --- Software Heritage recommends firing it on branch,
+        tag or release creation rather than on every push. All the routes, and what a
+        well-formed repository should contain before you archive it, are on
+        \url{https://www.softwareheritage.org/how-to-archive-reference-code/}.
+  \item \textbf{Take the identifier from the archive.} Browse to the exact version, open the
+        \emph{Permalinks} tab, enable the \texttt{origin}, \texttt{visit} and \texttt{anchor}
+        qualifiers, and copy the \emph{qualified} \texttt{dir} \textsc{swhid}.
+  \item \textbf{Hand it over.} Put that string in the artifact appendix, or give it to the chair
+        or editor with the submission.
+\end{enumerate}
+
+That is all. Nothing was computed, nothing was installed, nothing was deposited a second time.
+The reviewer pastes the identifier into any browser and is looking at the exact tree the authors
+named, together with the repository it came from, the visit that captured it and the commit it
+belongs to (Figure~\ref{fig:aec-core-vs-qualified}\,a). The artifact has also, as a side effect,
+been preserved --- which is the thing the \emph{Available} badge was asking for in the first place.
+
+\takeaway{In the common case the author computes nothing: the archive already holds the number.}
+
+\section{When review is blind}
+\label{sec:aec-blind}
+
+A qualified identifier names the origin, so it cannot go into an anonymous submission as it
+stands. But the qualifiers are exactly that --- a suffix:
+
+\begin{quote}\footnotesize
+\texttt{swh:1:dir:2dc0f462d191524530f5612d2935851505af41dd}\\
+\hspace*{1.5em}\emph{core} --- what goes into an anonymized submission\\[3pt]
+\texttt{swh:1:dir:2dc0f462d191524530f5612d2935851505af41dd;origin=\dots;anchor=\dots}\\
+\hspace*{1.5em}\emph{qualified} --- what goes into the camera-ready
+\end{quote}
+
+\noindent The hash is the same in both. It is computed from the content of the tree and from
+nothing else: not from an author, a date, a repository name or a commit. A \emph{core} identifier
+therefore discloses none of them, and resolving it in the archive shows the contents of the
+directory and nothing whatever besides (Figure~\ref{fig:aec-core-vs-qualified}\,b). The ordinary
+interfaces offer no route back either: the directory endpoint returns the tree's entries and
+nothing else, and the graph traversal that could answer \enquote{which origins contain this
+tree?} is not anonymously available. That is a practical obstacle rather than a guarantee --- as
+with a submitted tarball, a reviewer who already suspects a particular repository can always
+fetch it and compare. What the identifier \emph{itself} discloses is nothing, and that is what
+the venue is relying on.
+
+So the blind procedure is the common one with its last step trimmed. Archive as usual, take the
+qualified identifier, and give the reviewers only the part before the first semicolon. On
+acceptance, restore the suffix in the camera-ready copy. The hash the committee checked and the
+hash in the published paper are then the same string --- the difference between them is only how
+much context the reader is offered.
+
+\takeaway{Qualifiers are a suffix. Cut them for review, restore them at camera-ready: same hash.}
+
+One residual disclosure is worth naming, because it is not quite zero. Requesting archival adds a
+row --- repository URL, date, status --- to the archive's publicly browsable list of save
+requests. That row says a repository was archived on a date; it says nothing about a paper, a
+venue or a submission, and a repository already public on a forge gives away no more by being
+archived than by existing. Where a venue's threat model is stricter than that, invert the order:
+leave the artifact unarchived until acceptance and have authors compute the core identifier
+locally, as in Section~\ref{sec:aec-local}.
+
+\begin{figure}[tbp]
+  \centering
+  \setlength{\fboxsep}{0pt}\setlength{\fboxrule}{0.4pt}
+  {\sffamily\footnotesize\bfseries (a) the qualified identifier: the tree, in its context}\par
+  \smallskip
+  \fbox{\includegraphics[width=0.97\linewidth]{figures/archive-view-qualified.png}}
+
+  \medskip
+  {\sffamily\footnotesize\bfseries (b) the core identifier: the same tree, and nothing else}\par
+  \smallskip
+  \fbox{\includegraphics[width=0.97\linewidth]{figures/archive-view-core.png}}
+  \caption[The same tree, with and without qualifiers]{What the archive displays for the two forms
+  of one identifier. \textbf{(a)} the qualified \textsc{swhid} resolves in context: the origin
+  \texttt{github.com/rdicosmo/parmap}, the visit that captured it, the revision, its author, its
+  date and its commit message. \textbf{(b)} the same hash without qualifiers resolves to the
+  directory itself --- no origin, no author, no date, no message. The breadcrumb
+  \texttt{2dc0f46\,/} is identical in both, because it is the same tree; everything around it is
+  what the qualifiers add. This is what makes a core \textsc{swhid} usable in a double-blind
+  submission.}
+  \label{fig:aec-core-vs-qualified}
+\end{figure}
+
+\section{If you compute it yourself}
+\label{sec:aec-local}
+
+Not every artifact sits in a public git repository, and some venues will want a number before
+anything is archived. Then the author computes it, and one invariant carries the whole workflow.
+
+The identifier always names a \emph{clean tree}: for a git-managed artifact, the committed tree of
+a precise commit; for anything else, the content of the exact bundle submitted, unpacked into an
+empty directory. Nobody --- author, reviewer or committee --- ever hashes a live working copy: a
+checkout contains \texttt{.git/}, build output and editor droppings, so its hash matches neither
+the archive nor the reviewer's tarball, and is not even stable over time on an unchanged commit.
+For a git artifact the clean tree's \texttt{dir} \textsc{swhid} is, bit for bit, the hash that
+\verb|git rev-parse <commit>^{tree}| already prints --- which is also exactly what Software
+Heritage stores.
 
 Hence one recipe, current at press time (maintained version, variants and troubleshooting in the
 \textsc{howto}; the local tools in Appendix~\ref{app:cookbook}):
@@ -58,56 +166,61 @@ git rev-parse <commit>^{tree}   # self-check: the two hashes must be equal
 \end{quote}
 
 \noindent If the self-check fails, the tree is not clean: diagnose (the \textsc{howto} has the
-checklist) rather than submit the number.
+checklist) rather than submit the number. Where a locally computed value and an archived one both
+exist they must coincide, and that coincidence is itself the end-to-end check of the procedure.
 
-One rule then orders the identifier's two possible sources. \emph{Before} archival --- at
-submission and through revisions, double-blind included --- the clean-export value is the only
-one there is: the artifact is not in the archive yet, and under double-blind it must not be.
-\emph{After} archival, the qualified \textsc{swhid} from the archive's \emph{Permalinks} tab is
-primary and the local value the cross-check; where both exist they must coincide, and that
-coincidence is itself the end-to-end check of the whole procedure.
-
-\takeaway{Everyone hashes the same object: the clean tree, never the working copy.}
+\takeaway{When anyone does hash, it is the clean tree --- never the working copy.}
 
 \section{Model text for a call for artifacts}
 
 \begin{callout}{Artifact identification and archival --- text to adapt}
 \small
-\textbf{Identifying the artifact.} At every submission or revision, authors must include the
-\texttt{dir} \textsc{swhid} (\emph{SoftWare Hash IDentifier}, ISO/IEC~18670) of the \emph{clean
-artifact tree}: the committed tree for a version-controlled artifact, the content of the
-submitted bundle otherwise --- never a live working copy. The identifier is \emph{intrinsic}:
-derived from the content alone, it requires no account, no deposit and no network access to
-produce, and it changes whenever the artifact changes. Compute it following the \textsc{howto}
-accompanying this call, which includes a one-line self-check. A revised artifact gets a new
-\textsc{swhid}, reported with the revision; earlier identifiers remain valid names for the
-earlier states.
+\textbf{Identifying the artifact.} Authors must identify the artifact by its \texttt{dir}
+\textsc{swhid} (\emph{SoftWare Hash IDentifier}, ISO/IEC~18670): an identifier derived from the
+content of the artifact tree alone, which changes whenever the artifact changes. Request archival
+of the repository --- history included --- and take the identifier of the exact version from the
+archive's \emph{Permalinks} tab. The procedure is on Software Heritage's own page,
+\url{https://www.softwareheritage.org/how-to-archive-reference-code/}: in short, one click on the
+\textsc{updateswh} browser extension, or the repository URL pasted at
+\url{https://save.softwareheritage.org}; no account is needed for either. Report the identifier
+with the submission. A
+revised artifact gets a new \textsc{swhid}, reported with the revision; earlier identifiers remain
+valid names for the earlier states.
 
 \smallskip
-\textbf{Archiving the artifact --- after acceptance.} In addition to any deposit this venue
-already requires (for example Zenodo, with its DOI), authors must ensure the source code is
-archived in Software Heritage: request archival of the repository --- history included ---
-through Save Code Now (\url{https://save.softwareheritage.org}); no account is needed. Then take
-the \emph{qualified} \textsc{swhid} of the exact version from the archive's \emph{Permalinks}
-tab and put it in the camera-ready paper alongside the DOI of any deposit. Its core \texttt{dir}
-hash must equal the identifier recorded at the close of evaluation; verify that equality before
-submitting. If the artifact was improved after evaluation, list both identifiers, labelled
+\textbf{Under double-blind review.} Report only the \emph{core} identifier --- the part before
+the first semicolon, \texttt{swh:1:dir:\dots} --- omitting the \texttt{origin} and \texttt{anchor}
+qualifiers. The core identifier carries no author, origin, date or commit metadata, and resolves
+in the archive to the artifact's contents alone, so it is safe in an anonymized submission. At
+camera-ready, add the qualifiers back around the identical core hash.
+
+\smallskip
+\textbf{In the camera-ready paper.} Cite the \emph{qualified} \textsc{swhid} of the evaluated
+version alongside the DOI of any deposit this venue already requires (for example Zenodo). Its
+core hash must equal the identifier recorded at the close of evaluation; verify that equality
+before submitting. If the artifact was improved after evaluation, list both identifiers, labelled
 \enquote{as evaluated} and \enquote{as published}.
 
 \smallskip
-\textbf{Before acceptance there is nothing to archive.} Under double-blind review, do not
-request archival before acceptance: the archive records the repository's origin, which would
-reveal the authors. A core directory \textsc{swhid} carries no author, origin or commit
-metadata, so it may appear in an anonymized submission as is; qualifiers (\texttt{origin},
-\texttt{anchor}) are added at camera-ready around the identical core hash.
+\textbf{Artifacts not in a public repository.} Where there is no repository to archive, compute
+the identifier from the exact bundle submitted, unpacked into an empty directory, following the
+\textsc{howto} accompanying this call --- never from a live working copy. The \textsc{howto}
+includes a one-line self-check; if it fails, diagnose before reporting a number.
 
 \smallskip
-\textbf{What reviewers check.} Reviewers verify the identification by \emph{recomputation}: they
-unpack the artifact into a fresh directory, recompute the identifier per the \textsc{howto}, and
-compare it with the one on record. Equality proves that the tree under review is, bit for bit,
-the tree the authors named. A mismatch goes through the \textsc{howto}'s diagnostic checklist
-first --- its commonest cause is procedural, not a changed artifact --- and is reported as a
-finding only if it survives diagnosis.
+\textbf{What reviewers do.} Reviewers resolve the identifier, download the artifact from the
+archive and evaluate it. \emph{There is no hash for them to check}: the archive retrieves the
+object by its hash and cannot return a different one, so re-deriving the identifier they used to
+fetch the artifact would test nothing. Where authors supply a bundle rather than an identifier,
+reviewers compute the identifier from that bundle per the \textsc{howto}, so that what was
+evaluated acquires a name. Should two numbers ever disagree, the \textsc{howto}'s diagnostic
+checklist comes first --- the commonest cause is procedural, not a changed artifact --- and only
+what survives diagnosis is reported.
+
+\smallskip
+\textbf{What the committee does, once.} At camera-ready, confirm that the core hash of the
+qualified \textsc{swhid} in the paper equals the identifier recorded at the close of evaluation.
+This is the check that makes the badge mean something, and it is one line of work per paper.
 
 \smallskip
 \textbf{Scope.} This covers \textbf{source code}, including build recipes --- Dockerfiles,
@@ -116,59 +229,66 @@ tree. Datasets, container \emph{images} and large binaries follow this venue's e
 instructions; Software Heritage is a source-code archive, not a data archive.
 \end{callout}
 
-\section{For authors}
+\section{The author's checklist}
 
-Two phases, and the phase determines where the identifier comes from.
-
-\paragraph{Before archival --- submission and revisions.}
 \begin{enumerate}[nosep,leftmargin=*]
-  \item Develop wherever you already develop. Nothing changes about your forge, your CI or your
-        packaging.
-  \item At submission, compute the identifier of the clean artifact tree --- the recipe in
-        Section~\ref{sec:aec-invariant}, or the \textsc{howto} for anything it does not cover ---
-        and put it in the artifact appendix beside your submission URL. If the self-check fails,
-        diagnose before submitting the number.
-  \item At each revision during evaluation, recompute and report it in one line:
+  \item Develop wherever you already develop; nothing changes about your forge, your \textsc{ci}
+        or your packaging.
+  \item Archive the version you are submitting --- one click in \textsc{updateswh}, or Save Code
+        Now by hand, or a forge webhook for good; see
+        \url{https://www.softwareheritage.org/how-to-archive-reference-code/} --- and copy the
+        qualified \textsc{swhid} from the \emph{Permalinks} tab.
+  \item Report it with the submission: the whole string normally, the core hash alone if the
+        venue is double-blind.
+  \item At each revision during evaluation, report the new one in a line:
         \enquote{revised tree: \texttt{swh:1:dir:\dots}}.
+  \item In the camera-ready, cite the qualified \textsc{swhid} beside the \textsc{doi} of any
+        deposit, and check its core hash against the one recorded at the close of evaluation.
 \end{enumerate}
 
-\paragraph{After acceptance.}
-\begin{enumerate}[nosep,leftmargin=*]
-  \item Archive the repository through Save Code Now, and take the qualified \textsc{swhid} of
-        the exact release from the \emph{Permalinks} tab.
-  \item Check that its core \texttt{dir} hash equals the identifier recorded at the close of
-        evaluation. Equality here is the end-to-end check that every step above went right; on a
-        mismatch, go to the \textsc{howto}'s diagnostics, or label the two versions
-        \enquote{as evaluated} and \enquote{as published}.
-  \item Deposit as your venue requires --- unchanged --- and cite both the DOI and the
-        \textsc{swhid} in the camera-ready paper.
-\end{enumerate}
+\section{For reviewers: there is nothing to check}
+\label{sec:aec-reviewers}
 
-\section{For reviewers}
+A reviewer handed a \textsc{swhid} does not verify it. They paste it into the archive, press
+\emph{Download} --- the button visible in both panels of
+Figure~\ref{fig:aec-core-vs-qualified} --- and evaluate the code that comes back. That is the
+whole of it. Their time goes where it should: into running the artifact.
 
-What a submitted tarball supports is precise, and worth stating honestly.
+It is worth saying plainly why no check is needed, because committees keep writing one into their
+instructions. The archive retrieves the object \emph{by} its hash. Given
+\texttt{swh:1:dir:2dc0f462\dots} it can return that tree or nothing at all; there is no way for it
+to return some other tree under that name. Asking a reviewer to download an artifact and then
+confirm that it hashes to the identifier they used to fetch it tests their \texttt{tar} command,
+not the artifact. The guarantee was spent the moment the identifier resolved.
 
-\paragraph{What you can verify, offline.} That the tree you unpacked \emph{is} the object the
-authors named: unpack into a fresh directory, recompute the identifier per the \textsc{howto},
-compare. Equality is a proof of bit-for-bit identity, and the comparison involves no judgement,
-no account, no service, and nothing beyond the initial download.
+So what does the identifier buy a reviewer? Not a check they perform --- a check they no longer
+have to. What they evaluated now has a name, and \emph{later} anyone can confirm that the version
+in the published paper is that same thing. The verification is real; it simply does not happen at
+the reviewer's desk.
 
-\paragraph{What a mismatch means.} Only that two different trees were hashed --- nothing about
-\emph{how} different, or on whose side the error lies; the commonest cause is procedural (a live
-working copy hashed on one side), not a changed artifact. Run the \textsc{howto}'s diagnostics
-first; report only what survives them, as you would a build failure: the identifier obtained and
-the procedure used, never an accusation.
+\takeaway{Resolve, download, evaluate. The archive cannot hand back a tree other than the one you asked for.}
 
-\paragraph{What you cannot verify.} Before acceptance, anything about the archive: the artifact
-is not there, and under double-blind it must not be --- the check is purely local. Nor that the
-submitted tree corresponds to any commit in the authors' (hidden) repository; that link is
-established only at camera-ready. For the \emph{Available} badge after acceptance, the real
-check is to resolve the camera-ready qualified \textsc{swhid} --- resolution proves archival ---
-and to confirm that its core \texttt{dir} hash equals the identifier recorded at the close of
-evaluation. (Fully independent recomputation from the archive: see the \textsc{howto}.)
+\paragraph{The two cases that do involve a computation.} Neither is routine, and neither belongs
+in a reviewing form as a default step.
 
-\takeaway{The comparison is arithmetic: recompute, compare. Interpreting a mismatch is not:
-diagnose before you report.}
+\begin{itemize}[nosep,leftmargin=*]
+  \item \textbf{The authors supplied a bundle instead of an identifier.} Then nothing has a name
+        yet, and hashing is how one is made: unpack into a fresh, empty directory and compute the
+        identifier per the \textsc{howto}. The same path serves a reviewer who would rather not
+        consult a service at all --- it needs no account and no network.
+  \item \textbf{The chair, at camera-ready.} One line, once: check that the core hash of the
+        qualified \textsc{swhid} printed in the paper equals the identifier recorded at the close
+        of evaluation. That compares an archive-held object against an independent committee
+        record, so unlike the reviewer's non-check it really is one --- and it is the step that
+        makes \enquote{the artifact we badged} and \enquote{the artifact a reader can download}
+        the same claim.
+\end{itemize}
+
+\paragraph{If two numbers ever do disagree,} the inequality proves exactly one thing: two
+different trees were hashed. It says nothing about how different they are, or on whose side the
+error lies, and in practice the commonest cause is procedural --- someone hashed a live working
+copy. Run the \textsc{howto}'s diagnostics first and report only what survives them, the way you
+would report a build failure: the identifier obtained and the procedure used, never an accusation.
 
 \section{How it maps onto existing badges}
 
@@ -208,6 +328,7 @@ arrangements your venue already has. A proposal that claimed otherwise would be 
 and would deserve to be.
 
 \paragraph{What does it cost the committee?}
-One sentence in the call for artifacts, one line in the reviewing form, and a link to the
-\textsc{howto}. No new infrastructure, no accounts, no service dependency, and a verification
-step that is faster than the one it supplements.
+One sentence in the call for artifacts and a link to Software Heritage's how-to. No new
+infrastructure, no accounts and no service dependency. It costs the reviewers nothing at all ---
+it removes a step rather than adding one, since the artifact now arrives from the archive under
+the name it will keep. The only new work is the chair's one-line check at camera-ready.
