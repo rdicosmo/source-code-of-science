@@ -16,6 +16,7 @@
 
 # Built PDFs (rebuild with `make`); the SWHID-stamped PDF must never be committed
 main.pdf
+source-code-of-science.pdf
 source-code-of-science-swhid.*
 swhid.tex
 

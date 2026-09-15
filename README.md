@@ -29,7 +29,8 @@ the footer; bump it to match the tag when cutting a release.
 main.tex            % memoir class, xelatex, biblatex + software-biblatex; \noteversion
 preamble.tex        % fonts, SWH branding, memoir chapter/section style, footer, boxes, title page
 chapters/01..07     % 1 Why · 2 Beyond FAIR · 3 Foundations · 4 Identifiers · 5 ARDC · 6 Reproducibility/AEC · 7 Outlook
-appendix/A..F       % A cookbook · B SWHID syntax · C glossary · D SWHID tools · E policy matrix · F venue classes
+appendix/A..H       % A cookbook · B SWHID syntax · C glossary · D SWHID tools · E policy matrix
+                    %   · F venue classes · G model AEC section · H Archie + illustration provenance
 references.bib      % canonical citekeys + biblatex-software entries (shared with the AEC guide)
 style/              % vendored biblatex-software (crossref-capable release; see Build)
 figures/ logos/     % SWH assets

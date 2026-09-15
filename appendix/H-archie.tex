@@ -1,0 +1,211 @@
+\chapter{Archie, and how these illustrations were made}
+\label{app:archie}
+
+A note that argues for archiving, referencing and reproducing research artefacts ought to say
+where its own artefacts came from. Ten drawings punctuate these pages: a frontispiece and nine
+vignettes, one at the head of each chapter and one over the appendices. This appendix records
+what the character is, why it is an elephant, how the images were produced, and what went wrong
+on the way.
+
+\begin{callout}{Disclosure}
+\small All ten illustrations are \textbf{AI-generated}, using Google Gemini's image generation,
+directed and selected by the author, with light local post-processing (greyscale conversion and
+white-point normalisation) in ImageMagick. No human illustrator was involved. The print copies
+are in \texttt{figures/illustrations/} in the source tree of these notes, and are therefore
+archived and named by the same \textsc{swhid} as the text.
+\end{callout}
+
+\section{Why a mascot}
+
+The model is Knuth's \emph{TeXbook} and \emph{METAFONTbook}, whose whimsical pen-and-ink
+vignettes, a friendly recurring lion among them, punctuate a dense technical text without
+cartoonifying it. The aim here is the same: a small warm drawing at each chapter head, and one
+recurring character, so that the set reads as a series rather than as a pile of clip art.
+
+The visual style was specified by \emph{attributes}: line weight, cross-hatching, vignette
+framing, whimsy. It was deliberately \emph{not} specified by naming a living illustrator, for
+two reasons. Image models reproduce an aesthetic more reliably from attributes than from a name,
+and naming a working artist to imitate their style is a thing one should not do.
+
+\section{Archie, the elephant archivist}
+
+\textbf{The character.} A gentle, rounded elephant who works as the archive's librarian: small
+round spectacles, a simple archivist's apron with one breast pocket, no lettering anywhere on
+the figure. Warm, unhurried, dignified. He appears in every plate, sometimes alone, once
+multiplied into a network of equal peers.
+
+\textbf{Why an elephant.} The choice is an argument in itself, and it is the book's argument.
+
+\begin{description}[leftmargin=1.2em,itemsep=2pt,topsep=3pt]
+  \item[An elephant never forgets.] The thesis of these notes is long memory: a universal
+    archive that keeps the world's source code, with its full development history, for the long
+    term. The proverb does the work of a paragraph.
+  \item[Large, calm, dependable.] The archive is a patient, non-profit, multi-decade commitment,
+    not a platform racing to a funding round. A big unhurried animal reads as durable
+    custodianship rather than as move-fast development.
+  \item[Expressive, and easy to pose.] Trunk, ears and spectacles allow a wide range of gentle
+    business while staying dignified enough for a scholarly text. A mascot that cannot act out
+    the chapter's mechanism is decoration, and decoration was not the point.
+\end{description}
+
+\textbf{Why \enquote{Archie}.} The name reads instantly as \emph{archivist} and \emph{archive},
+which is the character's job and the book's subject in five letters. It also carries a quiet nod
+to computing history: Archie, built at McGill University in 1990, was the first internet search
+engine, the first tool made to \emph{find} what had been stored. It works unchanged in English,
+French and Italian, which matters for a note that travels, and it is short enough for a caption.
+Above all it names a \emph{character} rather than a concept: a recurring mascot needs a name a
+reader can use.
+
+Three other names were considered and rejected, and the reasons are instructive.
+
+\begin{table}[htbp]
+  \centering\small
+  \caption[Names considered for the mascot]{Names considered for the mascot, and why each was
+  set aside.}
+  \label{tab:archie-names}
+  \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{1.8cm}%
+                                 >{\raggedright\arraybackslash}X%
+                                 >{\raggedright\arraybackslash}X@{}}
+    \toprule
+    \textbf{Name} & \textbf{For} & \textbf{Against} \\
+    \midrule
+    \textbf{Merkle}
+      & The tree he tends \emph{is} a Merkle \textsc{dag}; the name would teach the structure
+        on every appearance.
+      & Eponymises a living researcher, and sits oddly on a cartoon animal. \\
+    \addlinespace
+    \textbf{Trunk}
+      & A triple pun: the elephant's trunk, the tree trunk, the version-control trunk. The
+        wittiest option.
+      & Names an object rather than a person, and reads awkwardly as a character name. \\
+    \addlinespace
+    \textbf{Mnemo}
+      & From Mnemosyne; leans directly on the long-memory idea.
+      & Abstract, and less pronounceable across the three languages. \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\takeaway{A mascot earns its place when it carries the argument, not when it decorates it.}
+
+\textbf{One standing caution.} A rounded elephant in spectacles and an apron sits visually close
+to Babar. The art direction avoids names and costumes in that register, so that an incidental
+family resemblance does not harden into an implied reference to a character still under
+copyright. The waistcoat and necktie in the Chapter~\ref{ch:identifiers} plate are the one
+departure from the apron, kept deliberately after review.
+
+A small supporting cast appears where multiplicity is the point, and nowhere else: worker mice
+with satchels in Chapter~\ref{ch:foundations}, the listers and loaders that fill the archive;
+two identical round creatures at a shared drawer in the same plate, whose \emph{sameness} is the
+whole joke, because identical content is stored once; and in Chapter~\ref{ch:outlook} several
+small keepers, all the same size as each other, each tending an archive of their own.
+
+\section{How the images were made}
+
+\textbf{The tool: Google Gemini image generation.} It was chosen over the alternatives for one
+specific property, \emph{character consistency across a series}. Its reference-image editing,
+\enquote{here is the character, now draw him doing this}, is what keeps Archie recognisably the
+same elephant across ten drawings. The trade-off is weaker literal adherence to dense
+compositional prose, which is exactly where the failures in the next section came from.
+
+\textbf{The consistency chain.} The images were not generated independently. They were chained:
+
+\begin{enumerate}[leftmargin=1.4em,itemsep=2pt,topsep=3pt]
+  \item Generate one vignette first with no reference, and regenerate it until the design is
+    right. It establishes the canonical Archie, and becomes the reference sheet.
+  \item For every later image, \emph{attach that reference}, instruct the model to keep the
+    character identical, and describe only the new scene. Attaching the image is what carries
+    the character; words alone do not.
+  \item On drift, re-attach the best prior image: \enquote{match this elephant exactly, same
+    face, spectacles, apron; change only the scene.}
+  \item State the aspect ratio in words (\enquote{landscape 3:2 composition}), which the model
+    honours.
+  \item Regenerate on stray lettering rather than keeping it. Garbled characters read as an
+    error in a scholarly book.
+\end{enumerate}
+
+\noindent A fixed style anchor was prepended to every scene prompt, and never varied:
+
+\begin{quote}\small
+\textbf{Style:} black-and-white \textbf{pen-and-ink line drawing}, confident hand-drawn linework
+of varying weight, light \textbf{cross-hatching} for shading, generous white space, no fill tones
+or grey washes beyond hatching. A small, warm \textbf{vignette}, a single self-contained little
+scene that fades softly at its edges into the white of the page, \emph{not} a full bordered
+illustration and \emph{not} a busy full scene. The mood is whimsical, gentle and good-humoured,
+in the tradition of a mid-twentieth-century technical-book chapter-head drawing.
+\textbf{No colour. No photorealism, no digital gloss, no gradients, no 3D rendering. No text, no
+lettering, no numbers, no logos anywhere in the image.} Recurring character: a gentle, rounded
+\textbf{elephant archivist} with small round spectacles and a simple archivist's apron, drawn the
+same way each time.
+\end{quote}
+
+\section{What each plate says}
+
+Each vignette states its chapter's mechanism, not its mood.
+
+\begin{description}[leftmargin=1.2em,itemsep=2pt,topsep=3pt,font=\normalfont\itshape]
+  \item[Frontispiece.] A tree rooted in an open book, its leaves made of files, with Archie
+    steadying a branch: the science grows out of its source.
+  \item[Front matter.] Three pedestals bearing a bound book, a specimen jar and a tree-shaped
+    bundle of files, the trunk gesturing to the third as to an old friend left out of things.
+    Publications, data and software are three research outputs of equal standing.
+  \item[Chapter~\ref{ch:why}.] The journal is shelved on solid ground while the code tumbles off
+    a crumbling ledge into loose leaves, just past the reach of the outstretched trunk. One
+    output is preserved by an apparatus built for it; the other is not.
+  \item[Chapter~\ref{ch:beyond-fair}.] A sealed jar with a pinned specimen, held up against a
+    potted sapling that sprouts, reaches tendrils to its neighbours and overgrows its pot. Data
+    holds still; software does not.
+  \item[Chapter~\ref{ch:foundations}.] A tree built of shelves and drawers, files at the tips,
+    gathered into branches, gathered into one trunk, with one branch growing \emph{into} the
+    branch above it, because the archive is a directed acyclic graph and a subtree can have
+    several parents.
+  \item[Chapter~\ref{ch:identifiers}.] The same bundle named twice: a paper luggage tag on a
+    string running off to a distant registry desk, eyed with scepticism, against a fingerprint
+    pressed into the object's own surface and read on the spot through a lens.
+  \item[Chapter~\ref{ch:ardc}.] The right hand writes in the open citation catalogue; the left
+    holds a lens flat over a completely blank book, and the fingerprint appears only inside the
+    glass. The identifier is computed from the content and then transcribed, never stamped on.
+  \item[Chapter~\ref{ch:repro}.] A fair examiner at a desk, matching a submitted bundle's mark
+    against the claimed mark on a slip, a blank ribboned rosette ready to award, a folding screen
+    hiding who sent it. Verification needs no authority, and survives double-blind review.
+  \item[Chapter~\ref{ch:outlook}.] A globe of plain line-work continents, several equal keepers
+    tending their own patch, their sites linked by faint dotted arcs, one of them offering a
+    sapling toward the reader. A mirror network has no single point of failure and no hero.
+  \item[Appendices.] Archie in a cook's apron, spoon behind one ear, pulling a card from a recipe
+    box: what follows is a cookbook, recipes to follow rather than arguments to weigh. It is the
+    one image that deliberately contains lettering, because the words are the metaphor.
+\end{description}
+
+\section{What went wrong, and what fixed it}
+
+Three failures are worth recording, because they generalise beyond drawings.
+
+\textbf{Name the delta; never re-describe the scene.} A prompt that restates a scene is read as a
+request to regenerate it, not to edit it. Every style clause repeated for safety is
+re-interpreted from scratch, and that, rather than poor taste, produced every drift observed
+here: sepia backgrounds, an engraving style, four elephants where one was wanted. The reliable
+form is a preservation clause and one sentence of change, naming the region by landmark:
+\enquote{keep this exact image unchanged; change only \textellipsis}.
+
+\textbf{A drawing can assert the opposite of the text.} An early version of the
+Chapter~\ref{ch:ardc} plate had Archie \emph{stamping} an identifier onto a citation slip. That
+is the extrinsic gesture Chapter~\ref{ch:identifiers} argues against, drawn at the head of the
+chapter that depends on the distinction, and it was discarded for that reason rather than
+retouched. In the same plate the model kept printing the fingerprint on the book cover as well as
+in the lens, which quietly restores the very claim the picture exists to refute. An illustration
+is part of the argument and has to be reviewed as such.
+
+\textbf{Judge the artefact, not its description.} The Chapter~\ref{ch:identifiers} plate carried
+a small hanging tag reading \texttt{LUGGAGE LABL}: legible, unintended, misspelled, and forbidden
+by every prompt in the set. It survived an author-side review conducted from the prompts, the
+thumbnails and the file names, and was caught only when a reviewer opened each image at full
+resolution with no expectation of what it should contain. The lettering was then removed by a
+local edit of a few thousand pixels rather than by regeneration, which would have risked
+character drift for a defect confined to one tag.
+
+\takeaway{A name, a prompt or a filename describes an artefact. Only the artefact is evidence.}
+
+That last failure is this book's own thesis turned back on its own production. An
+identifier, a description, a record of intent: none of them is the object. The reason to name
+source code by a hash of its content is precisely that the hash is computed from what is there,
+and not from what someone meant to put there.
