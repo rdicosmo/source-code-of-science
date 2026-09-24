@@ -1,0 +1,121 @@
+\chapter{How these notes name their own sources}
+\label{app:self}
+
+Three facts printed in this copy were derived by the build rather than typed in by anyone: the
+version on the title page, the date beside it, and the intrinsic identifier of the sources the
+copy was built from. Each is read out of the repository at build time. This appendix explains
+how, because the mechanism transfers to any document whose sources live in a repository.
+
+\section{A key observation}
+
+An intrinsic identifier is a hash of content. Write a document's identifier into that document,
+and the content changes, so the hash changes, so the identifier just written is wrong. You cannot
+embed a digest of bytes that do not exist until the digest is embedded.
+
+That argument holds, and it rules out a file that names itself. Two properties put the mechanism
+used here outside its reach.
+
+\begin{description}[leftmargin=1.6em,itemsep=3pt]
+\item[The identifier names the sources.] What is named is the directory of \LaTeX{} files,
+  figures and illustrations that the build consumes. The \textsc{pdf} is what the build produces
+  from them. Recording the identity of your input in your output is ordinary provenance.
+\item[The stamp stays out of the sources.] The identifier is written to \texttt{swhid.tex}, which
+  is listed in \texttt{.gitignore} and therefore absent from \texttt{git archive HEAD}. That is
+  the tree the identifier is computed over, so stamping the document leaves it untouched.
+\end{description}
+
+\noindent Drop either property and the problem comes back.
+
+\section{The mechanism}
+
+A \textsc{swhid} is computed from content, so the build derives it locally and never asks the
+archive for it. Two commands in \texttt{.latexmkrc} do the work:
+
+\begin{quote}\footnotesize
+\begin{verbatim}
+git archive HEAD | tar -x -C $tmp        # the exact tree that gets archived
+swh identify --type directory $tmp       # -> swh:1:dir:...
+\end{verbatim}
+\end{quote}
+
+\noindent The result, with the origin and the anchoring revision appended, goes into the
+git-ignored \texttt{swhid.tex}, which the note reads and prints. Two things follow. Anyone who
+checks out this revision and runs \texttt{make} derives the same identifier and builds the same
+page. And the printed identifier is falsifiable: compare it with what the archive reports for
+this revision, and a mismatch tells you something is wrong without requiring you to trust the
+author.
+
+The version and the date come from the same place. The version is read from the annotated release
+tag with \texttt{git describe}, so the tag is the single source of truth and no file has to be
+kept in sync with it by hand. The date is the date of the commit, not the day the build happened,
+so two people building this revision a year apart still get the same title page. Between releases
+the derived version says so, as in \texttt{1.5-3-g0a1b2c3d}, and a tree with uncommitted changes
+adds a trailing \texttt{+}.
+
+One ordering constraint falls out of this, and it is worth stating because it is easy to get
+wrong: the tag has to exist before the release is built. Tagging does not touch the tree, so the
+identifier is unaffected, but a build made before the tag cannot know the version.
+
+The build stamps a clean working tree only. Uncommitted changes correspond to no commit and to
+nothing archived, so a note built from them carries no identifier and says so on this page.
+
+\section{This build}
+
+\ifdefempty{\thisswhid}{%
+Two of the three values were still derived, and the third is deliberately absent. The version on
+the title page reads \textbf{\noteversion}, which records the state of the tree this copy was
+built from rather than a release. The date beside it, \textbf{\builddate}, is the day of the
+build, since a tree in that state belongs to no commit. No identifier is printed: the build
+declines to name sources that were never archived. A released copy carries all three.
+}{%
+The version on the title page, \textbf{\noteversion}, was read from the annotated release tag by
+\texttt{git describe}. The date beside it, \textbf{\builddate}, is the date of that tagged commit,
+recovered with \texttt{git log -1}. And the sources are named by:
+
+\begin{quote}\ttfamily\footnotesize
+\href{\swhresolver\thisswhid}{\thisswhidcore}\\
+\;;origin=\thisswhidorigin\\
+\;;anchor=\thisswhidanchor
+\end{quote}
+
+\noindent The first line is the identifier, computed from the content. The two qualifiers say
+where these sources are published and which revision they were taken from. The link resolves to
+the directory in the archive.
+}
+
+\section{Checking it yourself}
+
+Clone the repository, check out the tag matching the version on the title page, and run:
+
+\begin{quote}\footnotesize
+\begin{verbatim}
+make swhid
+\end{verbatim}
+\end{quote}
+
+\noindent It prints the identifier derived on your own machine, offline. Three numbers should
+agree: the one printed above, the one your checkout produces, and the one the archive reports for
+that revision.
+
+A difference usually means you are on a later commit. The identifier names the tree you have, so
+a tree that has moved on hashes differently; check out the release tag to reproduce the number
+printed here. An earlier version of this machinery told readers to compute from \texttt{HEAD},
+which drifts past the release, and that produced exactly this confusion.
+
+\section{What the stamp leaves out}
+
+The stamp carries the identifier, the origin and the anchor. It omits the \texttt{visit}
+qualifier, which names the archive crawl that observed these sources. A visit records when a
+crawler passed, so it cannot be derived from your bytes, and including it would cost the property
+this appendix rests on: that you can recompute everything printed here without asking anyone. The
+fully qualified form, \texttt{visit} included, is recorded in the HAL deposit and in the release
+notes, both written after the archiving has happened.
+
+All three derived values are read from the repository, so they need the repository. A plain
+download of the archived source directory carries the files without their history, and a build
+from it reports no version, no commit date and no identifier. Recover the history first, by
+cloning the origin or by asking the archive's vault for this revision as a git bundle, and the
+three values come back.
+
+\takeaway{A document can carry the identifier of the sources it was built from, provided the
+build derives the stamp and keeps it out of the tree it names.}

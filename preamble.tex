@@ -115,6 +115,10 @@
 % Build-time git state (written by .latexmkrc); fallback if built by hand.
 \InputIfFileExists{gitinfo.tex}{}{}
 \providecommand{\gitinfo}{unknown}
+% Date of the commit being built (written by .latexmkrc), so that two people
+% building the same revision get the same title page. Falls back to today for a
+% build from a tree with uncommitted changes, which corresponds to no commit.
+\providecommand{\builddate}{\today}
 % Release version (a human tag: 1.1, 1.2, ...). Set in main.tex to match the
 % GitHub release tag; bump both together. Fallback here so the note always builds.
 \providecommand{\noteversion}{dev}
@@ -262,15 +266,19 @@
 \usepackage{tikz}
 \usetikzlibrary{positioning,arrows.meta,shapes.geometric,fit,backgrounds,calc}
 
-% Self-archival stamp (see the Colophon and the Makefile `swhid` target).
-% A document cannot contain its own SWHID; `make swhid` injects it, at build
-% time, into a throwaway swhid.tex consumed only by the stamped (non-committed)
-% PDF. A plain `make` leaves \thisswhid empty -> the Colophon shows a placeholder.
-% Consequence: the ARCHIVED source builds the unstamped PDF; the stamped PDF is a
-% sibling byte-object whose printed SWHID names the source of the unstamped one.
-% The Colophon and capstone say this out loud -- keep them in sync with this file.
+% Self-archival stamp (see Appendix J, which explains the mechanism it uses).
+% .latexmkrc DERIVES the identifier of the committed sources -- a SWHID is
+% computed from the content, so the build need not be told it -- and writes it
+% to the git-ignored swhid.tex. Because that file is git-ignored, stamping does
+% not change the tree the identifier names, and anyone who checks out this
+% revision derives the same number and builds the same PDF.
+% Empty on a tree with uncommitted changes, or without the `swh` CLI: the note
+% then builds unstamped and Appendix J says why.
 \providecommand{\thisswhid}{}
-\ifdef{\STAMPSWHID}{\InputIfFileExists{swhid.tex}{}{}}{}
+\providecommand{\thisswhidcore}{}
+\providecommand{\thisswhidorigin}{}
+\providecommand{\thisswhidanchor}{}
+\InputIfFileExists{swhid.tex}{}{}
 
 % --- Title-page command ---------------------------------------------------
 % memoir has no plain `titlepage` environment (it uses `titlingpage`); provide it.
@@ -290,10 +298,17 @@
   {\Large Archiving, Referencing and Reproducing Research Software\par}\vspace{0.3cm}
   {\large\itshape a doctoral course --- beyond FAIR data\par}
   \vfill
-  {\large Roberto Di Cosmo\par}\vspace{0.2cm}
-  {\large Software Heritage\par}\vspace{0.7cm}
+  {\large Roberto Di Cosmo\par}\vspace{0.25cm}
+  {\normalsize Software Heritage \textperiodcentered{} Inria \textperiodcentered{}
+   Université Paris Cité\par}\vspace{0.2cm}
+  {\small\href{https://www.dicosmo.org/}{www.dicosmo.org} \textperiodcentered{}
+   \textsc{orcid} \href{https://orcid.org/0000-0002-7493-5349}{0000-0002-7493-5349}\par}%
+  \vspace{0.7cm}
   {\large\itshape Version \noteversion\par}\vfill
   {\small This work is licensed under a Creative Commons
    Attribution~4.0 International License (CC-BY-4.0).\par}
-  {\small \today\par}
+  {\small \builddate\par}\vspace{0.6cm}
+  {\small\itshape These notes are revised. The latest version is always at\par}
+  {\small\href{https://hal.science/hal-05734828}{hal.science/hal-05734828}\par}
+  {\small\itshape How to cite them: Appendix~\ref{app:citing}.\par}
   \end{titlepage}}

@@ -2,8 +2,12 @@
 % Build with:  latexmk -xelatex main.tex   (or: make)
 \documentclass[11pt,oneside]{memoir}
 
-% Release version --- keep in sync with the GitHub release tag (v1.2, v1.3, ...).
-\newcommand{\noteversion}{1.5}
+% Release version: DERIVED, not declared. .latexmkrc reads it from the annotated
+% tag (`git describe`) and writes it into the git-ignored gitinfo.tex, so the tag
+% is the single source of truth and there is nothing to keep in sync by hand.
+% CONSEQUENCE FOR THE RELEASE FLOW: tag before building. Tagging does not change
+% the tree, so the source SWHID is unaffected, but the version on the title page
+% is only correct once the tag exists.  See appendix/J-self-archival.tex.
 
 \input{preamble}
 
@@ -75,6 +79,8 @@ policy (Chapter~\ref{ch:outlook}, with a model clause and a governance/sustainab
 \include{appendix/F-venue-classes}
 \include{appendix/G-aec-model-section}
 \include{appendix/H-archie}
+\include{appendix/I-citing}
+\include{appendix/J-self-archival}
 
 % --- References ----------------------------------------------------------
 \printbibliography[heading=refschapter,title={References}]

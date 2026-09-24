@@ -1,0 +1,115 @@
+\chapter{How to cite these notes}
+\label{app:citing}
+
+These notes are revised: chapters gain material, the evidence is refreshed, and the version
+number on the title page moves. A reference to them therefore has to answer the same question
+that Chapter~\ref{ch:ardc} puts to any research artefact --- does it name \emph{the work}, which
+will keep changing, or \emph{one exact version}, which will not? Both are legitimate. What is not
+legitimate is a reference that leaves the reader unable to tell which was meant.
+
+\begin{callout}{The short answer}
+\small
+Cite the HAL record \textbf{without} a version number:
+\begin{center}
+\url{https://hal.science/hal-05734828}
+\end{center}
+That address always resolves to the most recent version. A reader who follows it in five years
+gets whatever these notes have become by then, which is what a reference to a living course note
+should do.
+\end{callout}
+
+\section{Citing the work}
+
+This is the form to use in a reading list, a syllabus, a policy document, or a paper that
+recommends the notes as a whole. In plain text:
+
+\begin{quote}\footnotesize
+Roberto Di Cosmo. \emph{The Source Code of Science}. Doctoral. Pise (Italia), Italy.
+2026. \url{https://hal.science/hal-05734828}
+\end{quote}
+
+\noindent and in Bib\TeX{}, adapted from the entry HAL generates, with the version-specific fields
+left out on purpose:
+
+\begin{quote}\footnotesize
+\begin{verbatim}
+@unpublished{dicosmo:hal-05734828,
+  TITLE   = {{The Source Code of Science}},
+  AUTHOR  = {Di Cosmo, Roberto},
+  URL     = {https://hal.science/hal-05734828},
+  TYPE    = {Doctoral},
+  ADDRESS = {Pise (Italia), Italy},
+  YEAR    = {2026},
+  HAL_ID  = {hal-05734828},
+}
+\end{verbatim}
+\end{quote}
+
+\noindent The \texttt{URL} carries no \texttt{v} suffix, and that is the whole point: HAL keeps
+every version, and the unsuffixed identifier is the one that follows the work forward.
+
+\section{Citing one exact version}
+
+This is the form to use when the reference supports a claim --- when you quote a page, rely on a
+figure, or say that these notes recommend some specific thing. A later version may say something
+else, and a reader checking your claim must land on the text you actually read.
+
+Three identifiers name an exact version, at three different levels:
+
+\begin{description}[leftmargin=1.6em,itemsep=2pt]
+\item[The HAL record, versioned.] Append the version suffix HAL assigns, as in
+  \url{https://hal.science/hal-05734828v1}. Each deposit is a fixed document with a fixed cover
+  page. HAL's own citation block for that version carries the page count and the version note,
+  so take it from the record rather than retyping it.
+\item[The release.] Every version is tagged in the source repository and published with its
+  \textsc{pdf} attached:
+  \url{https://github.com/rdicosmo/source-code-of-science/releases}. The tag (\texttt{v1.4},
+  \texttt{v1.5}, \dots) is the human-readable name of the version.
+\item[The source tree.] The \LaTeX{} sources, figures and illustrations of each released version
+  are archived in Software Heritage and named by a qualified \textsc{swhid}. This is the
+  identifier to use when what you need is the material these notes are built from, rather than a
+  rendering of them. Version~1.5, for example, is named by
+  \begin{quote}\footnotesize
+  \swhreflong{swh:1:dir:769f7afe6cc52fe86bd63d35cb68e7513874e2fd;origin=https://github.com/rdicosmo/source-code-of-science;visit=swh:1:snp:b8715018e8f7ffab19b3f8a88fcd036fd2020ca8;anchor=swh:1:rev:7f22576697b3ee89eb96ac11839f724fe7db91b0}{swh:1:dir:769f7afe6cc52fe86bd63d35cb68e7513874e2fd;origin=https://github.com/rdicosmo/source-code-of-science;visit=swh:1:snp:b8715018e8f7ffab19b3f8a88fcd036fd2020ca8;anchor=swh:1:rev:7f22576697b3ee89eb96ac11839f724fe7db91b0}
+  \end{quote}
+  \vspace{-4pt}
+  The part before the first semicolon, \texttt{swh:1:dir:769f7afe\dots}, is the identifier
+  proper: it is computed from the content, so it can be recomputed and verified offline by the
+  method of Chapter~\ref{ch:identifiers}. What follows it is context that helps a reader find the
+  object again: where it came from, which visit saw it, and which revision it hangs from. Each
+  released version has its own such identifier, recorded in that version's HAL record under
+  related resources and in the release notes.
+\end{description}
+
+\noindent In Bib\TeX{}, the versioned form differs from the one above in two fields:
+
+\begin{quote}\footnotesize
+\begin{verbatim}
+  URL         = {https://hal.science/hal-05734828v1},
+  HAL_VERSION = {v1},
+\end{verbatim}
+\end{quote}
+
+\section{Which document is which}
+
+One caution, and it is the note's own lesson turned on itself. The \textsc{pdf} served by HAL is
+\emph{not} byte-identical to the \textsc{pdf} attached to the corresponding release: HAL prepends
+a cover page, which makes it a different digital object even though it is the same document to a
+reader. A byte-stable copy of each release, exactly as built, is kept at
+\url{https://dicosmo.org/Articles/2026-source-code-of-science.pdf}.
+
+The \textsc{swhid} recorded with each version names the \emph{source tree}, not any of those
+\textsc{pdf}s. This is not an oversight. A rendered document has no canonical byte form --- it can
+be rebuilt, converted, or reprinted with a cover page, and remain the same work --- whereas its
+source does, which is precisely why intrinsic identifiers fit code and fit sources, and sit
+awkwardly on a printed artefact.
+
+The example above names version~1.5. The version you are holding names itself as well:
+Appendix~\ref{app:self} prints the identifier of the sources this copy was built from, and
+explains how the build derives it. The distinction matters. A document cannot carry an intrinsic
+identifier of \emph{itself}, since writing the identifier in changes the bytes it names. It can
+carry the identifier of the \emph{sources it was built from}, which is a different object, and
+the one you want in a citation anyway.
+
+\takeaway{Cite the unsuffixed identifier for the work, the versioned one for a claim. A reference
+that does not say which it means is not doing its job.}
